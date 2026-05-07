@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Games Portal</title>
+    <style>
+        /* CSS for Grid and Search Bar */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; padding: 20px; }
+        .game-item { text-align: center; cursor: pointer; }
+        .game-item img { width: 100px; height: 100px; border-radius: 10px; }
+        #search { width: 90%; padding: 10px; margin: 10px auto; display: block; }
+        .cloak-btn { position: fixed; top: 10px; right: 10px; padding: 10px; background: red; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <button class="cloak-btn" onclick="openGame()">Unblock Game</button>
+    <input type="text" id="search" placeholder="Search games...">
+
+    <div class="grid" id="gameGrid">
+        <!-- Game 1 -->
+        <div class="game-item" onclick="openGame('https://example.com')">
+            <img src="icon1.png" alt="Game 1">
+            <p>Game 1</p>
+        </div>
+        <!-- Add more game-items here -->
+    </div>
+
+    <script>
+        // About:Blank Cloaking Function
+        function openGame(url) {
+            var win = window.open();
+            var iframe = win.document.createElement('iframe');
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+            iframe.style.border = "none";
+            iframe.src = url || "about:blank"; // Opens blank if no URL provided
+            win.document.body.appendChild(iframe);
+            win.document.body.style.margin = "0";
+            win.document.body.style.padding = "0";
+            win.document.body.style.overflow = "hidden";
+        }
+
+        // Simple Search Filter
+        document.getElementById('search').addEventListener('keyup', function(e) {
+            // Filter logic here
+        });
+    </script>
+</body>
+</html>
