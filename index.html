@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Google Drive</title>
+    <title>gelly</title> <!-- Tab name changed to Gelly -->
     <style>
         body { margin: 0; padding: 0; background-color: #ffffff; height: 100vh; overflow: hidden; }
         
-        /* Button moved to top-left */
+        /* Transfer button in the TOP-LEFT */
         .transfer-btn {
             position: fixed; 
             top: 20px; 
@@ -18,7 +18,7 @@
             border-radius: 4px; 
             cursor: pointer; 
             font-family: sans-serif;
-            z-index: 1000;
+            z-index: 9999;
         }
         .transfer-btn:hover { background-color: #d7d7d7; }
     </style>
@@ -35,7 +35,7 @@
             var html = `
                 <html>
                 <head>
-                    <title> </title>
+                    <title> </title> <!-- Blank title for the secret tab -->
                     <style>
                         body { background: #111; color: white; font-family: sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; }
                         #nav-bar { display: none; background: #222; padding: 10px; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
@@ -59,22 +59,32 @@
 
                     <div id="home-portal">
                         <input type="text" id="search" placeholder="Search games..." onkeyup="filterGames()">
-                        <div class="grid">
-                            <!-- SLOPE -->
-                            <div class="game-card" onclick="openGame('https://github.io')">
-                                <img src="https://googleusercontent.com" alt="Slope">
-                                <p>Slope</p>
-                            </div>
+                        <div class="grid" id="gameGrid">
+                            
                             <!-- 1V1.LOL -->
                             <div class="game-card" onclick="openGame('https://github.io')">
                                 <img src="https://googleusercontent.com" alt="1v1.lol">
                                 <p>1v1.lol</p>
                             </div>
-                             <!-- SUBWAY SURFERS -->
+
+                            <!-- SLOPE -->
+                            <div class="game-card" onclick="openGame('https://github.io')">
+                                <img src="https://googleusercontent.com" alt="Slope">
+                                <p>Slope</p>
+                            </div>
+
+                            <!-- RETRO BOWL -->
+                            <div class="game-card" onclick="openGame('https://github.io')">
+                                <img src="https://googleusercontent.com" alt="Retro Bowl">
+                                <p>Retro Bowl</p>
+                            </div>
+
+                            <!-- SUBWAY SURFERS -->
                             <div class="game-card" onclick="openGame('https://github.io')">
                                 <img src="https://googleusercontent.com" alt="Subway Surfers">
                                 <p>Subway Surfers</p>
                             </div>
+
                         </div>
                     </div>
 
