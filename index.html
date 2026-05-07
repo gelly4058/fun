@@ -5,17 +5,9 @@
     <style>
         body { margin: 0; padding: 0; background-color: #ffffff; height: 100vh; overflow: hidden; }
         .transfer-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            padding: 8px 15px;
-            font-size: 14px;
-            color: #555;
-            background-color: #e7e7e7;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: sans-serif;
+            position: fixed; bottom: 20px; left: 20px; padding: 8px 15px;
+            font-size: 14px; color: #555; background-color: #e7e7e7;
+            border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-family: sans-serif;
         }
         .transfer-btn:hover { background-color: #d7d7d7; }
     </style>
@@ -32,60 +24,90 @@
             var html = `
                 <html>
                 <head>
-                    <title> </title> <!-- Blank title -->
+                    <title> </title>
                     <style>
-                        body { background: #111; color: white; font-family: sans-serif; padding: 20px; }
+                        body { background: #111; color: white; font-family: sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; }
+                        
+                        /* Navigation Bar (Hidden when on home) */
+                        #nav-bar { display: none; background: #222; padding: 10px; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
+                        .nav-btn { background: #444; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 14px; }
+                        .nav-btn:hover { background: #555; }
+
+                        /* Home Portal Layout */
+                        #home-portal { padding: 20px; overflow-y: auto; flex-grow: 1; }
                         #search { width: 100%; padding: 15px; border-radius: 8px; border: none; background: #222; color: white; margin-bottom: 20px; outline: none; }
                         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
                         .game-card { background: #222; padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; border: 1px solid #333; transition: 0.3s; }
                         .game-card:hover { background: #333; border-color: #4CAF50; transform: translateY(-3px); }
                         .game-card img { width: 120px; height: 120px; border-radius: 12px; object-fit: cover; }
                         .game-card p { margin-top: 10px; font-weight: bold; font-size: 14px; }
+
+                        /* Game Frame */
+                        #game-container { display: none; flex-grow: 1; position: relative; }
+                        iframe { width: 100%; height: 100%; border: none; }
                     </style>
                 </head>
                 <body>
-                    <input type="text" id="search" placeholder="Search for a game..." onkeyup="filterGames()">
-                    
-                    <div class="grid" id="gameGrid">
-                        
-                        <!-- 1V1.LOL -->
-                        <div class="game-card" onclick="openGame('https://1v1-lolgame.github.io/')">
-                            <img src="https://googleusercontent.com" alt="1v1.lol">
-                            <p>1v1.lol</p>
-                        </div>
+                    <!-- Navigation Bar -->
+                    <div id="nav-bar">
+                        <button class="nav-btn" onclick="goHome()">Go Back</button>
+                        <button class="nav-btn" onclick="toggleFull()">Enter Fullscreen</button>
+                    </div>
 
-                        <!-- SLOPE -->
-                        <div class="game-card" onclick="openGame('https://github.io')">
-                            <img src="https://googleusercontent.com" alt="Slope">
-                            <p>Slope</p>
-                        </div>
+                    <!-- Home Portal -->
+                    <div id="home-portal">
+                        <input type="text" id="search" placeholder="Search..." onkeyup="filterGames()">
+                        <div class="grid" id="gameGrid">
+                            
+                            <div class="game-card" onclick="openGame('https://1v1-lolgame.github.io/')">
+                                <img src="https://googleusercontent.com" alt="1v1.lol">
+                                <p>1v1.lol</p>
+                            </div>
 
-                        <!-- RETRO BOWL -->
-                        <div class="game-card" onclick="openGame('https://amhooman.github.io/website/games/retrobowl/')">
-                            <img src="https://googleusercontent.com" alt="Retro Bowl">
-                            <p>Retro Bowl</p>
-                        </div>
+                            <div class="game-card" onclick="openGame('https://github.io')">
+                                <img src="https://googleusercontent.com" alt="Slope">
+                                <p>Slope</p>
+                            </div>
 
-                        <!-- GEOGUESSR -->
-                        <div class="game-card" onclick="openGame('https://games-online.io')">
-                            <img src="https://googleusercontent.com" alt="GeoGuessr">
-                            <p>GeoGuessr</p>
-                        </div>
+                            <div class="game-card" onclick="openGame('https://amhooman.github.io/website/games/retrobowl/')">
+                                <img src="https://googleusercontent.com" alt="Retro Bowl">
+                                <p>Retro Bowl</p>
+                            </div>
 
+                        </div>
+                    </div>
+
+                    <!-- Game Container -->
+                    <div id="game-container">
+                        <iframe id="game-frame" src=""></iframe>
                     </div>
 
                     <script>
-                        // Function to open the game in the SAME tab
                         function openGame(url) {
-                            document.body.innerHTML = '<style>body,html{margin:0;padding:0;height:100%;overflow:hidden;}iframe{width:100%;height:100%;border:none;}</style><iframe src="' + url + '"></iframe>';
+                            document.getElementById('home-portal').style.display = 'none';
+                            document.getElementById('nav-bar').style.display = 'flex';
+                            document.getElementById('game-container').style.display = 'block';
+                            document.getElementById('game-frame').src = url;
                         }
 
-                        // Search filter
+                        function goHome() {
+                            document.getElementById('home-portal').style.display = 'block';
+                            document.getElementById('nav-bar').style.display = 'none';
+                            document.getElementById('game-container').style.display = 'none';
+                            document.getElementById('game-frame').src = '';
+                        }
+
+                        function toggleFull() {
+                            let frame = document.getElementById('game-frame');
+                            if (frame.requestFullscreen) { frame.requestFullscreen(); }
+                            else if (frame.webkitRequestFullscreen) { frame.webkitRequestFullscreen(); }
+                        }
+
                         function filterGames() {
                             let input = document.getElementById('search').value.toLowerCase();
                             let cards = document.getElementsByClassName('game-card');
                             for (let i = 0; i < cards.length; i++) {
-                                let title = cards[i].getElementsByTagName('p')[0].innerText.toLowerCase();
+                                let title = cards[i].innerText.toLowerCase();
                                 cards[i].style.display = title.includes(input) ? "block" : "none";
                             }
                         }
