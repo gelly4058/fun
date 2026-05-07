@@ -4,72 +4,46 @@
     <title>Google Drive</title>
     <style>
         body { font-family: sans-serif; text-align: center; padding-top: 50px; background-color: #f4f4f4; }
-        .launch-btn { padding: 20px 40px; font-size: 24px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.3s; }
-        .launch-btn:hover { background: #45a049; transform: translateY(-2px); }
+        .launch-btn { padding: 20px 40px; font-size: 24px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
 
     <h1>About Blank Cloak For Tabs</h1>
-    <p>Click below to launch your unblocked dashboard in a cloaked tab.</p>
-    
-    <button class="launch-btn" onclick="launchCloaked()">Unblock Games</button>
+    <button class="launch-btn" id="launcher">Unblock Games</button>
 
     <script>
-        function launchCloaked() {
+        document.getElementById('launcher').onclick = function() {
             var win = window.open('about:blank', '_blank');
-            
-            var content = `
+            var doc = win.document;
+
+            // HTML content for the new tab
+            var html = `
                 <html>
                 <head>
                     <title>Classes</title>
                     <style>
                         body { background: #111; color: white; font-family: sans-serif; padding: 20px; }
-                        #search { width: 100%; padding: 15px; font-size: 18px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #444; background: #222; color: white; outline: none; }
+                        #search { width: 100%; padding: 15px; border-radius: 8px; border: none; background: #222; color: white; margin-bottom: 20px; }
                         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
-                        .game-card { background: #222; padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; transition: 0.3s; border: 1px solid #333; }
-                        .game-card:hover { background: #333; transform: translateY(-5px); border-color: #4CAF50; }
-                        .game-card img { width: 120px; height: 120px; border-radius: 8px; object-fit: cover; margin-bottom: 10px; }
-                        .game-card p { margin: 0; font-weight: bold; font-size: 14px; }
+                        .game-card { background: #222; padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; }
+                        .game-card img { width: 120px; height: 120px; border-radius: 8px; }
                     </style>
                 </head>
                 <body>
-                    <input type="text" id="search" placeholder="Search for a game..." onkeyup="filterGames()">
-                    
+                    <input type="text" id="search" placeholder="Search for a game...">
                     <div class="grid" id="gameGrid">
-                        <!-- Add your games here -->
-                        <div class="game-card" onclick="location.href='GAME_URL_HERE'">
-                            <img src="IMAGE_URL_HERE" alt="Slope">
-                            <p>Slope</p>
-                        </div>
-                        <div class="game-card" onclick="location.href='GAME_URL_HERE'">
-                            <img src="IMAGE_URL_HERE" alt="1v1.lol">
-                            <p>1v1.lol</p>
+                        <div class="game-card" onclick="location.href='YOUR_GAME_URL'">
+                            <img src="YOUR_IMAGE_URL" alt="Game Name">
+                            <p>Game Name</p>
                         </div>
                     </div>
-
-                    <script>
-                        function filterGames() {
-                            let input = document.getElementById('search').value.toLowerCase();
-                            let cards = document.getElementsByClassName('game-card');
-                            
-                            for (let i = 0; i < cards.length; i++) {
-                                let title = cards[i].getElementsByTagName('p')[0].innerText.toLowerCase();
-                                if (title.includes(input)) {
-                                    cards[i].style.display = "block";
-                                } else {
-                                    cards[i].style.display = "none";
-                                }
-                            }
-                        }
-                    <\\/script>
                 </body>
                 </html>
             `;
-
-            win.document.write(content);
-            win.document.close();
-        }
+            doc.write(html);
+            doc.close();
+        };
     </script>
 </body>
 </html>
