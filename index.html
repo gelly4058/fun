@@ -1,13 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>gelly</title>
+    <title>Google Drive</title>
     <style>
         body { margin: 0; padding: 0; background-color: #ffffff; height: 100vh; overflow: hidden; }
+        
+        /* Button moved to top-left */
         .transfer-btn {
-            position: fixed; bottom: 20px; left: 20px; padding: 8px 15px;
-            font-size: 14px; color: #555; background-color: #e7e7e7;
-            border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-family: sans-serif;
+            position: fixed; 
+            top: 20px; 
+            left: 20px; 
+            padding: 8px 15px;
+            font-size: 14px; 
+            color: #555; 
+            background-color: #e7e7e7;
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-family: sans-serif;
+            z-index: 1000;
         }
         .transfer-btn:hover { background-color: #d7d7d7; }
     </style>
@@ -48,32 +59,22 @@
 
                     <div id="home-portal">
                         <input type="text" id="search" placeholder="Search games..." onkeyup="filterGames()">
-                        <div class="grid" id="gameGrid">
-                            
-                            <!-- SLOPE: Direct File Link -->
+                        <div class="grid">
+                            <!-- SLOPE -->
                             <div class="game-card" onclick="openGame('https://github.io')">
                                 <img src="https://googleusercontent.com" alt="Slope">
                                 <p>Slope</p>
                             </div>
-
-                            <!-- 1V1.LOL: Clean Version -->
+                            <!-- 1V1.LOL -->
                             <div class="game-card" onclick="openGame('https://github.io')">
                                 <img src="https://googleusercontent.com" alt="1v1.lol">
                                 <p>1v1.lol</p>
                             </div>
-
-                            <!-- RETRO BOWL: Direct File -->
-                            <div class="game-card" onclick="openGame('https://github.io')">
-                                <img src="https://googleusercontent.com" alt="Retro Bowl">
-                                <p>Retro Bowl</p>
-                            </div>
-
-                            <!-- SUBWAY SURFERS: Direct -->
+                             <!-- SUBWAY SURFERS -->
                             <div class="game-card" onclick="openGame('https://github.io')">
                                 <img src="https://googleusercontent.com" alt="Subway Surfers">
                                 <p>Subway Surfers</p>
                             </div>
-
                         </div>
                     </div>
 
@@ -88,20 +89,17 @@
                             document.getElementById('game-container').style.display = 'block';
                             document.getElementById('game-frame').src = url;
                         }
-
                         function goHome() {
                             document.getElementById('game-frame').src = '';
                             document.getElementById('game-container').style.display = 'none';
                             document.getElementById('nav-bar').style.display = 'none';
                             document.getElementById('home-portal').style.display = 'block';
                         }
-
                         function toggleFull() {
                             var elem = document.getElementById("game-frame");
                             if (elem.requestFullscreen) { elem.requestFullscreen(); }
                             else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
                         }
-
                         function filterGames() {
                             let input = document.getElementById('search').value.toLowerCase();
                             let cards = document.getElementsByClassName('game-card');
