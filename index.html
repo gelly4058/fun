@@ -3,36 +3,39 @@
 <head>
     <title>gelly</title>
     <style>
-        /* Matches the #111 background of your dashboard */
-        body { 
-            margin: 0; 
-            padding: 0; 
-            background-color: #111; 
-            height: 100vh; 
-            overflow: hidden; 
-        }
+        body { margin: 0; padding: 0; background-color: #111; height: 100vh; overflow: hidden; }
         
-        /* Discreet Transfer button */
+        /* Shared Button Style (Matches Menu) */
+        .gelly-btn {
+            background: none; 
+            color: #aaa; 
+            border: none; 
+            padding: 12px 15px; 
+            text-align: left; 
+            cursor: pointer; 
+            font-size: 16px; 
+            border-radius: 8px; 
+            transition: 0.2s; 
+            font-family: sans-serif;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .gelly-btn:hover { background: #333; color: white; }
+        .gelly-btn.active { background: #d3d3d3; color: #111; font-weight: bold; }
+
+        /* Transfer button specific positioning */
         .transfer-btn {
             position: fixed; 
             top: 20px; 
             left: 20px; 
-            padding: 8px 15px;
-            font-size: 14px; 
-            color: #555; 
-            background-color: #1a1a1a; 
-            border: 1px solid #333; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-family: sans-serif;
+            border: 1px solid #333; /* Slight border to see it on #111 background */
             z-index: 9999;
         }
-        .transfer-btn:hover { background-color: #222; color: #888; }
     </style>
 </head>
 <body>
 
-    <button class="transfer-btn" id="launchPortal">Transfer</button>
+    <button class="gelly-btn transfer-btn" id="launchPortal">Transfer</button>
 
     <script>
         document.getElementById('launchPortal').onclick = function() {
@@ -48,21 +51,17 @@
                         
                         #sidebar { width: 220px; background: #1a1a1a; display: flex; flex-direction: column; padding: 20px; border-right: 1px solid #333; box-sizing: border-box; }
                         
-                        .nav-group { display: flex; flex-direction: column; margin-bottom: 20px; }
+                        .nav-group { display: flex; flex-direction: column; }
                         
-                        /* Menu buttons and Panic button styled the same */
-                        .nav-btn { background: none; color: #aaa; border: none; padding: 12px 15px; text-align: left; cursor: pointer; font-size: 16px; border-radius: 8px; margin-bottom: 8px; transition: 0.2s; font-family: sans-serif; }
-                        .nav-btn:hover { background: #333; color: white; }
-                        .nav-btn.active { background: #d3d3d3; color: #111; font-weight: bold; }
-                        
-                        /* Panic button specifically styled like menu options */
-                        .panic-btn-menu { color: #aaa; margin-top: auto; margin-bottom: 10px; border: 1px solid transparent; }
-                        .panic-btn-menu:hover { background: #d3d3d3; color: #111; }
+                        /* Re-using the Button Style */
+                        .gelly-btn { background: none; color: #aaa; border: none; padding: 12px 15px; text-align: left; cursor: pointer; font-size: 16px; border-radius: 8px; margin-bottom: 8px; transition: 0.2s; font-family: sans-serif; }
+                        .gelly-btn:hover { background: #333; color: white; }
+                        .gelly-btn.active { background: #d3d3d3; color: #111; font-weight: bold; }
 
                         .brand-container { flex-grow: 1; display: flex; align-items: center; justify-content: center; width: 100%; }
                         .brand { font-size: 32px; font-weight: bold; color: #d3d3d3; letter-spacing: 2px; }
                         
-                        .status-msg { font-size: 11px; color: #888; padding: 10px; background: #222; border-radius: 5px; border-left: 3px solid #d3d3d3; }
+                        .status-msg { font-size: 11px; color: #888; padding: 10px; background: #222; border-radius: 5px; border-left: 3px solid #d3d3d3; margin-top: auto; }
 
                         #main-content { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
                         .page { display: none; padding: 40px; overflow-y: auto; height: 100%; box-sizing: border-box; }
@@ -84,16 +83,16 @@
                 <body>
                     <div id="sidebar">
                         <div class="nav-group">
-                            <button class="nav-btn active" id="btn-home" onclick="showPage('home')">Home</button>
-                            <button class="nav-btn" id="btn-games" onclick="showPage('games')">Games</button>
-                            <button class="nav-btn" id="btn-sounds" onclick="showPage('sounds')">Sound Board</button>
+                            <button class="gelly-btn active" id="btn-home" onclick="showPage('home')">Home</button>
+                            <button class="gelly-btn" id="btn-games" onclick="showPage('games')">Games</button>
+                            <button class="gelly-btn" id="btn-sounds" onclick="showPage('sounds')">Sound Board</button>
+                            <button class="gelly-btn" id="btn-panic" onclick="panicMode()">Panic</button>
                         </div>
 
                         <div class="brand-container">
                             <div class="brand">gelly</div>
                         </div>
                         
-                        <button class="nav-btn panic-btn-menu" onclick="panicMode()">Panic</button>
                         <div class="status-msg">Monday Launch Ready!</div>
                     </div>
 
@@ -126,16 +125,16 @@
                         <div id="sounds" class="page">
                             <div class="welcome-container">
                                 <h2 style="color:#d3d3d3">Soundboard</h2>
-                                <button class="nav-btn" style="background:#d3d3d3; color:#111; padding: 20px 40px;" onclick="openFrame('./soundboard/index.html')">Open Soundboard</button>
+                                <button class="gelly-btn active" style="text-align:center; padding: 20px 40px;" onclick="openFrame('./soundboard/index.html')">Open Soundboard</button>
                             </div>
                         </div>
                         <div id="player-container">
                             <div id="player-nav">
-                                <button class="nav-btn" onclick="closeFrame()" style="background:#444; color:white">← Back</button>
+                                <button class="gelly-btn" onclick="closeFrame()" style="margin:0;">← Back</button>
                                 <span style="font-weight:bold; color:#d3d3d3">gelly player</span>
                                 <div style="display: flex; gap: 10px;">
-                                    <button class="nav-btn" onclick="panicMode()" style="background:#333; margin:0; color:#aaa; border: 1px solid #444;">Panic</button>
-                                    <button class="nav-btn" onclick="toggleFull()" style="background:#444; margin:0; color:white">Fullscreen</button>
+                                    <button class="gelly-btn" onclick="panicMode()" style="margin:0;">Panic</button>
+                                    <button class="gelly-btn" onclick="toggleFull()" style="margin:0;">Fullscreen</button>
                                 </div>
                             </div>
                             <iframe id="game-frame" src=""></iframe>
@@ -145,8 +144,9 @@
                         function showPage(pageId) {
                             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
                             document.getElementById('player-container').style.display = 'none';
-                            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                            document.getElementById('btn-' + pageId).classList.add('active');
+                            document.querySelectorAll('.gelly-btn').forEach(b => b.classList.remove('active'));
+                            let btn = document.getElementById('btn-' + pageId);
+                            if(btn) btn.classList.add('active');
                             document.getElementById(pageId).classList.add('active');
                         }
                         function openFrame(url) {
@@ -157,7 +157,7 @@
                         function closeFrame() {
                             document.getElementById('game-frame').src = '';
                             document.getElementById('player-container').style.display = 'none';
-                            if (document.getElementById('btn-sounds').classList.contains('active')) { showPage('sounds'); } else { showPage('games'); }
+                            showPage('games');
                         }
                         function panicMode() { window.location.href = 'https://google.com'; }
                         function toggleFull() {
@@ -181,7 +181,6 @@
             doc.write(html);
             doc.close();
 
-            // Self-close the launcher
             window.open('', '_self', ''); 
             window.close();
         };
