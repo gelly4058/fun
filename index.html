@@ -30,40 +30,69 @@
                         body { background: #111; color: white; font-family: sans-serif; margin: 0; padding: 0; display: flex; height: 100vh; width: 100vw; overflow: hidden; }
                         
                         /* Sidebar Navigation */
-                        #sidebar { width: 220px; background: #1a1a1a; display: flex; flex-direction: column; padding: 20px; border-right: 1px solid #333; box-sizing: border-box; }
-                        .brand { font-size: 28px; font-weight: bold; color: #4CAF50; margin-bottom: 5px; }
-                        .status-msg { font-size: 12px; color: #888; margin-bottom: 25px; padding: 10px; background: #222; border-radius: 5px; border-left: 3px solid #4CAF50; }
+                        #sidebar { 
+                            width: 220px; 
+                            background: #1a1a1a; 
+                            display: flex; 
+                            flex-direction: column; 
+                            padding: 20px; 
+                            border-right: 1px solid #333; 
+                            box-sizing: border-box; 
+                        }
                         
+                        /* Centered Brand Title */
+                        .brand-container { 
+                            flex-grow: 1; 
+                            display: flex; 
+                            align-items: center; 
+                            justify-content: center; 
+                            width: 100%;
+                        }
+                        .brand { 
+                            font-size: 32px; 
+                            font-weight: bold; 
+                            color: #d3d3d3; /* Light Gray Accent */
+                            letter-spacing: 2px;
+                        }
+                        
+                        /* Navigation Buttons */
+                        .nav-group { display: flex; flex-direction: column; margin-bottom: 20px; }
                         .nav-btn { background: none; color: #aaa; border: none; padding: 12px 15px; text-align: left; cursor: pointer; font-size: 16px; border-radius: 8px; margin-bottom: 8px; transition: 0.2s; }
                         .nav-btn:hover { background: #333; color: white; }
-                        .nav-btn.active { background: #4CAF50; color: white; font-weight: bold; }
+                        .nav-btn.active { background: #d3d3d3; color: #111; font-weight: bold; }
+
+                        /* Bottom Update Message */
+                        .status-msg { 
+                            margin-top: auto; /* Pushes to bottom */
+                            font-size: 11px; 
+                            color: #888; 
+                            padding: 10px; 
+                            background: #222; 
+                            border-radius: 5px; 
+                            border-left: 3px solid #d3d3d3; 
+                        }
 
                         /* Main Content Area */
                         #main-content { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
                         
-                        /* Pages */
+                        /* Page Styles */
                         .page { display: none; padding: 40px; overflow-y: auto; height: 100%; box-sizing: border-box; }
                         .page.active { display: block; }
                         
-                        /* Home Page */
+                        /* Home Page Content */
                         .welcome-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; }
-                        .welcome-text { font-size: 56px; font-weight: bold; margin-bottom: 10px; }
+                        .welcome-text { font-size: 56px; font-weight: bold; margin-bottom: 10px; color: #d3d3d3; }
                         .sub-text { font-size: 18px; color: #888; }
 
-                        /* Games Page */
+                        /* Games Grid */
                         #search { width: 100%; padding: 15px; border-radius: 8px; border: none; background: #222; color: white; margin-bottom: 30px; outline: none; font-size: 16px; }
                         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 20px; }
                         .game-card { background: #222; padding: 15px; border-radius: 12px; text-align: center; cursor: pointer; border: 1px solid #333; transition: 0.3s; }
-                        .game-card:hover { transform: translateY(-5px); border-color: #4CAF50; background: #2a2a2a; }
+                        .game-card:hover { transform: translateY(-5px); border-color: #d3d3d3; background: #2a2a2a; }
                         .game-card img { width: 110px; height: 110px; border-radius: 10px; object-fit: cover; margin-bottom: 10px; }
                         .game-card p { margin: 0; font-size: 14px; font-weight: bold; }
 
-                        /* Soundboard Page */
-                        .sound-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
-                        .sound-btn { background: #333; color: white; border: 1px solid #444; padding: 15px; border-radius: 8px; cursor: pointer; text-align: center; }
-                        .sound-btn:hover { background: #444; }
-
-                        /* Game Player View */
+                        /* Player View */
                         #player-container { display: none; width: 100%; height: 100%; background: #000; flex-direction: column; }
                         #player-nav { background: #1a1a1a; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
                         iframe { width: 100%; flex-grow: 1; border: none; }
@@ -71,12 +100,17 @@
                 </head>
                 <body>
                     <div id="sidebar">
-                        <div class="brand">gelly</div>
-                        <div class="status-msg">Update: Soundboard coming soon!</div>
+                        <div class="brand-container">
+                            <div class="brand">gelly</div>
+                        </div>
                         
-                        <button class="nav-btn active" id="btn-home" onclick="showPage('home')">Home</button>
-                        <button class="nav-btn" id="btn-games" onclick="showPage('games')">Games</button>
-                        <button class="nav-btn" id="btn-sounds" onclick="showPage('sounds')">Sound Board</button>
+                        <div class="nav-group">
+                            <button class="nav-btn active" id="btn-home" onclick="showPage('home')">Home</button>
+                            <button class="nav-btn" id="btn-games" onclick="showPage('games')">Games</button>
+                            <button class="nav-btn" id="btn-sounds" onclick="showPage('sounds')">Sound Board</button>
+                        </div>
+                        
+                        <div class="status-msg">Update: Soundboard coming soon!</div>
                     </div>
 
                     <div id="main-content">
@@ -84,7 +118,7 @@
                         <div id="home" class="page active">
                             <div class="welcome-container">
                                 <div class="welcome-text">Welcome to gelly, have fun</div>
-                                <div class="sub-text">Click "Games" on the left to start playing.</div>
+                                <div class="sub-text">Use the sidebar to explore.</div>
                             </div>
                         </div>
 
@@ -118,17 +152,14 @@
                         <!-- Sound Board Page -->
                         <div id="sounds" class="page">
                             <h2>Sound Board</h2>
-                            <p style="color:#888">Upload mp3 files to your audio folder to get started!</p>
-                            <div class="sound-grid">
-                                <!-- Sound buttons will go here -->
-                            </div>
+                            <p style="color:#888">Blank page for now.</p>
                         </div>
 
                         <!-- Game Player Overlay -->
                         <div id="player-container">
                             <div id="player-nav">
                                 <button class="nav-btn" onclick="closeGame()" style="background:#444; margin:0">← Back</button>
-                                <span id="game-title" style="font-weight:bold; color:#4CAF50">Game Player</span>
+                                <span id="game-title" style="font-weight:bold; color:#d3d3d3">Game Player</span>
                                 <button class="nav-btn" onclick="toggleFull()" style="background:#444; margin:0">Fullscreen</button>
                             </div>
                             <iframe id="game-frame" src=""></iframe>
@@ -137,15 +168,10 @@
 
                     <script>
                         function showPage(pageId) {
-                            // Hide everything
                             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
                             document.getElementById('player-container').style.display = 'none';
-                            
-                            // Handle Nav Buttons
                             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
                             document.getElementById('btn-' + pageId).classList.add('active');
-                            
-                            // Show Page
                             document.getElementById(pageId).classList.add('active');
                         }
 
