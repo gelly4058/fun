@@ -67,10 +67,11 @@
                         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
                         #search { width: 100%; max-width: 600px; padding: 16px 24px; border-radius: 12px; border: 1px solid #222; background: #151515; color: white; margin-bottom: 40px; outline: none; font-size: 16px; }
-                        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 25px; }
+                        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 25px; }
                         .game-card { background: #151515; padding: 15px; border-radius: 18px; text-align: center; cursor: pointer; border: 1px solid #222; transition: all 0.4s ease; }
                         .game-card:hover { transform: translateY(-10px); background: #1c1c1c; border-color: #333; }
                         .game-card img { width: 130px; height: 130px; border-radius: 14px; object-fit: cover; margin-bottom: 12px; }
+                        .game-card p { margin: 0; font-size: 15px; font-weight: 600; color: #bbb; }
 
                         /* Player View */
                         #player-container { display: none; width: 100%; height: 100%; background: #000; flex-direction: column; }
@@ -99,35 +100,38 @@
                         <div id="games" class="page">
                             <input type="text" id="search" placeholder="Search library..." onkeyup="filterGames()">
                             <div class="grid">
-                                <div class="game-card" onclick="openFrame('./games/flappy/index.html')">
+                                <div class="game-card" onclick="openFrame('./games/flappy/index.html', this)">
                                     <img src="./icons/flappybirdicon.png" alt="Flappy"><p>Flappy Bird</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/drivemad/index.html')">
+                                <div class="game-card" onclick="openFrame('./games/drivemad/index.html', this)">
                                     <img src="./icons/drivemadicon.png" alt="Drive Mad"><p>Drive Mad</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/bitlife/index.html')">
+                                <div class="game-card" onclick="openFrame('./games/bitlife/index.html', this)">
                                     <img src="./icons/bitlifeicon.png" alt="BitLife"><p>BitLife</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/geodash/index.html')">
-                                    <img src="./icons/geodashicon.png" alt="Geometry Dash"><p>Geometry Dash</p>
+                                <div class="game-card" onclick="openFrame('./games/geodash/index.html', this)">
+                                    <img src="./icons/geodashicon.png" alt="Geometry Dash"><p>Geo Dash</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/tetris/index.html')">
+                                <div class="game-card" onclick="openFrame('./games/tetris/index.html', this)">
                                     <img src="./icons/tetrisicon.png" alt="Tetris"><p>Tetris</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/cookieclicker/index.html')">
+                                <div class="game-card" onclick="openFrame('./games/cookieclicker/index.html', this)">
                                     <img src="./icons/cookieclickericon.png" alt="Cookie Clicker"><p>Cookie Clicker</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/minecraft/index.html')">
+                                <div class="game-card" onclick="openFrame('./games/slope/index.html', this)">
+                                    <img src="./icons/slopeicon.png" alt="Slope"><p>Slope</p>
+                                </div>
+                                <div class="game-card" onclick="openFrame('./games/stickmanhook/index.html', this)">
+                                    <img src="./icons/stickmanicon.png" alt="Stickman Hook"><p>Stickman Hook</p>
+                                </div>
+                                <div class="game-card" onclick="openFrame('./games/minecraft/index.html', this)">
                                     <img src="./icons/minecrafticon.png" alt="Minecraft"><p>Minecraft</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/stickmanhook/index.html')">
-                                    <img src="./icons/stickmanhookicon.png" alt="Stickman Hook"><p>Stickman Hook</p>
-                                </div>
-                                <div class="game-card" onclick="openFrame('./games/crossyroad/index.html')">
+                                <div class="game-card" onclick="openFrame('./games/crossyroad/index.html', this)">
                                     <img src="./icons/crossyroadicon.png" alt="Crossy Road"><p>Crossy Road</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/slope/index.html')">
-                                    <img src="./icons/slopeicon.png" alt="Slope"><p>Slope</p>
+                                <div class="game-card" onclick="openFrame('./games/retrobowl/index.html', this)">
+                                    <img src="./icons/retrobowlicon.png" alt="Retro Bowl"><p>Retro Bowl</p>
                                 </div>
                             </div>
                         </div>
@@ -135,14 +139,14 @@
                         <div id="sounds" class="page">
                             <div style="margin-top:20vh; text-align:center;">
                                 <h2 style="font-size:32px; letter-spacing:-1px;">Sound Engine</h2>
-                                <button class="gelly-btn active" style="margin:20px auto; padding: 15px 40px; text-align:center;" onclick="openFrame('./soundboard/index.html')">Launch Soundboard</button>
+                                <button class="gelly-btn active" style="margin:20px auto; padding: 15px 40px; text-align:center;" onclick="openFrame('./soundboard/index.html', this)">Launch Soundboard</button>
                             </div>
                         </div>
 
                         <div id="player-container">
                             <div id="player-nav">
                                 <button class="gelly-btn" id="back-btn" onclick="closeFrame()">Back</button>
-                                <span style="font-size:12px; color:#444; letter-spacing:2px; text-transform:uppercase;">System Active</span>
+                                <span id="game-display-name" style="font-size:12px; color:#eee; letter-spacing:2px; text-transform:uppercase; font-weight:bold;">System Active</span>
                                 <div style="display: flex; gap: 10px;">
                                     <button class="gelly-btn" onclick="panicMode()" style="font-size:13px; padding: 8px 15px;">Panic</button>
                                     <button class="gelly-btn active" onclick="toggleFull()" style="font-size:13px; padding: 8px 15px;">Full</button>
@@ -166,13 +170,23 @@
                             document.getElementById(pageId).classList.add('active');
                         }
 
-                        function openFrame(url) {
+                        function openFrame(url, el) {
+                            // Get game name from the <p> tag inside the card
+                            var gameName = "System Active";
+                            if (el && el.querySelector('p')) {
+                                gameName = el.querySelector('p').innerText;
+                            } else if (el && el.innerText.includes('Launch')) {
+                                gameName = "Soundboard";
+                            }
+                            
+                            document.getElementById('game-display-name').innerText = gameName;
                             document.getElementById('sidebar').classList.add('hidden');
+                            
                             setTimeout(() => {
                                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
                                 document.getElementById('player-container').style.display = 'flex';
                                 document.getElementById('game-frame').src = url;
-                            }, 500); // Waits for sidebar slide to finish
+                            }, 500);
                         }
 
                         function closeFrame() {
