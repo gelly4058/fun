@@ -93,11 +93,22 @@
                     </div>
 
                     <script>
-                        function openGame(url) {
-                            document.getElementById('home-portal').style.display = 'none';
-                            document.getElementById('nav-bar').style.display = 'flex';
-                            document.getElementById('game-container').style.display = 'block';
-                            document.getElementById('game-frame').src = url;
+function openGame(url) {
+    // Hide the home list and show the container
+    document.getElementById('home-portal').style.display = 'none';
+    document.getElementById('nav-bar').style.display = 'flex';
+    document.getElementById('game-container').style.display = 'block';
+
+    // Force the iframe to be 100% of the viewport width and height
+    var frame = document.getElementById('game-frame');
+    frame.style.width = "100vw";
+    frame.style.height = "calc(100vh - 40px)"; // Subtracts 40px for your nav-bar
+    frame.style.border = "none";
+    frame.style.margin = "0";
+    frame.style.padding = "0";
+    frame.src = url;
+}
+
                         }
                         function goHome() {
                             document.getElementById('game-frame').src = '';
