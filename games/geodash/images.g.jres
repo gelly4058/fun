@@ -1,0 +1,17 @@
+{
+    "image2": {
+        "data": "hwQBAAEAAAAAAAAA",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "camera_reference"
+    },
+    "image1": {
+        "data": "hwQMAAwAAAAAAAAAAAAAAAAAAAAAAAAAAMzMzMwAAAAAvLu7ywAAAAC8zLvLAAAAALy7u8sAAAAAvLu7ywAAAAC8zLvLAAAAALy7u8sAAAAAzMzMzAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "character"
+    },
+    "*": {
+        "mimeType": "image/x-mkcd-f4",
+        "dataEncoding": "base64",
+        "namespace": "myImages"
+    }
+}
