@@ -1,2 +1,96 @@
-<!--an unminifed version is at og.html-->
-<!DOCTYPE html><html> <head> <link rel="stylesheet" href="css/styles.css"/> <link rel="icon" href="img/mlg-favicon.png"/> <link rel="shortcut icon" href="img/mlg-favicon.png" type="image/x-icon"/> <link rel="apple-touch-icon" href="img/mlg-favicon.png" type="image/x-icon"/> <title>Online Soundboard</title> <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <meta name="title" content="Online Soundboard"/> <meta name="description" content="A collection of sounds to play out of context. Perfect for school! Just play it when your teacher is talking and I bet they will love it!"/> <meta name="robots" content="index, follow"/> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <link rel="manifest" href="./manifest.json"/> <link rel="stylesheet" href="css/spinner.css"/> <script>if ("serviceWorker" in navigator){navigator.serviceWorker .register("/sw.js") .then(function (registration){console.log("Service worker registered:", registration);}) .catch(function (error){console.log("Service worker registration failed:", error);});}</script> </head> <body> <h1>Online Soundboard</h1> <h2> Just click on the colorful buttons to play the sound.<br/> <a href="https://forms.gle/hoiTBEZ4p14iupXH6">Click here to submit a sound to be added!</a><br/> </h2> <div class="control"> Audio Controls <button class="woah" onclick="javascript:playAll()">Provoke Chaos</button> <button class="woah" onclick="javascript:stopAll()">Stop Everything</button> </div><div class="soundboard-container"> <div class="flex-container"> <div class="spinner"></div></div></div><p id="footer">3kh0 © 2023</p><script type="application/javascript" src="loader.js"></script> </body></html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title> </title>
+    <style>
+        /* Matches your Dashboard #111 / #1a1a1a Theme */
+        body { 
+            background-color: #111; 
+            color: #d3d3d3; 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            text-align: center;
+        }
+
+        h1 { font-size: 32px; letter-spacing: -1px; color: #fff; margin-bottom: 30px; }
+
+        /* Sound Buttons Grid */
+        #soundboard-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Button Style matching your Gelly theme */
+        .sound-btn {
+            background: #1a1a1a;
+            color: #aaa;
+            border: 1px solid #333;
+            padding: 20px 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 14px;
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sound-btn:hover {
+            background: #d3d3d3;
+            color: #111;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        /* Control Bar at Top */
+        .controls {
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #1a1a1a;
+            border-radius: 12px;
+            display: inline-block;
+            border: 1px solid #333;
+        }
+
+        .ctrl-btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .ctrl-btn:hover { background: #444; }
+    </style>
+</head>
+<body>
+
+    <h1>sound engine</h1>
+
+    <div class="controls">
+        <button class="ctrl-btn" onclick="stopAll()">Stop Everything</button>
+    </div>
+
+    <div id="soundboard-container">
+        <!-- The loader.js will fill this with buttons automatically -->
+    </div>
+
+    <script src="loader.js"></script>
+    <script>
+        function stopAll() {
+            const audios = document.querySelectorAll('audio');
+            audios.forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+        }
+    </script>
+</body>
+</html>
