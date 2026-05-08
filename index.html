@@ -28,8 +28,12 @@
                     <title> </title>
                     <style>
                         body { background: #111; color: white; font-family: sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; width: 100vw; overflow: hidden; }
-                        #nav-bar { display: none; background: #222; padding: 10px; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; height: 40px; }
+                        
+                        /* Navigation Bar */
+                        #nav-bar { display: none; background: #222; padding: 10px; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; height: 40px; box-sizing: border-box; }
                         .nav-btn { background: #444; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+                        
+                        /* Home Portal */
                         #home-portal { padding: 20px; overflow-y: auto; flex-grow: 1; }
                         #search { width: 100%; padding: 12px; border-radius: 6px; border: none; background: #222; color: white; margin-bottom: 20px; outline: none; }
                         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
@@ -37,8 +41,28 @@
                         .game-card:hover { transform: scale(1.05); border-color: #4CAF50; }
                         .game-card img { width: 100px; height: 100px; border-radius: 8px; object-fit: cover; background: #333; }
                         .game-card p { margin-top: 8px; font-size: 12px; font-weight: bold; }
-                        #game-container { display: none; width: 100vw; height: calc(100vh - 40px); flex-grow: 1; background: #000; }
-                        iframe { width: 100%; height: 100%; border: none; display: block; }
+
+                        /* CENTERED GAME CONTAINER */
+                        #game-container { 
+                            display: none; 
+                            flex-grow: 1; 
+                            background: #000; 
+                            display: flex; 
+                            justify-content: center; 
+                            align-items: center; 
+                            width: 100vw; 
+                            height: calc(100vh - 40px);
+                        }
+                        
+                        /* Rescaling Iframe */
+                        iframe { 
+                            width: 100%; 
+                            height: 100%; 
+                            border: none; 
+                            display: block;
+                            max-width: 100%;
+                            max-height: 100%;
+                        }
                     </style>
                 </head>
                 <body>
@@ -51,25 +75,13 @@
                         <input type="text" id="search" placeholder="Search games..." onkeyup="filterGames()">
                         <div class="grid" id="gameGrid">
                             
-                            <!-- FLAPPY BIRD (Inside your 'flappy' folder) -->
+                            <!-- FLAPPY BIRD -->
                             <div class="game-card" onclick="openGame('./games/flappy/index.html')">
                                 <img src="https://googleusercontent.com" alt="Flappy Bird">
                                 <p>Flappy Bird</p>
                             </div>
 
-                            <!-- EXAMPLE 2 -->
-                            <div class="game-card" onclick="openGame('PASTE_LINK_HERE')">
-                                <img src="https://placeholder.com" alt="example">
-                                <p>example</p>
-                            </div>
-
-                            <!-- EXAMPLE 3 -->
-                            <div class="game-card" onclick="openGame('PASTE_LINK_HERE')">
-                                <img src="https://placeholder.com" alt="example">
-                                <p>example</p>
-                            </div>
-
-                            <!-- EXAMPLE 4 -->
+                            <!-- Example 2 -->
                             <div class="game-card" onclick="openGame('PASTE_LINK_HERE')">
                                 <img src="https://placeholder.com" alt="example">
                                 <p>example</p>
@@ -86,7 +98,7 @@
                         function openGame(url) {
                             document.getElementById('home-portal').style.display = 'none';
                             document.getElementById('nav-bar').style.display = 'flex';
-                            document.getElementById('game-container').style.display = 'block';
+                            document.getElementById('game-container').style.display = 'flex'; // Uses Flex to center
                             var frame = document.getElementById('game-frame');
                             frame.src = url;
                         }
