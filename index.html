@@ -28,52 +28,32 @@
                     <title> </title>
                     <style>
                         body { background: #0b0b0b; color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; height: 100vh; width: 100vw; overflow: hidden; }
-                        
-                        /* Sidebar with Smooth Transition */
-                        #sidebar { 
-                            width: 240px; 
-                            background: #121212; 
-                            display: flex; 
-                            flex-direction: column; 
-                            padding: 30px 20px; 
-                            border-right: 1px solid #222; 
-                            box-sizing: border-box; 
-                            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-                            overflow: hidden;
-                            white-space: nowrap;
-                        }
+                        #sidebar { width: 240px; background: #121212; display: flex; flex-direction: column; padding: 30px 20px; border-right: 1px solid #222; box-sizing: border-box; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; white-space: nowrap; }
                         #sidebar.hidden { width: 0; padding: 0; border: none; opacity: 0; }
-
                         .nav-group { display: flex; flex-direction: column; gap: 10px; min-width: 200px; }
-                        .gelly-btn { 
-                            background: transparent; color: #888; border: none; padding: 12px 18px; 
-                            text-align: left; cursor: pointer; font-size: 15px; border-radius: 10px; 
-                            transition: all 0.3s ease; font-weight: 500; font-family: 'Segoe UI', sans-serif;
-                        }
+                        .gelly-btn { background: transparent; color: #888; border: none; padding: 12px 18px; text-align: left; cursor: pointer; font-size: 15px; border-radius: 10px; transition: all 0.3s ease; font-weight: 500; }
                         .gelly-btn:hover { background: #1d1d1d; color: #fff; transform: translateX(5px); }
                         .gelly-btn.active { background: #eee; color: #111; box-shadow: 0 4px 15px rgba(255,255,255,0.1); }
                         .gelly-btn.panic { margin-top: 10px; color: #555; font-size: 13px; }
                         .gelly-btn.panic:hover { color: #ff4444; background: #221111; }
-                        
                         .brand-container { flex-grow: 1; display: flex; align-items: center; justify-content: center; }
                         .brand { font-size: 38px; font-weight: 800; color: #fff; letter-spacing: -1px; opacity: 0.1; }
                         .status-msg { font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 1px; text-align: center; }
-
-                        /* Main Content Area */
                         #main-content { flex-grow: 1; display: flex; flex-direction: column; background: radial-gradient(circle at top right, #1a1a1a, #0b0b0b); overflow: hidden; }
                         .page { display: none; padding: 60px; overflow-y: auto; height: 100%; box-sizing: border-box; animation: fadeIn 0.4s ease; }
                         .page.active { display: block; }
-                        
                         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+                        
+                        /* Search and Filter Bar */
+                        .search-container { display: flex; gap: 15px; max-width: 800px; margin-bottom: 40px; }
+                        #search { flex-grow: 1; padding: 16px 24px; border-radius: 12px; border: 1px solid #222; background: #151515; color: white; outline: none; font-size: 16px; }
+                        #sort-filter { padding: 0 15px; border-radius: 12px; border: 1px solid #222; background: #151515; color: #888; outline: none; cursor: pointer; font-family: inherit; }
 
-                        #search { width: 100%; max-width: 600px; padding: 16px 24px; border-radius: 12px; border: 1px solid #222; background: #151515; color: white; margin-bottom: 40px; outline: none; font-size: 16px; }
-                        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 25px; }
+                        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 25px; }
                         .game-card { background: #151515; padding: 15px; border-radius: 18px; text-align: center; cursor: pointer; border: 1px solid #222; transition: all 0.4s ease; }
                         .game-card:hover { transform: translateY(-10px); background: #1c1c1c; border-color: #333; }
                         .game-card img { width: 130px; height: 130px; border-radius: 14px; object-fit: cover; margin-bottom: 12px; }
                         .game-card p { margin: 0; font-size: 15px; font-weight: 600; color: #bbb; }
-
-                        /* Player View */
                         #player-container { display: none; width: 100%; height: 100%; background: #000; flex-direction: column; }
                         #player-nav { background: #0f0f0f; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; }
                         iframe { width: 100%; flex-grow: 1; border: none; }
@@ -98,40 +78,44 @@
                         </div>
 
                         <div id="games" class="page">
-                            <input type="text" id="search" placeholder="Search library..." onkeyup="filterGames()">
-                            <div class="grid">
-                                <div class="game-card" onclick="openFrame('./games/flappy/index.html', this)">
+                            <div class="search-container">
+                                <input type="text" id="search" placeholder="Search library..." onkeyup="filterGames()">
+                                <select id="sort-filter" onchange="sortGames()">
+                                    <option value="recent">Newest</option>
+                                    <option value="az">A-Z</option>
+                                    <option value="za">Z-A</option>
+                                </select>
+                            </div>
+                            <div class="grid" id="gameGrid">
+                                <div class="game-card" data-date="2023-01-01" onclick="openFrame('./games/flappy/index.html', this)">
                                     <img src="./icons/flappybirdicon.png" alt="Flappy"><p>Flappy Bird</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/drivemad/index.html', this)">
+                                <div class="game-card" data-date="2023-01-02" onclick="openFrame('./games/drivemad/index.html', this)">
                                     <img src="./icons/drivemadicon.png" alt="Drive Mad"><p>Drive Mad</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/bitlife/index.html', this)">
+                                <div class="game-card" data-date="2023-01-03" onclick="openFrame('./games/bitlife/index.html', this)">
                                     <img src="./icons/bitlifeicon.png" alt="BitLife"><p>BitLife</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/geodash/index.html', this)">
+                                <div class="game-card" data-date="2023-01-04" onclick="openFrame('./games/geodash/index.html', this)">
                                     <img src="./icons/geodashicon.png" alt="Geometry Dash"><p>Geo Dash</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/tetris/index.html', this)">
+                                <div class="game-card" data-date="2023-01-05" onclick="openFrame('./games/tetris/index.html', this)">
                                     <img src="./icons/tetrisicon.png" alt="Tetris"><p>Tetris</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/cookieclicker/index.html', this)">
+                                <div class="game-card" data-date="2023-01-06" onclick="openFrame('./games/cookieclicker/index.html', this)">
                                     <img src="./icons/cookieclickericon.png" alt="Cookie Clicker"><p>Cookie Clicker</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/slope/index.html', this)">
+                                <div class="game-card" data-date="2023-01-07" onclick="openFrame('./games/slope/index.html', this)">
                                     <img src="./icons/slopeicon.png" alt="Slope"><p>Slope</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/stickmanhook/index.html', this)">
+                                <div class="game-card" data-date="2023-01-08" onclick="openFrame('./games/stickmanhook/index.html', this)">
                                     <img src="./icons/stickmanicon.png" alt="Stickman Hook"><p>Stickman Hook</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/minecraft/index.html', this)">
+                                <div class="game-card" data-date="2023-01-09" onclick="openFrame('./games/minecraft/index.html', this)">
                                     <img src="./icons/minecrafticon.png" alt="Minecraft"><p>Minecraft</p>
                                 </div>
-                                <div class="game-card" onclick="openFrame('./games/crossyroad/index.html', this)">
+                                <div class="game-card" data-date="2023-01-10" onclick="openFrame('./games/crossyroad/index.html', this)">
                                     <img src="./icons/crossyroadicon.png" alt="Crossy Road"><p>Crossy Road</p>
-                                </div>
-                                <div class="game-card" onclick="openFrame('./games/retrobowl/index.html', this)">
-                                    <img src="./icons/retrobowlicon.png" alt="Retro Bowl"><p>Retro Bowl</p>
                                 </div>
                             </div>
                         </div>
@@ -171,17 +155,14 @@
                         }
 
                         function openFrame(url, el) {
-                            // Get game name from the <p> tag inside the card
                             var gameName = "System Active";
                             if (el && el.querySelector('p')) {
                                 gameName = el.querySelector('p').innerText;
                             } else if (el && el.innerText.includes('Launch')) {
                                 gameName = "Soundboard";
                             }
-                            
                             document.getElementById('game-display-name').innerText = gameName;
                             document.getElementById('sidebar').classList.add('hidden');
-                            
                             setTimeout(() => {
                                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
                                 document.getElementById('player-container').style.display = 'flex';
@@ -211,6 +192,25 @@
                                 let title = card.innerText.toLowerCase();
                                 card.style.display = title.includes(input) ? "block" : "none";
                             });
+                        }
+
+                        function sortGames() {
+                            const grid = document.getElementById('gameGrid');
+                            const cards = Array.from(grid.getElementsByClassName('game-card'));
+                            const mode = document.getElementById('sort-filter').value;
+
+                            cards.sort((a, b) => {
+                                const nameA = a.querySelector('p').innerText.toLowerCase();
+                                const nameB = b.querySelector('p').innerText.toLowerCase();
+                                const dateA = a.getAttribute('data-date');
+                                const dateB = b.getAttribute('data-date');
+
+                                if (mode === 'az') return nameA.localeCompare(nameB);
+                                if (mode === 'za') return nameB.localeCompare(nameA);
+                                if (mode === 'recent') return dateB.localeCompare(dateA);
+                            });
+
+                            cards.forEach(card => grid.appendChild(card));
                         }
                     <\/script>
                 </body>
