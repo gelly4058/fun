@@ -28,7 +28,9 @@
 
     <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
     <script>
-        // Load Ruffle immediately
+        // CRITICAL FIX: Blocks any attempt by the game to open a new window/tab
+        window.open = function() { return null; };
+        
         window.addEventListener("load", (event) => {
             const ruffle = window.RufflePlayer.newest();
             const player = ruffle.createPlayer();
@@ -39,7 +41,9 @@
                 url: "redball4.swf",
                 letterbox: "on",
                 scale: "showAll",
-                autoplay: "on"
+                autoplay: "on",
+                // Additional Ruffle protection
+                allowScriptAccess: false 
             });
         });
     </script>
