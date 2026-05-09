@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0b0b0b; /* updated background */
+            --bg: #0b0b0b;
             --sidebar: #080808;
             --card: #141414;
             --accent: #ffffff;
@@ -33,9 +33,11 @@
             overflow: hidden;
         }
 
-        button, .nav-item, .game-card, select, input {
+        /* --- Global Cursor Fix --- */
+        button, .nav-item, .game-card, .game-card *, select, input {
             cursor: pointer;
         }
+        input[type="text"] { cursor: text; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
@@ -142,7 +144,6 @@
             border-radius: 12px;
             outline: none;
         }
-        input { flex: 1; cursor: text; }
 
         .grid {
             display: grid;
@@ -151,7 +152,7 @@
         }
 
         .game-card {
-            background: var(--card); /* subtle contrast against #0b0b0b */
+            background: var(--card);
             border-radius: 18px;
             padding: 10px;
             transition: var(--transition);
@@ -159,8 +160,8 @@
         }
 
         .game-card:hover { transform: scale(1.03); background: var(--secondary); }
-        .game-card img { width: 100%; aspect-ratio: 1/1; border-radius: 12px; margin-bottom: 8px; object-fit: cover; }
-        .game-card span { font-size: 12px; color: var(--subtext); font-weight: 600; }
+        .game-card img { width: 100%; aspect-ratio: 1/1; border-radius: 12px; margin-bottom: 8px; object-fit: cover; pointer-events: none; }
+        .game-card span { font-size: 12px; color: var(--subtext); font-weight: 600; pointer-events: none; }
 
         /* --- Player --- */
         #player {
@@ -250,7 +251,7 @@
         <iframe id="game-frame" src=""></iframe>
     </div>
 
-    <div id="version-tag">f</div>
+    <div id="version-tag">g</div>
 
     <script>
         const gameData = [
