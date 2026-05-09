@@ -63,7 +63,6 @@
 
                         #player-container { display: none; width: 100%; height: 100%; background: #000; flex-direction: column; position: relative; }
                         
-                        /* Loading Text Overlay */
                         #loading-overlay {
                             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
                             background: #000; display: flex; flex-direction: column;
@@ -101,48 +100,56 @@
                             <div class="search-container">
                                 <input type="text" id="search" placeholder="Search library..." onkeyup="filterGames()">
                                 <select id="sort-filter" onchange="sortGames()">
-                                    <option value="recent">Newest</option>
-                                    <option value="oldest">Oldest</option>
                                     <option value="az">A-Z</option>
                                     <option value="za">Z-A</option>
                                 </select>
                             </div>
                             <div class="grid" id="gameGrid">
-                                <div class="game-card" data-date="2023-01-01" onclick="openFrame('./games/flappy/index.html', this)">
+                                <div class="game-card" onclick="openFrame('./games/flappy/index.html', this)">
                                     <img src="./icons/flappybirdicon.png" alt="Flappy"><p>Flappy Bird</p>
                                 </div>
-                                <div class="game-card" data-date="2023-01-02" onclick="openFrame('./games/drivemad/index.html', this)">
+                                <div class="game-card" onclick="openFrame('./games/drivemad/index.html', this)">
                                     <img src="./icons/drivemadicon.png" alt="Drive Mad"><p>Drive Mad</p>
                                 </div>
-                                <div class="game-card" data-date="2023-01-03" onclick="openFrame('./games/bitlife/index.html', this)">
+                                <div class="game-card" onclick="openFrame('./games/bitlife/index.html', this)">
                                     <img src="./icons/bitlifeicon.png" alt="BitLife"><p>BitLife</p>
                                 </div>
-                                <div class="game-card" data-date="2023-01-04" onclick="openFrame('./games/geodash/index.html', this)">
+                                <div class="game-card" onclick="openFrame('./games/geodash/index.html', this)">
                                     <img src="./icons/geodashicon.png" alt="GD"><p>Geometry Dash</p>
                                 </div>
-                                <div class="game-card" data-date="2023-01-05" onclick="openFrame('./games/tetris/index.html', this)">
+                                <div class="game-card" onclick="openFrame('./games/tetris/index.html', this)">
                                     <img src="./icons/tetrisicon.png" alt="Tetris"><p>Tetris</p>
                                 </div>
-                                <div class="game-card" data-date="2023-01-06" onclick="openFrame('./games/cookieclicker/index.html', this)">
+                                <div class="game-card" onclick="openFrame('./games/cookieclicker/index.html', this)">
                                     <img src="./icons/cookieclickericon.png" alt="Cookies"><p>Cookie Clicker</p>
                                 </div>
-                                <div class="game-card" data-date="2023-01-07" onclick="openFrame('./games/slope/index.html', this)">
+                                <div class="game-card" onclick="openFrame('./games/slope/index.html', this)">
                                     <img src="./icons/slopeicon.png" alt="Slope"><p>Slope</p>
                                 </div>
-                                <div class="game-card" data-date="2023-01-08" onclick="openFrame('./games/stickmanhook/index.html', this)">
+                                <div class="game-card" onclick="openFrame('./games/stickmanhook/index.html', this)">
                                     <img src="./icons/stickmanhookicon.png" alt="Hook"><p>Stickman Hook</p>
                                 </div>
-                                <div class="game-card" data-date="2023-01-09" onclick="openFrame('./games/minecraft/index.html', this)">
+                                <div class="game-card" onclick="openFrame('./games/minecraft/index.html', this)">
                                     <img src="./icons/minecrafticon.png" alt="MC"><p>Minecraft</p>
                                 </div>
-                                <div class="game-card" data-date="2023-01-10" onclick="openFrame('./games/crossyroad/index.html', this)">
+                                <div class="game-card" onclick="openFrame('./games/crossyroad/index.html', this)">
                                     <img src="./icons/crossyroadicon.png" alt="Road"><p>Crossy Road</p>
                                 </div>
-                                <div class="game-card" data-date="2023-01-12" onclick="openFrame('./games/redball/index.html', this)">
-                                    <img src="./icons/redballicon.png" alt="Red Ball 4"><p>Red Ball 4</p>
+                                <div class="game-card" onclick="openFrame('./games/redball4/index.html', this)">
+                                    <img src="./icons/redball4icon.png" alt="Red Ball 4"><p>Red Ball 4</p>
                                 </div>
-                                <div class="game-card" data-date="2023-01-13" onclick="openFrame('./games/ducklife/index.html', this)">
-                                    <img src="./icons/ducklifeicon.png" alt="Duck Life"><p>Duck Life 4</p>
+                                <div class="game-card" onclick="openFrame('./games/ducklife/index.html', this)">
+                                    <img src="./icons/ducklifeicon.png" alt="Duck Life"><p>Duck Life</p>
+                                </div>
+                                <!-- New Games -->
+                                <div class="game-card" onclick="openFrame('./games/paperio2/index.html', this)">
+                                    <img src="./icons/paperio2icon.png" alt="Paper.io 2"><p>Paper.io 2</p>
+                                </div>
+                                <div class="game-card" onclick="openFrame('./games/snake/index.html', this)">
+                                    <img src="./icons/snakeicon.png" alt="Google Snake"><p>Google Snake</p>
+                                </div>
+                                <div class="game-card" onclick="openFrame('./games/vex4/index.html', this)">
+                                    <img src="./icons/vex4icon.png" alt="Vex 4"><p>Vex 4</p>
                                 </div>
                             </div>
                         </div>
@@ -200,12 +207,8 @@
                             } else if (el && el.innerText.includes('Launch')) {
                                 gameName = "Soundboard";
                             }
-                            
                             document.getElementById('game-display-name').innerText = gameName;
-                            
-                            // Show Loading Overlay
                             document.getElementById('loading-overlay').style.display = 'flex';
-                            
                             document.getElementById('sidebar').classList.add('hidden');
                             setTimeout(() => {
                                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -258,13 +261,8 @@
                             cards.sort((a, b) => {
                                 const nameA = a.querySelector('p').innerText.toLowerCase();
                                 const nameB = b.querySelector('p').innerText.toLowerCase();
-                                const dateA = a.getAttribute('data-date');
-                                const dateB = b.getAttribute('data-date');
-
                                 if (mode === 'az') return nameA.localeCompare(nameB);
                                 if (mode === 'za') return nameB.localeCompare(nameA);
-                                if (mode === 'recent') return dateB.localeCompare(dateA);
-                                if (mode === 'oldest') return dateA.localeCompare(dateB);
                             });
 
                             cards.forEach(card => grid.appendChild(card));
