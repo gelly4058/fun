@@ -3,25 +3,50 @@
 <head>
     <title>gelly</title>
     <style>
-        body { margin: 0; padding: 0; background-color: #111; height: 100vh; overflow: hidden; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        .transfer-btn {
-            position: fixed; top: 20px; left: 20px; padding: 10px 20px;
-            font-size: 13px; color: #333; background: transparent;
-            border: 1px solid transparent; border-radius: 6px; cursor: pointer;
-            transition: 0.5s; z-index: 9999;
-        }
-        .transfer-btn:hover { color: #888; border-color: #333; background: #1a1a1a; }
+        body { margin: 0; padding: 0; background-color: #0b0b0b; height: 100vh; overflow: hidden; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; display: flex; justify-content: center; align-items: center; color: #eee; }
+        #login-gate { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0b0b; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .gate-brand { font-size: 42px; font-weight: 800; letter-spacing: -2px; margin-bottom: 30px; color: #fff; }
+        .gate-label { font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-weight: 600; }
+        #pass-input { background: #151515; border: 1px solid #222; padding: 12px 20px; border-radius: 10px; color: #fff; outline: none; text-align: center; font-size: 16px; width: 200px; transition: 0.3s; margin-bottom: 15px; }
+        #pass-input:focus { border-color: #444; background: #1a1a1a; }
+        .enter-btn { background: #eee; color: #111; border: none; padding: 10px 30px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px; text-transform: lowercase; transition: 0.3s; }
+        .enter-btn:hover { background: #fff; transform: scale(1.05); }
+        #main-transfer { opacity: 0; transition: 1s; display: flex; flex-direction: column; align-items: center; }
+        .transfer-btn { padding: 15px 40px; font-size: 14px; color: #888; background: #151515; border: 1px solid #222; border-radius: 10px; cursor: pointer; transition: 0.5s; font-weight: 600; text-transform: lowercase; }
+        .transfer-btn:hover { color: #fff; border-color: #444; background: #1d1d1d; transform: translateY(-3px); }
+        #login-gate.unlocked { transform: translateY(-100%); opacity: 0; pointer-events: none; }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
-    <button class="transfer-btn" id="launchPortal">Transfer</button>
+    <div id="login-gate">
+        <div class="gate-brand">gelly.</div>
+        <div class="gate-label">password:</div>
+        <input type="password" id="pass-input" placeholder="••••">
+        <button class="enter-btn" onclick="checkPass()">enter</button>
+    </div>
+
+    <div id="main-transfer">
+        <button class="transfer-btn" id="launchPortal">transfer system</button>
+    </div>
 
     <script>
+        function checkPass() {
+            const input = document.getElementById('pass-input').value;
+            if (input === 'gg55') {
+                document.getElementById('login-gate').classList.add('unlocked');
+                document.getElementById('main-transfer').style.opacity = "1";
+            } else {
+                alert('ACCESS DENIED');
+                document.getElementById('pass-input').value = '';
+            }
+        }
+
+        document.getElementById('pass-input').addEventListener("keyup", function(e) { if (e.keyCode === 13) checkPass(); });
+
         document.getElementById('launchPortal').onclick = function() {
             var win = window.open('about:blank', '_blank');
             var doc = win.document;
-
             var html = `
                 <html>
                 <head>
@@ -31,7 +56,7 @@
                         #sidebar { width: 240px; background: #121212; display: flex; flex-direction: column; padding: 30px 20px; border-right: 1px solid #222; box-sizing: border-box; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; white-space: nowrap; }
                         #sidebar.hidden { width: 0; padding: 0; border: none; opacity: 0; }
                         .nav-group { display: flex; flex-direction: column; gap: 10px; min-width: 200px; }
-                        .gelly-btn { background: transparent; color: #888; border: none; padding: 12px 18px; text-align: left; cursor: pointer; font-size: 15px; border-radius: 10px; transition: all 0.3s ease; font-weight: 500; font-family: inherit; }
+                        .gelly-btn { background: transparent; color: #888; border: none; padding: 12px 18px; text-align: left; cursor: pointer; font-size: 15px; border-radius: 10px; transition: all 0.3s ease; font-weight: 500; font-family: inherit; text-transform: lowercase; }
                         .gelly-btn:hover { background: #1d1d1d; color: #fff; transform: translateX(5px); }
                         .gelly-btn.active { background: #eee; color: #111; box-shadow: 0 4px 15px rgba(255,255,255,0.1); }
                         .gelly-btn.panic { margin-top: 10px; color: #555; font-size: 13px; }
@@ -39,70 +64,49 @@
                         .brand-container { flex-grow: 1; display: flex; align-items: center; justify-content: center; }
                         .brand { font-size: 38px; font-weight: 800; color: #fff; letter-spacing: -1px; opacity: 0.1; }
                         .status-msg { font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 1px; text-align: center; }
-
                         #main-content { flex-grow: 1; display: flex; flex-direction: column; background: radial-gradient(circle at top right, #1a1a1a, #0b0b0b); overflow: hidden; }
                         .page { display: none; padding: 60px; overflow-y: auto; height: 100%; box-sizing: border-box; animation: fadeIn 0.4s ease; }
                         .page.active { display: block; }
                         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-                        
                         .search-header { display: flex; align-items: center; justify-content: space-between; max-width: 800px; margin-bottom: 10px; }
                         .game-count { font-size: 11px; color: #333; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-                        
                         .search-container { display: flex; gap: 15px; max-width: 800px; margin-bottom: 40px; }
                         #search { flex-grow: 1; padding: 16px 24px; border-radius: 12px; border: 1px solid #222; background: #151515; color: white; outline: none; font-size: 16px; transition: 0.3s; }
                         #search:focus { border-color: #444; background: #1a1a1a; }
-                        
                         #sort-filter { padding: 0 20px; border-radius: 12px; border: 1px solid #222; background: #151515; color: #888; outline: none; cursor: pointer; font-family: inherit; font-size: 14px; transition: 0.3s; appearance: none; text-align: center; }
-                        #sort-filter:hover { border-color: #444; color: #fff; background: #1d1d1d; }
-
                         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 25px; }
                         .game-card { background: #151515; padding: 15px; border-radius: 18px; text-align: center; cursor: pointer; border: 1px solid #222; transition: all 0.4s ease; }
                         .game-card:hover { transform: translateY(-10px); background: #1c1c1c; border-color: #333; }
                         .game-card img { width: 130px; height: 130px; border-radius: 14px; object-fit: cover; margin-bottom: 12px; }
                         .game-card p { margin: 0; font-size: 15px; font-weight: 600; color: #bbb; }
-
                         #player-container { display: none; width: 100%; height: 100%; background: #000; flex-direction: column; position: relative; }
-                        
-                        #loading-overlay {
-                            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-                            background: #000; display: flex; flex-direction: column;
-                            justify-content: center; align-items: center; z-index: 5;
-                            text-align: center; color: #444; font-size: 14px;
-                            letter-spacing: 1px; font-weight: 600; text-transform: uppercase;
-                        }
-
+                        #loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 5; text-align: center; color: #444; font-size: 14px; letter-spacing: 1px; font-weight: 600; text-transform: uppercase; }
                         #player-nav { background: #0f0f0f; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; z-index: 10; }
                         iframe { width: 100%; flex-grow: 1; border: none; z-index: 6; }
                     </style>
                 </head>
-                <body>
+                <body oncontextmenu="return false;">
                     <div id="sidebar">
                         <div class="nav-group">
-                            <button class="gelly-btn active" id="btn-home" onclick="showPage('home')">Home</button>
-                            <button class="gelly-btn" id="btn-games" onclick="showPage('games')">Games</button>
-                            <button class="gelly-btn" id="btn-sounds" onclick="showPage('sounds')">Sounds</button>
-                            <button class="gelly-btn panic" onclick="panicMode()">Panic</button>
+                            <button class="gelly-btn active" id="btn-home" onclick="showPage('home')">home</button>
+                            <button class="gelly-btn" id="btn-games" onclick="showPage('games')">games</button>
+                            <button class="gelly-btn" id="btn-sounds" onclick="showPage('sounds')">sounds</button>
+                            <button class="gelly-btn panic" onclick="panicMode()">panic</button>
                         </div>
                         <div class="brand-container"><div class="brand">gelly</div></div>
-                        <div class="status-msg">v2.0 // Active</div>
+                        <div class="status-msg">v2.0 // active</div>
                     </div>
-
                     <div id="main-content">
                         <div id="home" class="page active">
                             <h1 style="font-size: 64px; font-weight: 800; letter-spacing: -2px; margin-top: 15vh;">welcome to gelly.</h1>
-                            <p style="font-size: 18px; color: #666; margin-top: 10px;">games for games sound for soundboard home for this page panic for send to google classroom</p>
+                            <p style="font-size: 18px; color: #666; margin-top: 10px;">WE GOT FRICKING GEOMETRY DASH NOW!!!!!</p>
                         </div>
-
                         <div id="games" class="page">
-                            <div class="search-header">
-                                <span class="game-count" id="count-display">Syncing...</span>
-                            </div>
+                            <div class="search-header"><span class="game-count" id="count-display">Syncing...</span></div>
                             <div class="search-container">
                                 <input type="text" id="search" placeholder="Search library..." onkeyup="filterGames()">
                                 <select id="sort-filter" onchange="sortGames()">
-                                    <option value="oldest" selected>Oldest</option>
-                                    <option value="az">A-Z</option>
-                                    <option value="za">Z-A</option>
+                                    <option value="oldest" selected>Oldest</option><option value="az">A-Z</option><option value="za">Z-A</option>
                                 </select>
                             </div>
                             <div class="grid" id="gameGrid">
@@ -127,73 +131,51 @@
                                 <div class="game-card" onclick="openFrame('./games/doodlejump/index.html', this)"><img src="./icons/doodlejumpicon.png" alt="Doodle Jump"><p>Doodle Jump</p></div>
                             </div>
                         </div>
-
                         <div id="sounds" class="page">
                             <div style="margin-top:20vh; text-align:center;">
-                                <h2 style="font-size:32px; letter-spacing:-1px;">Sound Engine</h2>
-                                <button class="gelly-btn active" style="margin:20px auto; padding: 15px 40px; text-align:center;" onclick="openFrame('./soundboard/index.html', this)">Launch Soundboard</button>
+                                <h2 style="font-size:32px; letter-spacing:-1px;">sound engine</h2>
+                                <button class="gelly-btn active" style="margin:20px auto; padding: 15px 40px; text-align:center;" onclick="openFrame('https://github.io', this)">launch soundboard</button>
                             </div>
                         </div>
-
                         <div id="player-container">
                             <div id="loading-overlay">Please wait, this can take up to 2 minutes on ur first launch.</div>
                             <div id="player-nav">
-                                <button class="gelly-btn" id="back-btn" onclick="closeFrame()">Back</button>
-                                <span id="game-display-name" style="font-size:12px; color:#eee; letter-spacing:2px; text-transform:uppercase; font-weight:bold;">System Active</span>
-                                <div style="display: flex; gap: 10px;">
-                                    <button class="gelly-btn" onclick="panicMode()" style="font-size:13px; padding: 8px 15px;">Panic</button>
-                                    <button class="gelly-btn active" onclick="toggleFull()" style="font-size:13px; padding: 8px 15px;">Full</button>
-                                </div>
+                                <button class="gelly-btn" id="back-btn" onclick="closeFrame()">back</button>
+                                <span id="game-display-name" style="font-size:12px; color:#eee; letter-spacing:2px; text-transform:uppercase; font-weight:bold;">system active</span>
+                                <div style="display: flex; gap: 10px;"><button class="gelly-btn" onclick="panicMode()" style="font-size:13px; padding: 8px 15px;">panic</button><button class="gelly-btn active" onclick="toggleFull()" style="font-size:13px; padding: 8px 15px;">full</button></div>
                             </div>
                             <iframe id="game-frame" src="" onload="hideLoading()"></iframe>
                         </div>
                     </div>
-
                     <script>
                         let initialOrder = [];
-                        
-                        function updateCount() { const count = document.getElementsByClassName('game-card').length; const display = document.getElementById('count-display'); if(display) display.innerText = count + " Games Available"; }
+                        function updateCount() { const count = document.getElementsByClassName('game-card').length; const display = document.getElementById('count-display'); if(display) display.innerText = count + " games available"; }
                         function showPage(pageId) { if (pageId !== 'sounds') { document.getElementById('game-frame').src = ''; } document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById('player-container').style.display = 'none'; document.getElementById('sidebar').classList.remove('hidden'); document.querySelectorAll('.gelly-btn').forEach(b => { if (b.id !== 'back-btn') b.classList.remove('active'); }); let btn = document.getElementById('btn-' + pageId); if(btn) btn.classList.add('active'); document.getElementById(pageId).classList.add('active'); if(pageId === 'games') updateCount(); }
-                        function openFrame(url, el) { var gameName = "System Active"; if (el && el.querySelector('p')) { gameName = el.querySelector('p').innerText; } else if (el && el.innerText.includes('Launch')) { gameName = "Soundboard"; } document.getElementById('game-display-name').innerText = gameName; document.getElementById('loading-overlay').style.display = 'flex'; document.getElementById('sidebar').classList.add('hidden'); setTimeout(() => { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById('player-container').style.display = 'flex'; document.getElementById('game-frame').src = url; }, 500); }
+                        function openFrame(url, el) { 
+                            var gameName = "system active"; 
+                            if (el && el.querySelector('p')) { gameName = el.querySelector('p').innerText; } 
+                            else if (el && el.innerText.toLowerCase().includes('launch')) { gameName = "soundboard"; } 
+                            document.getElementById('game-display-name').innerText = gameName; 
+                            document.getElementById('loading-overlay').style.display = 'flex'; 
+                            document.getElementById('sidebar').classList.add('hidden'); 
+                            var finalUrl = url;
+                            if (url.startsWith('./')) { finalUrl = "https://github.io" + url.substring(2); }
+                            setTimeout(() => { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById('player-container').style.display = 'flex'; document.getElementById('game-frame').src = finalUrl; }, 500); 
+                        }
                         function hideLoading() { document.getElementById('loading-overlay').style.display = 'none'; }
                         function closeFrame() { document.getElementById('game-frame').src = ''; document.getElementById('player-container').style.display = 'none'; document.getElementById('sidebar').classList.remove('hidden'); showPage('games'); }
                         function panicMode() { window.location.href = 'https://google.com'; }
                         function toggleFull() { var frame = document.getElementById("game-frame"); if (frame.requestFullscreen) frame.requestFullscreen(); else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen(); }
-                        function filterGames() { let input = document.getElementById('search').value.toLowerCase(); let cards = document.querySelectorAll('.game-card'); let visibleCount = 0; cards.forEach(card => { let title = card.innerText.toLowerCase(); if(title.includes(input)) { card.style.display = "block"; visibleCount++; } else { card.style.display = "none"; } }); const display = document.getElementById('count-display'); if(display) display.innerText = visibleCount + " Games Found"; }
-                        
-                        function sortGames() { 
-                            const grid = document.getElementById('gameGrid'); 
-                            const cards = Array.from(grid.getElementsByClassName('game-card')); 
-                            const mode = document.getElementById('sort-filter').value; 
-                            
-                            if (mode === 'oldest') {
-                                initialOrder.forEach(card => grid.appendChild(card));
-                                return;
-                            }
-
-                            cards.sort((a, b) => { 
-                                const nameA = a.querySelector('p').innerText.toLowerCase(); 
-                                const nameB = b.querySelector('p').innerText.toLowerCase(); 
-                                if (mode === 'az') return nameA.localeCompare(nameB); 
-                                if (mode === 'za') return nameB.localeCompare(nameA); 
-                            }); 
-                            cards.forEach(card => grid.appendChild(card)); 
-                        }
-
-                        setTimeout(() => {
-                            const grid = document.getElementById('gameGrid');
-                            initialOrder = Array.from(grid.getElementsByClassName('game-card'));
-                            sortGames();
-                            updateCount();
-                        }, 100);
+                        function filterGames() { let input = document.getElementById('search').value.toLowerCase(); let cards = document.querySelectorAll('.game-card'); let visibleCount = 0; cards.forEach(card => { let title = card.innerText.toLowerCase(); if(title.includes(input)) { card.style.display = "block"; visibleCount++; } else { card.style.display = "none"; } }); const display = document.getElementById('count-display'); if(display) display.innerText = visibleCount + " games found"; }
+                        function sortGames() { const grid = document.getElementById('gameGrid'); const cards = Array.from(grid.getElementsByClassName('game-card')); const mode = document.getElementById('sort-filter').value; if (mode === 'oldest') { initialOrder.forEach(card => grid.appendChild(card)); return; } cards.sort((a, b) => { const nameA = a.querySelector('p').innerText.toLowerCase(); const nameB = b.querySelector('p').innerText.toLowerCase(); if (mode === 'az') return nameA.localeCompare(nameB); if (mode === 'za') return nameB.localeCompare(nameA); }); cards.forEach(card => grid.appendChild(card)); }
+                        setTimeout(() => { const grid = document.getElementById('gameGrid'); initialOrder = Array.from(grid.getElementsByClassName('game-card')); sortGames(); updateCount(); }, 100);
                     <\/script>
                 </body>
                 </html>
             `;
             doc.write(html);
             doc.close();
-            window.open('', '_self', ''); 
-            window.close();
+            window.location.replace('https://google.com');
         };
     </script>
 </body>
