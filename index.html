@@ -4,16 +4,28 @@
     <title>gelly</title>
     <style>
         body { margin: 0; padding: 0; background-color: #0b0b0b; height: 100vh; overflow: hidden; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; display: flex; justify-content: center; align-items: center; color: #eee; }
+        
+        /* LOGIN SCREEN STYLE */
         #login-gate { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0b0b; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
         .gate-brand { font-size: 42px; font-weight: 800; letter-spacing: -2px; margin-bottom: 30px; color: #fff; }
         .gate-label { font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-weight: 600; }
-        #pass-input { background: #151515; border: 1px solid #222; padding: 12px 20px; border-radius: 10px; color: #fff; outline: none; text-align: center; font-size: 16px; width: 200px; transition: 0.3s; margin-bottom: 15px; }
+        
+        /* Masked input that looks like plain text to Chrome */
+        #pass-input { 
+            background: #151515; border: 1px solid #222; padding: 12px 20px; border-radius: 10px; color: #fff; outline: none; text-align: center; font-size: 16px; width: 220px; transition: 0.3s; margin-bottom: 15px;
+            -webkit-text-security: disc; /* Hides text without telling Chrome it's a password */
+        }
         #pass-input:focus { border-color: #444; background: #1a1a1a; }
+        
         .enter-btn { background: #eee; color: #111; border: none; padding: 10px 30px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px; text-transform: lowercase; transition: 0.3s; }
         .enter-btn:hover { background: #fff; transform: scale(1.05); }
+
+        .chrome-warning { margin-top: 40px; font-size: 10px; color: #ff4444; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; opacity: 0.6; }
+        
         #main-transfer { opacity: 0; transition: 1s; display: flex; flex-direction: column; align-items: center; }
         .transfer-btn { padding: 15px 40px; font-size: 14px; color: #888; background: #151515; border: 1px solid #222; border-radius: 10px; cursor: pointer; transition: 0.5s; font-weight: 600; text-transform: lowercase; }
         .transfer-btn:hover { color: #fff; border-color: #444; background: #1d1d1d; transform: translateY(-3px); }
+
         #login-gate.unlocked { transform: translateY(-100%); opacity: 0; pointer-events: none; }
     </style>
 </head>
@@ -21,9 +33,11 @@
 
     <div id="login-gate">
         <div class="gate-brand">gelly.</div>
-        <div class="gate-label">password:</div>
-        <input type="password" id="pass-input" placeholder="••••">
+        <div class="gate-label">enter code:</div>
+        <!-- autocomplete="off" tells Chrome not to save this -->
+        <input type="text" id="pass-input" autocomplete="off" spellcheck="false">
         <button class="enter-btn" onclick="checkPass()">enter</button>
+        <div class="chrome-warning">do not save password to chrome</div>
     </div>
 
     <div id="main-transfer">
@@ -41,7 +55,6 @@
                 document.getElementById('pass-input').value = '';
             }
         }
-
         document.getElementById('pass-input').addEventListener("keyup", function(e) { if (e.keyCode === 13) checkPass(); });
 
         document.getElementById('launchPortal').onclick = function() {
@@ -160,6 +173,7 @@
                             document.getElementById('sidebar').classList.add('hidden'); 
                             var finalUrl = url;
                             if (url.startsWith('./')) { finalUrl = "https://github.io" + url.substring(2); }
+                            else if (url.startsWith('https://')) { finalUrl = url; }
                             setTimeout(() => { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById('player-container').style.display = 'flex'; document.getElementById('game-frame').src = finalUrl; }, 500); 
                         }
                         function hideLoading() { document.getElementById('loading-overlay').style.display = 'none'; }
