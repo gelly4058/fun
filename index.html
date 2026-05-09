@@ -1,521 +1,967 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>gelly</title>
+    <title>gelly</title>
 
-<style>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0b0b0b;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #eee;
+        }
 
-body{
-margin:0;
-padding:0;
-background:#0b0b0b;
-height:100vh;
-overflow:hidden;
-font-family:'Segoe UI',sans-serif;
-display:flex;
-justify-content:center;
-align-items:center;
-color:#eee;
-}
+        #login-gate {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0b0b0b;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-#login-gate{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#0b0b0b;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:9999;
-transition:.8s;
-}
+        .gate-label {
+            font-size: 11px;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
 
-#login-gate.unlocked{
-transform:translateY(-100%);
-opacity:0;
-pointer-events:none;
-}
+        #pass-input {
+            background: #151515;
+            border: 1px solid #222;
+            padding: 12px 20px;
+            border-radius: 10px;
+            color: #fff;
+            outline: none;
+            text-align: center;
+            font-size: 16px;
+            width: 220px;
+            transition: 0.3s;
+            margin-bottom: 15px;
+            -webkit-text-security: disc;
+        }
 
-.gate-label{
-font-size:11px;
-color:#444;
-text-transform:uppercase;
-letter-spacing:2px;
-margin-bottom:10px;
-font-weight:600;
-}
+        #pass-input:focus {
+            border-color: #444;
+            background: #1a1a1a;
+        }
 
-#pass-input{
-background:#151515;
-border:1px solid #222;
-padding:12px 20px;
-border-radius:10px;
-color:#fff;
-outline:none;
-text-align:center;
-font-size:16px;
-width:220px;
-margin-bottom:15px;
--webkit-text-security:disc;
-}
+        .shake {
+            animation: shake 0.4s;
+            border-color: #ff4444 !important;
+        }
 
-.enter-btn{
-background:#eee;
-color:#111;
-border:none;
-padding:10px 30px;
-border-radius:8px;
-cursor:pointer;
-font-weight:700;
-font-size:13px;
-text-transform:lowercase;
-}
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
 
-#main-transfer{
-opacity:0;
-transition:1s;
-}
+        .enter-btn {
+            background: #eee;
+            color: #111;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: lowercase;
+            transition: 0.3s;
+        }
 
-.transfer-btn{
-padding:15px 40px;
-font-size:14px;
-color:#888;
-background:#151515;
-border:1px solid #222;
-border-radius:10px;
-cursor:pointer;
-font-weight:600;
-text-transform:lowercase;
-}
+        .enter-btn:hover {
+            background: #fff;
+            transform: scale(1.05);
+        }
 
-</style>
+        #error-msg {
+            margin-top: 15px;
+            font-size: 11px;
+            color: #ff4444;
+            text-transform: lowercase;
+            font-weight: 600;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .chrome-warning {
+            position: absolute;
+            bottom: 40px;
+            font-size: 10px;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        #main-transfer {
+            opacity: 0;
+            transition: 1s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .transfer-btn {
+            padding: 15px 40px;
+            font-size: 14px;
+            color: #888;
+            background: #151515;
+            border: 1px solid #222;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.5s;
+            font-weight: 600;
+            text-transform: lowercase;
+        }
+
+        .transfer-btn:hover {
+            color: #fff;
+            border-color: #444;
+            background: #1d1d1d;
+            transform: translateY(-3px);
+        }
+
+        #login-gate.unlocked {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
 </head>
 
 <body oncontextmenu="return false;">
 
-<div id="login-gate">
+    <div id="login-gate">
+        <div class="gate-label">enter code:</div>
 
-<div class="gate-label">enter code:</div>
+        <input type="text"
+               id="pass-input"
+               autocomplete="off"
+               spellcheck="false">
 
-<input type="text" id="pass-input">
+        <button class="enter-btn" onclick="checkPass()">enter</button>
 
-<button class="enter-btn" onclick="checkPass()">enter</button>
+        <div id="error-msg">invalid system code</div>
 
-</div>
+        <div class="chrome-warning">
+            do not save password to chrome
+        </div>
+    </div>
 
-<div id="main-transfer">
-<button class="transfer-btn" id="launchPortal">transfer</button>
-</div>
+    <div id="main-transfer">
+        <button class="transfer-btn" id="launchPortal">
+            transfer
+        </button>
+    </div>
 
 <script>
 
-function checkPass(){
+document.onkeydown = function(e) {
 
-if(document.getElementById('pass-input').value==='gg55'){
+    if (
+        e.keyCode == 123 ||
+        (e.ctrlKey && e.shiftKey &&
+        (e.keyCode == 73 ||
+         e.keyCode == 74 ||
+         e.keyCode == 67)) ||
+        (e.ctrlKey && e.keyCode == 85)
+    ) {
+        return false;
+    }
+};
 
-document.getElementById('login-gate').classList.add('unlocked');
+function checkPass() {
 
-document.getElementById('main-transfer').style.opacity='1';
+    const input =
+        document.getElementById('pass-input');
 
+    const error =
+        document.getElementById('error-msg');
+
+    if (input.value === 'gg55') {
+
+        document.getElementById('login-gate')
+            .classList.add('unlocked');
+
+        document.getElementById('main-transfer')
+            .style.opacity = "1";
+
+    } else {
+
+        input.classList.add('shake');
+
+        error.style.opacity = "1";
+
+        input.value = '';
+
+        setTimeout(() => {
+            input.classList.remove('shake');
+        }, 400);
+    }
 }
 
-}
+document.getElementById('pass-input')
+.addEventListener("keyup", function(e) {
 
-document.getElementById('launchPortal').onclick=function(){
+    if (e.keyCode === 13) {
+        checkPass();
+    }
+});
 
-var win=window.open('about:blank','_blank');
+document.getElementById('launchPortal').onclick =
+function() {
 
-var doc=win.document;
+    var win =
+        window.open('about:blank', '_blank');
 
-var html=`
+    var doc = win.document;
+
+    var html = `
 
 <html>
 
 <head>
 
-<title>gelly</title>
+<title> </title>
 
 <style>
 
-body{
-margin:0;
-background:#0b0b0b;
-color:#fff;
-font-family:'Segoe UI',sans-serif;
-display:flex;
-height:100vh;
-overflow:hidden;
+body {
+    background: #0b0b0b;
+    color: #eee;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
 }
 
-#sidebar{
-width:240px;
-background:#121212;
-padding:30px 20px;
-display:flex;
-flex-direction:column;
-border-right:1px solid #222;
-box-sizing:border-box;
-transition:.4s;
+#sidebar {
+    width: 240px;
+    background: #121212;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 20px;
+    border-right: 1px solid #222;
+    box-sizing: border-box;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-#sidebar.hidden{
-width:0;
-padding:0;
-overflow:hidden;
-opacity:0;
+#sidebar.hidden {
+    width: 0;
+    padding: 0;
+    border: none;
+    opacity: 0;
 }
 
-.nav-group{
-display:flex;
-flex-direction:column;
-gap:10px;
+.nav-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 200px;
 }
 
-.gelly-btn{
-background:transparent;
-border:none;
-color:#888;
-padding:12px 18px;
-text-align:left;
-cursor:pointer;
-border-radius:10px;
-font-size:15px;
-transition:.3s;
+.gelly-btn {
+    background: transparent;
+    color: #888;
+    border: none;
+    padding: 12px 18px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 15px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-family: inherit;
+    text-transform: lowercase;
 }
 
-.gelly-btn:hover{
-background:#1d1d1d;
-color:#fff;
+.gelly-btn:hover {
+    background: #1d1d1d;
+    color: #fff;
+    transform: translateX(5px);
 }
 
-.gelly-btn.active{
-background:#eee;
-color:#111;
+.gelly-btn.active {
+    background: #eee;
+    color: #111;
+    box-shadow: 0 4px 15px rgba(255,255,255,0.1);
 }
 
-#main-content{
-flex-grow:1;
-overflow:hidden;
-display:flex;
-flex-direction:column;
+.gelly-btn.panic {
+    margin-top: 10px;
+    color: #555;
+    font-size: 13px;
 }
 
-.page{
-display:none;
-padding:35px;
-overflow-y:auto;
-height:100%;
-box-sizing:border-box;
+.gelly-btn.panic:hover {
+    color: #ff4444;
+    background: #221111;
 }
 
-.page.active{
-display:block;
+.brand-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.search-container{
-display:flex;
-gap:12px;
-margin-bottom:25px;
+.brand {
+    font-size: 38px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -1px;
+    opacity: 0.1;
 }
 
-#search{
-flex-grow:1;
-padding:15px;
-background:#151515;
-border:1px solid #222;
-border-radius:12px;
-color:#fff;
-outline:none;
+.status-msg {
+    font-size: 10px;
+    color: #444;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
 }
 
-#sort-filter{
-padding:0 18px;
-background:#151515;
-border:1px solid #222;
-border-radius:12px;
-color:#888;
+#main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background: radial-gradient(circle at top right, #1a1a1a, #0b0b0b);
+    overflow: hidden;
 }
 
-/* GAME CARDS AT START + ONE LINE */
-
-.game-list{
-display:flex;
-flex-direction:column;
-gap:12px;
+.page {
+    display: none;
+    padding: 60px;
+    overflow-y: auto;
+    height: 100%;
+    box-sizing: border-box;
+    animation: fadeIn 0.4s ease;
 }
 
-.game-card{
-background:#151515;
-border:1px solid #222;
-border-radius:16px;
-padding:14px;
-display:flex;
-align-items:center;
-gap:16px;
-cursor:pointer;
-transition:.3s;
+.page.active {
+    display: block;
 }
 
-.game-card:hover{
-background:#1d1d1d;
-transform:translateX(5px);
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.game-card img{
-width:70px;
-height:70px;
-border-radius:12px;
-object-fit:cover;
+.search-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 800px;
+    margin-bottom: 10px;
 }
 
-.game-card p{
-margin:0;
-font-size:16px;
-font-weight:600;
+.game-count {
+    font-size: 11px;
+    color: #333;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-#player-container{
-display:none;
-width:100%;
-height:100%;
-background:#000;
-flex-direction:column;
+.search-container {
+    display: flex;
+    gap: 15px;
+    max-width: 800px;
+    margin-bottom: 40px;
 }
 
-#player-nav{
-background:#0f0f0f;
-padding:15px 30px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-border-bottom:1px solid #222;
+#search {
+    flex-grow: 1;
+    padding: 16px 24px;
+    border-radius: 12px;
+    border: 1px solid #222;
+    background: #151515;
+    color: white;
+    outline: none;
+    font-size: 16px;
+    transition: 0.3s;
 }
 
-iframe{
-width:100%;
-flex-grow:1;
-border:none;
+#search:focus {
+    border-color: #444;
+    background: #1a1a1a;
 }
 
-.build-tag{
-position:fixed;
-bottom:10px;
-right:10px;
-font-size:10px;
-color:#222;
-font-weight:800;
+#sort-filter {
+    padding: 0 20px;
+    border-radius: 12px;
+    border: 1px solid #222;
+    background: #151515;
+    color: #888;
+    outline: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    transition: 0.3s;
+    appearance: none;
+    text-align: center;
+}
+
+/* ONE LINE GAME CARDS */
+
+.grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 900px;
+}
+
+.game-card {
+    background: #151515;
+    padding: 15px;
+    border-radius: 18px;
+    cursor: pointer;
+    border: 1px solid #222;
+    transition: all 0.4s ease;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.game-card:hover {
+    transform: translateX(8px);
+    background: #1c1c1c;
+    border-color: #333;
+}
+
+.game-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
+    object-fit: cover;
+}
+
+.game-card p {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #bbb;
+}
+
+#player-container {
+    display: none;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    flex-direction: column;
+    position: relative;
+}
+
+#loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    text-align: center;
+    color: #444;
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+#player-nav {
+    background: #0f0f0f;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #222;
+    z-index: 10;
+}
+
+iframe {
+    width: 100%;
+    flex-grow: 1;
+    border: none;
+    z-index: 6;
+}
+
+.build-tag {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 9px;
+    color: #222;
+    font-weight: 800;
+    text-transform: lowercase;
+    z-index: 99999;
 }
 
 </style>
 
 </head>
 
-<body>
+<body oncontextmenu="return false;">
 
 <div id="sidebar">
 
 <div class="nav-group">
 
-<button class="gelly-btn active" id="btn-games" onclick="showPage('games')">games</button>
+<button class="gelly-btn active"
+        id="btn-home"
+        onclick="showPage('home')">
+home
+</button>
 
-<button class="gelly-btn" id="btn-home" onclick="showPage('home')">home</button>
+<button class="gelly-btn"
+        id="btn-games"
+        onclick="showPage('games')">
+games
+</button>
 
-<button class="gelly-btn" id="btn-sounds" onclick="showPage('sounds')">sounds</button>
+<button class="gelly-btn"
+        id="btn-sounds"
+        onclick="showPage('sounds')">
+sounds
+</button>
 
-<button class="gelly-btn" onclick="panicMode()">panic</button>
+<button class="gelly-btn panic"
+        onclick="panicMode()">
+panic
+</button>
 
+</div>
+
+<div class="brand-container">
+<div class="brand">gelly</div>
+</div>
+
+<div class="status-msg">
+v2.0 // active
 </div>
 
 </div>
 
 <div id="main-content">
 
+<div id="home" class="page">
+<h1 style="font-size:64px;font-weight:800;letter-spacing:-2px;margin-top:15vh;">welcome to gelly.</h1>
+<p style="font-size:18px;color:#666;margin-top:10px;">WE GOT FRICKING GEOMETRY DASH NOW!!!!!</p>
+</div>
+
 <div id="games" class="page active">
+
+<div class="search-header">
+<span class="game-count" id="count-display">
+Syncing...
+</span>
+</div>
 
 <div class="search-container">
 
-<input type="text" id="search" placeholder="Search library..." onkeyup="filterGames()">
+<input type="text"
+       id="search"
+       placeholder="Search library..."
+       onkeyup="filterGames()">
 
 <select id="sort-filter" onchange="sortGames()">
-<option value="oldest">Oldest</option>
+<option value="oldest" selected>Oldest</option>
 <option value="az">A-Z</option>
 <option value="za">Z-A</option>
 </select>
 
 </div>
 
-<!-- MOVED TO START + ONE LINE -->
+<!-- GAME CARDS MOVED TO START + ONE LINE -->
 
-<div class="game-list" id="gameGrid">
+<div class="grid" id="gameGrid">
 
-<div class="game-card" onclick="openFrame('./games/flappy/index.html',this)"><img src="./icons/flappybirdicon.png"><p>Flappy Bird</p></div>
-<div class="game-card" onclick="openFrame('./games/drivemad/index.html',this)"><img src="./icons/drivemadicon.png"><p>Drive Mad</p></div>
-<div class="game-card" onclick="openFrame('./games/bitlife/index.html',this)"><img src="./icons/bitlifeicon.png"><p>BitLife</p></div>
-<div class="game-card" onclick="openFrame('./games/geodash/index.html',this)"><img src="./icons/geodashicon.png"><p>Geometry Dash</p></div>
-<div class="game-card" onclick="openFrame('./games/tetris/index.html',this)"><img src="./icons/tetrisicon.png"><p>Tetris</p></div>
-<div class="game-card" onclick="openFrame('./games/cookieclicker/index.html',this)"><img src="./icons/cookieclickericon.png"><p>Cookie Clicker</p></div>
-<div class="game-card" onclick="openFrame('./games/slope/index.html',this)"><img src="./icons/slopeicon.png"><p>Slope</p></div>
-<div class="game-card" onclick="openFrame('./games/stickmanhook/index.html',this)"><img src="./icons/stickmanhookicon.png"><p>Stickman Hook</p></div>
-<div class="game-card" onclick="openFrame('./games/minecraft/index.html',this)"><img src="./icons/minecrafticon.png"><p>Minecraft</p></div>
-<div class="game-card" onclick="openFrame('./games/crossyroad/index.html',this)"><img src="./icons/crossyroadicon.png"><p>Crossy Road</p></div>
-<div class="game-card" onclick="openFrame('./games/redball/index.html',this)"><img src="./icons/redballicon.png"><p>Red Ball 4</p></div>
-<div class="game-card" onclick="openFrame('./games/ducklife/index.html',this)"><img src="./icons/ducklifeicon.png"><p>Duck Life 4</p></div>
-<div class="game-card" onclick="openFrame('./games/paperio2/index.html',this)"><img src="./icons/paperio2icon.png"><p>Paper.io 2</p></div>
-<div class="game-card" onclick="openFrame('./games/vex4/index.html',this)"><img src="./icons/vex4icon.png"><p>Vex 4</p></div>
-<div class="game-card" onclick="openFrame('./games/run3/index.html',this)"><img src="./icons/run3icon.png"><p>Run 3</p></div>
-<div class="game-card" onclick="openFrame('./games/dinogame/index.html',this)"><img src="./icons/dinogameicon.png"><p>Dino Game</p></div>
-<div class="game-card" onclick="openFrame('./games/2048/index.html',this)"><img src="./icons/2048icon.png"><p>2048</p></div>
-<div class="game-card" onclick="openFrame('./games/1v1lol/index.html',this)"><img src="./icons/1v1lolicon.png"><p>1v1.lol</p></div>
-<div class="game-card" onclick="openFrame('./games/doodlejump/index.html',this)"><img src="./icons/doodlejumpicon.png"><p>Doodle Jump</p></div>
-
-</div>
+<div class="game-card" onclick="openFrame('./games/flappy/index.html', this)"><img src="./icons/flappybirdicon.png"><p>Flappy Bird</p></div>
+<div class="game-card" onclick="openFrame('./games/drivemad/index.html', this)"><img src="./icons/drivemadicon.png"><p>Drive Mad</p></div>
+<div class="game-card" onclick="openFrame('./games/bitlife/index.html', this)"><img src="./icons/bitlifeicon.png"><p>BitLife</p></div>
+<div class="game-card" onclick="openFrame('./games/geodash/index.html', this)"><img src="./icons/geodashicon.png"><p>Geometry Dash</p></div>
+<div class="game-card" onclick="openFrame('./games/tetris/index.html', this)"><img src="./icons/tetrisicon.png"><p>Tetris</p></div>
+<div class="game-card" onclick="openFrame('./games/cookieclicker/index.html', this)"><img src="./icons/cookieclickericon.png"><p>Cookie Clicker</p></div>
+<div class="game-card" onclick="openFrame('./games/slope/index.html', this)"><img src="./icons/slopeicon.png"><p>Slope</p></div>
+<div class="game-card" onclick="openFrame('./games/stickmanhook/index.html', this)"><img src="./icons/stickmanhookicon.png"><p>Stickman Hook</p></div>
+<div class="game-card" onclick="openFrame('./games/minecraft/index.html', this)"><img src="./icons/minecrafticon.png"><p>Minecraft</p></div>
+<div class="game-card" onclick="openFrame('./games/crossyroad/index.html', this)"><img src="./icons/crossyroadicon.png"><p>Crossy Road</p></div>
+<div class="game-card" onclick="openFrame('./games/redball/index.html', this)"><img src="./icons/redballicon.png"><p>Red Ball 4</p></div>
+<div class="game-card" onclick="openFrame('./games/ducklife/index.html', this)"><img src="./icons/ducklifeicon.png"><p>Duck Life 4</p></div>
+<div class="game-card" onclick="openFrame('./games/paperio2/index.html', this)"><img src="./icons/paperio2icon.png"><p>Paper.io 2</p></div>
+<div class="game-card" onclick="openFrame('./games/vex4/index.html', this)"><img src="./icons/vex4icon.png"><p>Vex 4</p></div>
+<div class="game-card" onclick="openFrame('./games/run3/index.html', this)"><img src="./icons/run3icon.png"><p>Run 3</p></div>
+<div class="game-card" onclick="openFrame('./games/dinogame/index.html', this)"><img src="./icons/dinogameicon.png"><p>Dino Game</p></div>
+<div class="game-card" onclick="openFrame('./games/2048/index.html', this)"><img src="./icons/2048icon.png"><p>2048</p></div>
+<div class="game-card" onclick="openFrame('./games/1v1lol/index.html', this)"><img src="./icons/1v1lolicon.png"><p>1v1.lol</p></div>
+<div class="game-card" onclick="openFrame('./games/doodlejump/index.html', this)"><img src="./icons/doodlejumpicon.png"><p>Doodle Jump</p></div>
 
 </div>
-
-<div id="home" class="page">
-
-<h1>welcome to gelly.</h1>
 
 </div>
 
 <div id="sounds" class="page">
 
-<button class="gelly-btn active" onclick="openFrame('./sounds/index.html',this)">launch soundboard</button>
+<div style="margin-top:20vh;text-align:center;">
+
+<h2 style="font-size:32px;letter-spacing:-1px;">
+sound engine
+</h2>
+
+<!-- SOUNDBOARD FIXED -->
+
+<button class="gelly-btn active"
+style="margin:20px auto;padding:15px 40px;text-align:center;"
+onclick="openFrame('https://github.io', this)">
+launch soundboard
+</button>
+
+</div>
 
 </div>
 
 <div id="player-container">
 
+<div id="loading-overlay">
+Please wait, this can take up to 2 minutes on ur first launch.
+</div>
+
 <div id="player-nav">
 
-<button class="gelly-btn" onclick="closeFrame()">back</button>
+<button class="gelly-btn"
+id="back-btn"
+onclick="closeFrame()">
+back
+</button>
 
-<span id="game-display-name">system active</span>
+<span id="game-display-name"
+style="font-size:12px;color:#eee;letter-spacing:2px;text-transform:uppercase;font-weight:bold;">
+system active
+</span>
 
-<button class="gelly-btn active" onclick="toggleFull()">full</button>
+<div style="display:flex;gap:10px;">
+
+<button class="gelly-btn"
+onclick="panicMode()"
+style="font-size:13px;padding:8px 15px;">
+panic
+</button>
+
+<button class="gelly-btn active"
+onclick="toggleFull()"
+style="font-size:13px;padding:8px 15px;">
+full
+</button>
 
 </div>
 
-<iframe id="game-frame"></iframe>
+</div>
+
+<iframe id="game-frame"
+src=""
+onload="hideLoading()"></iframe>
 
 </div>
 
 </div>
 
-<div class="build-tag">i</div>
+<div class="build-tag">k</div>
 
 <script>
 
-function showPage(pageId){
+document.onkeydown = function(e) {
 
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+if (
+e.keyCode == 123 ||
+(e.ctrlKey && e.shiftKey &&
+(e.keyCode == 73 ||
+e.keyCode == 74 ||
+e.keyCode == 67)) ||
+(e.ctrlKey && e.keyCode == 85)
+) return false;
 
-document.getElementById('player-container').style.display='none';
+};
 
-document.querySelectorAll('.gelly-btn').forEach(b=>b.classList.remove('active'));
+let initialOrder = [];
 
-let btn=document.getElementById('btn-'+pageId);
+function updateCount() {
 
-if(btn)btn.classList.add('active');
+const count =
+document.getElementsByClassName('game-card').length;
 
-document.getElementById(pageId).classList.add('active');
+const display =
+document.getElementById('count-display');
 
-}
-
-function openFrame(url,el){
-
-var gameName='system active';
-
-if(el&&el.querySelector('p')){
-gameName=el.querySelector('p').innerText;
-}
-
-document.getElementById('game-display-name').innerText=gameName;
-
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-
-document.getElementById('player-container').style.display='flex';
-
-document.getElementById('game-frame').src=url;
+if(display)
+display.innerText = count + " games available";
 
 }
 
-function closeFrame(){
+function showPage(pageId) {
 
-document.getElementById('game-frame').src='';
+if (pageId !== 'sounds') {
+document.getElementById('game-frame').src = '';
+}
 
-document.getElementById('player-container').style.display='none';
+document.querySelectorAll('.page')
+.forEach(p => p.classList.remove('active'));
+
+document.getElementById('player-container')
+.style.display = 'none';
+
+document.getElementById('sidebar')
+.classList.remove('hidden');
+
+document.querySelectorAll('.gelly-btn')
+.forEach(b => {
+if (b.id !== 'back-btn')
+b.classList.remove('active');
+});
+
+let btn =
+document.getElementById('btn-' + pageId);
+
+if(btn)
+btn.classList.add('active');
+
+document.getElementById(pageId)
+.classList.add('active');
+
+if(pageId === 'games')
+updateCount();
+
+}
+
+function openFrame(url, el) {
+
+var gameName = "system active";
+
+if (el && el.querySelector('p')) {
+
+gameName =
+el.querySelector('p').innerText;
+
+}
+
+else if (
+el &&
+el.innerText.toLowerCase().includes('launch')
+) {
+
+gameName = "soundboard";
+
+}
+
+document.getElementById('game-display-name')
+.innerText = gameName;
+
+document.getElementById('loading-overlay')
+.style.display = 'flex';
+
+document.getElementById('sidebar')
+.classList.add('hidden');
+
+var finalUrl = url;
+
+if (url.startsWith('./')) {
+
+finalUrl =
+window.location.origin +
+url.substring(1);
+
+}
+
+setTimeout(() => {
+
+document.querySelectorAll('.page')
+.forEach(p => p.classList.remove('active'));
+
+document.getElementById('player-container')
+.style.display = 'flex';
+
+document.getElementById('game-frame')
+.src = finalUrl;
+
+}, 500);
+
+}
+
+function hideLoading() {
+
+document.getElementById('loading-overlay')
+.style.display = 'none';
+
+}
+
+function closeFrame() {
+
+document.getElementById('game-frame').src = '';
+
+document.getElementById('player-container')
+.style.display = 'none';
+
+document.getElementById('sidebar')
+.classList.remove('hidden');
 
 showPage('games');
 
 }
 
-function panicMode(){
-window.location.href='https://google.com';
+function panicMode() {
+
+window.location.href = 'https://google.com';
+
 }
 
-function toggleFull(){
+function toggleFull() {
 
-var frame=document.getElementById('game-frame');
+var frame =
+document.getElementById("game-frame");
 
-if(frame.requestFullscreen){
+if (frame.requestFullscreen)
 frame.requestFullscreen();
-}
+
+else if (frame.webkitRequestFullscreen)
+frame.webkitRequestFullscreen();
 
 }
 
-function filterGames(){
+function filterGames() {
 
-let input=document.getElementById('search').value.toLowerCase();
+let input =
+document.getElementById('search')
+.value.toLowerCase();
 
-let cards=document.querySelectorAll('.game-card');
+let cards =
+document.querySelectorAll('.game-card');
 
-cards.forEach(card=>{
+let visibleCount = 0;
 
-let title=card.innerText.toLowerCase();
+cards.forEach(card => {
 
-if(title.includes(input)){
-card.style.display='flex';
-}else{
-card.style.display='none';
+let title =
+card.innerText.toLowerCase();
+
+if(title.includes(input)) {
+
+card.style.display = "flex";
+
+visibleCount++;
+
+}
+
+else {
+
+card.style.display = "none";
+
 }
 
 });
 
+const display =
+document.getElementById('count-display');
+
+if(display)
+display.innerText = visibleCount + " games found";
+
 }
 
-function sortGames(){
+/* OLDEST FILTER FIXED */
 
-const grid=document.getElementById('gameGrid');
+function sortGames() {
 
-const cards=Array.from(grid.getElementsByClassName('game-card'));
+const grid =
+document.getElementById('gameGrid');
 
-const mode=document.getElementById('sort-filter').value;
+const cards =
+Array.from(
+grid.getElementsByClassName('game-card')
+);
 
-cards.sort((a,b)=>{
+const mode =
+document.getElementById('sort-filter').value;
 
-const nameA=a.querySelector('p').innerText.toLowerCase();
+if (mode === 'oldest') {
 
-const nameB=b.querySelector('p').innerText.toLowerCase();
+initialOrder.forEach(card => {
+grid.appendChild(card);
+});
 
-if(mode==='az'){
+return;
+
+}
+
+cards.sort((a, b) => {
+
+const nameA =
+a.querySelector('p')
+.innerText.toLowerCase();
+
+const nameB =
+b.querySelector('p')
+.innerText.toLowerCase();
+
+if (mode === 'az')
 return nameA.localeCompare(nameB);
-}
 
-if(mode==='za'){
+if (mode === 'za')
 return nameB.localeCompare(nameA);
-}
-
-return 0;
 
 });
 
-cards.forEach(card=>grid.appendChild(card));
+cards.forEach(card =>
+grid.appendChild(card)
+);
 
 }
+
+setTimeout(() => {
+
+const grid =
+document.getElementById('gameGrid');
+
+initialOrder =
+Array.from(
+grid.getElementsByClassName('game-card')
+);
+
+sortGames();
+
+updateCount();
+
+}, 100);
 
 <\/script>
 
