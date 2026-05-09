@@ -132,7 +132,7 @@
         #sounds { width: 100%; height: 100%; padding: 0; }
         #sounds iframe { width: 100%; height: 100%; border: none; }
 
-        /* --- Smaller Game Buttons --- */
+        /* --- Grid Config --- */
         .controls { display: flex; gap: 15px; margin-bottom: 40px; }
         input, select {
             background: var(--secondary);
@@ -146,7 +146,7 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* reduced from 160px */
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             gap: 20px;
         }
 
@@ -162,7 +162,7 @@
         .game-card img { width: 100%; aspect-ratio: 1/1; border-radius: 12px; margin-bottom: 8px; object-fit: cover; }
         .game-card span { font-size: 12px; color: var(--subtext); font-weight: 600; }
 
-        /* --- Player Overlay --- */
+        /* --- Player --- */
         #player {
             display: none;
             position: fixed;
@@ -250,7 +250,7 @@
         <iframe id="game-frame" src=""></iframe>
     </div>
 
-    <div id="version-tag">d</div>
+    <div id="version-tag">e</div>
 
     <script>
         const gameData = [
@@ -275,7 +275,9 @@
         ];
 
         function panic() {
-            window.top.location.href = "https://classroom.google.com";
+            window.top.close();
+            // Fallback for browsers that block script-initiated closing:
+            window.top.location.href = "about:blank";
         }
 
         function transfer() {
@@ -288,7 +290,11 @@
             ifr.style = "border:none; width:100%; height:100%;";
             ifr.src = window.location.href + "#cloaked";
             win.document.body.appendChild(ifr);
-            window.location.replace("https://classroom.google.com");
+            
+            // Close the original tab
+            window.close();
+            // Fallback
+            window.location.replace("about:blank");
         }
 
         if (window.self !== window.top || window.location.hash === "#cloaked") {
