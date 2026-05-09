@@ -10,7 +10,7 @@
             --bg: #050505;
             --sidebar: #0a0a0a;
             --card: #111111;
-            --accent: #00ff88; /* swapped purple for mint green */
+            --accent: #ffffff;
             --secondary: #1a1a1a;
             --text: #eeeeee;
             --subtext: #777777;
@@ -20,7 +20,6 @@
 
         * {
             box-sizing: border-box;
-            cursor: default;
             text-transform: lowercase;
         }
 
@@ -33,6 +32,10 @@
             overflow: hidden;
         }
 
+        button, .nav-item, .game-card {
+            cursor: pointer; /* cursor now changes */
+        }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 
@@ -41,28 +44,28 @@
             height: 100vh;
             width: 100vw;
             display: flex;
-            align-items: center;
-            justify-content: center;
             background: var(--bg);
             position: fixed;
             z-index: 9999;
         }
 
         .transfer-btn {
-            padding: 15px 40px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
             background: none;
-            border: 1px solid var(--secondary);
-            color: var(--text);
-            border-radius: 100px;
-            font-size: 14px;
+            border: 1px solid transparent; /* no background initially */
+            color: var(--subtext);
+            border-radius: 8px;
+            font-size: 13px;
             transition: var(--transition);
-            cursor: pointer;
         }
 
         .transfer-btn:hover {
-            background: var(--text);
-            color: var(--bg);
-            transform: scale(1.05);
+            border-color: var(--secondary);
+            background: var(--secondary);
+            color: var(--accent);
         }
 
         /* --- Layout --- */
@@ -74,13 +77,13 @@
         }
 
         #sidebar {
-            width: 240px;
+            width: 260px;
             background: var(--sidebar);
             border-right: 1px solid var(--secondary);
             display: flex;
             flex-direction: column;
             padding: 30px 20px;
-            animation: slideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
         .brand {
@@ -92,32 +95,46 @@
             color: var(--accent);
         }
 
-        .nav-item {
-            padding: 12px 15px;
+        /* Sidebar Buttons & Shared Button Style */
+        .nav-item, .btn {
+            padding: 12px 18px;
             margin-bottom: 8px;
             border-radius: 12px;
             color: var(--subtext);
+            background: none;
+            border: none;
             transition: var(--transition);
             font-weight: 600;
-            cursor: pointer;
+            text-align: left;
+            font-size: 14px;
+            display: block;
+            width: 100%;
+            font-family: inherit;
         }
 
-        .nav-item:hover, .nav-item.active {
+        .nav-item:hover, .nav-item.active, .btn:hover {
             background: var(--secondary);
-            color: var(--accent);
+            color: var(--accent); /* text stays white */
         }
 
         .viewport {
             flex: 1;
-            padding: 40px;
+            height: 100vh;
             overflow-y: auto;
             position: relative;
         }
 
-        .section { display: none; animation: fadeIn 0.5s ease; }
+        .section { display: none; animation: fadeIn 0.5s ease; height: 100%; }
         .section.active { display: block; }
+        
+        #home { padding: 40px; }
+        #games { padding: 40px; }
 
-        /* --- Games --- */
+        /* --- Soundboard Full Window --- */
+        #sounds { width: 100%; height: 100%; padding: 0; }
+        #sounds iframe { width: 100%; height: 100%; border: none; }
+
+        /* --- Games Grid --- */
         .controls { display: flex; gap: 15px; margin-bottom: 40px; }
         input, select {
             background: var(--secondary);
@@ -126,8 +143,9 @@
             padding: 12px 20px;
             border-radius: 12px;
             outline: none;
+            cursor: pointer;
         }
-        input { flex: 1; }
+        input { flex: 1; cursor: text; }
 
         .grid {
             display: grid;
@@ -140,11 +158,10 @@
             border-radius: 20px;
             padding: 10px;
             transition: var(--transition);
-            cursor: pointer;
             text-align: center;
         }
 
-        .game-card:hover { transform: scale(1.05); background: var(--secondary); }
+        .game-card:hover { transform: scale(1.03); background: var(--secondary); }
         .game-card img { width: 100%; aspect-ratio: 1/1; border-radius: 15px; margin-bottom: 10px; object-fit: cover; }
         .game-card span { font-size: 13px; color: var(--subtext); font-weight: 600; }
 
@@ -158,28 +175,27 @@
         }
 
         .top-bar {
-            height: 60px;
+            height: 70px;
             display: flex;
             align-items: center;
-            padding: 0 25px;
+            padding: 0 20px;
             background: var(--sidebar);
+            border-bottom: 1px solid var(--secondary);
         }
 
-        .top-right { margin-left: auto; display: flex; gap: 15px; }
+        .top-right { margin-left: auto; display: flex; gap: 10px; }
 
-        .btn {
-            background: var(--secondary);
-            border: none;
-            color: white;
-            padding: 8px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
+        /* design buttons like sidebar */
+        .btn { 
+            width: auto; 
+            padding: 10px 20px; 
+            margin-bottom: 0;
         }
 
         .btn-panic { color: var(--panic); }
+        .btn-panic:hover { color: #fff; background: var(--panic); }
 
-        iframe { width: 100%; height: calc(100% - 60px); border: none; }
+        #game-frame { width: 100%; height: calc(100% - 70px); border: none; }
 
         /* --- Update Marker --- */
         #version-tag {
@@ -187,11 +203,12 @@
             bottom: 15px;
             right: 15px;
             font-size: 12px;
-            color: #222;
+            color: #1a1a1a;
             pointer-events: none;
         }
 
         .hidden { display: none !important; }
+        .fade-out { opacity: 0; transform: translateX(-20px); pointer-events: none; }
     </style>
 </head>
 <body>
@@ -210,10 +227,7 @@
 
         <div class="viewport">
             <div id="home" class="section active">
-                <h1 style="font-size: 48px; font-weight: 900;">gelly</h1>
-                <p style="color: var(--subtext); max-width: 400px; line-height: 1.6;">
-                    a minimalist, high-speed arcade hub. strictly dark mode. strictly smooth.
-                </p>
+                <h1 style="font-size: 48px; font-weight: 900;">welcomewelcome to uhhh idk</h1>
             </div>
 
             <div id="games" class="section">
@@ -228,7 +242,7 @@
             </div>
 
             <div id="sounds" class="section">
-                <iframe src="soundboard/index.html" style="height: 80vh; border-radius: 24px;"></iframe>
+                <iframe src="soundboard/index.html"></iframe>
             </div>
         </div>
     </div>
@@ -237,14 +251,14 @@
         <div class="top-bar">
             <button class="btn" onclick="closeGame()">back</button>
             <div class="top-right">
-                <button class="btn" onclick="toggleFS()">fullscreen</button>
                 <button class="btn btn-panic" onclick="panic()">panic</button>
+                <button class="btn" onclick="toggleFS()">fullscreen</button>
             </div>
         </div>
         <iframe id="game-frame" src=""></iframe>
     </div>
 
-    <div id="version-tag">a</div>
+    <div id="version-tag">b</div>
 
     <script>
         const gameData = [
@@ -271,24 +285,18 @@
         function transfer() {
             const win = window.open();
             if (!win) return alert("allow popups");
-
             win.document.body.style.margin = '0';
             win.document.body.style.height = '100vh';
             win.document.body.style.background = '#050505';
-
             const ifr = win.document.createElement('iframe');
             ifr.style = "border:none; width:100%; height:100%;";
-            // We pass a hash so the new window knows to skip the landing page
             ifr.src = window.location.href + "#cloaked";
-            
             win.document.body.appendChild(ifr);
             window.location.replace("https://classroom.google.com");
         }
 
-        // Check if we are cloaked (via iframe or hash)
         if (window.self !== window.top || window.location.hash === "#cloaked") {
             document.getElementById('landing').classList.add('hidden');
-            document.getElementById('main-ui').classList.remove('hidden');
             document.getElementById('main-ui').style.display = 'flex';
         }
 
@@ -303,17 +311,19 @@
             const grid = document.getElementById('game-grid');
             const term = document.getElementById('search').value.toLowerCase();
             const sort = document.getElementById('sort').value;
-
             let list = gameData.filter(g => g.name.includes(term));
             list.sort((a, b) => sort === 'az' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
-
             grid.innerHTML = '';
             list.forEach(g => {
                 const div = document.createElement('div');
                 div.className = 'game-card';
                 div.onclick = () => {
-                    document.getElementById('player').style.display = 'block';
-                    document.getElementById('game-frame').src = `games/${g.id}/index.html`;
+                    // Start Sidebar Fade
+                    document.getElementById('sidebar').classList.add('fade-out');
+                    setTimeout(() => {
+                        document.getElementById('player').style.display = 'block';
+                        document.getElementById('game-frame').src = `games/${g.id}/index.html`;
+                    }, 400); // Wait for fade before showing player
                 };
                 div.innerHTML = `<img src="icons/${g.img}"><span>${g.name}</span>`;
                 grid.appendChild(div);
@@ -323,6 +333,7 @@
         function closeGame() {
             document.getElementById('player').style.display = 'none';
             document.getElementById('game-frame').src = '';
+            document.getElementById('sidebar').classList.remove('fade-out');
         }
 
         function panic() { window.location.href = "https://classroom.google.com"; }
