@@ -6,77 +6,34 @@
     <style>
         html, body {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            background-color: #000; color: #0f0;
-            font-family: 'Courier New', Courier, monospace;
+            background-color: #000;
             display: flex; flex-direction: column;
             overflow: hidden;
         }
-
-        #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #0a0a0a; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 10000;
-            transition: opacity 0.5s;
-        }
-
-        #start-btn {
-            display: none; margin-top: 20px; padding: 12px 25px;
-            background: black; color: #0f0; border: 2px solid #0f0;
-            cursor: pointer; font-family: inherit; font-weight: bold;
-        }
-
-        #start-btn:hover { background: #0f0; color: black; }
-
         #flash-container {
-            flex-grow: 1; 
+            flex-grow: 1;
             width: 100vw;
             height: 100vh;
             display: block;
         }
-
         ruffle-player {
             width: 100% !important;
             height: 100% !important;
         }
-
-        .cursor { animation: blink 0.8s infinite; border-left: 10px solid #0f0; margin-left: 5px; }
-        @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
 
-    <div id="splash-screen">
-        <div><span id="text-output"></span><span class="cursor">&nbsp;</span></div>
-        <button id="start-btn" onclick="launchGame()">START GAME</button>
-    </div>
-
     <div id="flash-container"></div>
 
     <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
-
     <script>
-        const msgs = ["Loading game...", "Finding braincells...", "Starting engine..."];
-        const output = document.getElementById("text-output");
-        const btn = document.getElementById("start-btn");
-        const selected = msgs[Math.floor(Math.random() * msgs.length)];
-        let i = 0;
-
-        function type() {
-            if (i < selected.length) {
-                output.innerText += selected.charAt(i);
-                i++;
-                setTimeout(type, 50);
-            } else { btn.style.display = "block"; }
-        }
-        type();
-
-        function launchGame() {
-            document.getElementById("splash-screen").style.opacity = "0";
-            setTimeout(() => document.getElementById("splash-screen").remove(), 500);
-
+        // Load Ruffle immediately
+        window.addEventListener("load", (event) => {
             const ruffle = window.RufflePlayer.newest();
             const player = ruffle.createPlayer();
-            document.getElementById("flash-container").appendChild(player);
+            const container = document.getElementById("flash-container");
+            container.appendChild(player);
             
             player.load({
                 url: "redball4.swf",
@@ -84,7 +41,7 @@
                 scale: "showAll",
                 autoplay: "on"
             });
-        }
+        });
     </script>
 </body>
 </html>
