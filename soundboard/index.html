@@ -3,15 +3,14 @@
 <head>
     <title>Gelly Soundboard</title>
     <style>
-        /* Exact match for Gelly Dashboard Theme */
         body { 
             background-color: #0b0b0b; 
             color: #eee; 
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
             margin: 0; 
             padding: 60px; 
-            overflow-y: auto; 
-            height: 100vh;
+            padding-bottom: 100px; /* Space for bottom buttons */
+            min-height: 100vh;
             box-sizing: border-box;
         }
 
@@ -33,83 +32,101 @@
             display: block;
         }
 
-        /* Nav Group Style Controls */
+        /* Fixed Controls at Bottom Right */
         .controls { 
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
             display: flex; 
-            gap: 15px; 
-            margin-bottom: 40px;
+            gap: 10px;
+            z-index: 1000;
         }
 
         .gelly-btn { 
-            background: transparent; 
+            background: #151515; 
             color: #888; 
             border: 1px solid #222; 
-            padding: 12px 24px; 
+            padding: 12px 20px; 
             cursor: pointer; 
-            font-size: 15px; 
+            font-size: 13px; 
             border-radius: 10px; 
             transition: all 0.3s ease; 
-            font-weight: 500;
+            font-weight: 600;
             font-family: inherit;
+            text-transform: lowercase; /* Forces lowercase */
         }
 
         .gelly-btn:hover { 
-            background: #1d1d1d; 
-            color: #fff; 
-            border-color: #333;
+            background: #eee; 
+            color: #111; 
+            border-color: #fff;
         }
 
-        /* Sound Button Grid - Matches your Game Grid */
+        /* The Grid - Fixed to ensure loader.js buttons show up */
         .soundboard-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
             width: 100%;
         }
 
         /* This targets the buttons created by loader.js */
-        button {
-            background: #151515;
-            padding: 25px 15px;
-            border-radius: 18px;
-            text-align: center;
-            cursor: pointer;
-            border: 1px solid #222;
-            transition: all 0.4s ease;
-            color: #bbb;
-            font-size: 15px;
-            font-weight: 600;
-            font-family: inherit;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100px;
+        .soundboard-container button, .sound-button {
+            background: #151515 !important;
+            padding: 20px 10px !important;
+            border-radius: 15px !important;
+            text-align: center !important;
+            cursor: pointer !important;
+            border: 1px solid #222 !important;
+            transition: all 0.4s ease !important;
+            color: #bbb !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            font-family: inherit !important;
+            min-height: 80px !important;
+            display: inline-block; /* Ensure they aren't hidden */
         }
 
-        button:hover { 
-            transform: translateY(-10px); 
-            background: #1c1c1c; 
-            border-color: #333;
-            color: #fff;
+        .soundboard-container button:hover { 
+            transform: translateY(-5px); 
+            background: #1c1c1c !important; 
+            border-color: #333 !important;
+            color: #fff !important;
         }
     </style>
 </head>
 <body>
 
     <h1>gelly soundboard.</h1>
-    <span class="status-header">v2.0 // Audio Engine Online</span>
+    <span class="status-header">v2.0 // audio engine online</span>
 
-    <div class="controls">
-        <button class="gelly-btn" onclick="stopAll()">Stop All</button>
-        <button class="gelly-btn" onclick="playAll()">Chaos Mode</button>
+    <div class="soundboard-container" id="soundboard">
+        <!-- loader.js will inject buttons here -->
     </div>
 
-    <!-- The loader.js targets the container to inject buttons -->
-    <div class="soundboard-container">
-        <!-- Buttons will appear here -->
+    <div class="controls">
+        <button class="gelly-btn" onclick="stopAll()">stop all</button>
+        <button class="gelly-btn" onclick="playAll()">chaos mode</button>
     </div>
 
     <script src="loader.js"></script>
+    <script>
+        // Fix for Chaos Mode to play EVERYTHING
+        function playAll() {
+            const sounds = document.querySelectorAll('audio');
+            sounds.forEach(s => {
+                s.currentTime = 0;
+                s.play();
+            });
+        }
+
+        function stopAll() {
+            const sounds = document.querySelectorAll('audio');
+            sounds.forEach(s => {
+                s.pause();
+                s.currentTime = 0;
+            });
+        }
+    </script>
 </body>
 </html>
