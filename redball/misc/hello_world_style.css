@@ -1,0 +1,16 @@
+#sonic {
+    width:70px;
+    height:100px;
+    border:ridge black 2px;
+}
+
+div {
+    border: ridge black 1px;
+    height:500px;
+    width:250px;
+}
+
+#redball {
+    width: 70px;
+    height:100px;
+}

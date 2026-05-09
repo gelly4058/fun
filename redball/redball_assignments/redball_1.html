@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <link rel="stylesheet" href="hello_world_style.css">
+        <script type="text/javascript" src="https://storage.googleapis.com/ics-redball/redball.js"></script>
+        <script type="text/javascript">
+          function sayhello(){
+            alert('hi there'); 
+          } 
+          
+          function moveright(){
+              if (redball.left>= +170) {
+                console.log('Right Wall Hit');    
+            }
+            else{
+              redball.left= redball.left+1;
+            }
+          }
+          
+          function moveleft(){
+              if (redball.left <= 0) {
+                redball.left = 1;   
+            }
+            else{
+              redball.left= redball.left-1;
+            }
+          }
+          
+          function moveup(){
+              if(redball.top<=-0){
+                redball.top = 1;
+            }
+            else{
+                redball.top= redball.top-1;
+            }
+          }
+          
+          function movedown(){
+            if(redball.top>=+665){
+                console.log('bottom hit');
+            }
+            else{
+                redball.top= redball.top+1;
+            }
+          }
+          
+          //move down right//
+          function movedownright(){
+              if(redball.top==+220){
+                console.log('right diagonal hit');
+            }
+            else{
+                movedown();
+                 moveright();
+            }
+                 
+          }
+          
+          //move down left//
+          function movedownleft(){
+              if(redball.top==+160){
+                console.log('left down diagonal hit');
+            }
+            else{
+              movedown();
+              moveleft();
+            }  
+          }
+          
+         //move up right//
+          function moveupright(){
+              if(redball.left==+160){
+                console.log('right down diagonal hit');
+            }
+            else{
+              moveup();
+              moveright();
+            }  
+          }
+          
+           //move up left//
+          function moveupleft(){
+              if(redball.left==-10){
+                console.log('left down diagonal hit');
+            }
+            else{
+              moveup();
+              moveleft();
+            }  
+          }
+        </script>
+    </head>
+    <body>
+      <img src="http://storage.googleapis.com/ics-redball/redball.jpg" id="redball">
+      <button onclick="sayhello()">hello worlds</button>
+      <button onclick="moveright()">move right</button>
+      <button onclick="moveleft()">move left</button>
+      <button onclick="moveup()">move up</button>
+      <button onclick="movedown()">move down</button>
+      <button onclick="moveupright()">Move Up Right</button>
+      <button onclick="movedownright()">move down right</button>
+      <button onclick="movedownleft()">move down left</button>
+      <button onclick="moveupleft()">move up left</button>
+    
+    
+      
+    </body>
+</html>

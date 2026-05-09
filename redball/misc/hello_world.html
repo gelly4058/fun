@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="hello_world_style.css">
+        <script type="text/javascript">
+            function sayhello(){
+                alert('Hi There');
+            }
+            
+            function moveright(){
+            
+                redball.left=redball.left+1;
+                
+            }
+            
+            function moveleft(){
+                redball.left=redball.left-1;
+            }
+            
+            function moveUp(){
+                redball.top=redball.top-1;
+            }
+            
+            function moveDown(){
+                redball.top=redball.top+1;
+            }
+
+            function moveUpperRight(){
+                /* redball.top=redball.top-1;
+                 redball.left=redball.left+1;
+                 redball.top=redball.top-1;
+                 redball.left=redball.left+1;
+                 redball.top=redball.top-1;
+                 redball.left=redball.left+1;
+                 redball.top=redball.top-1;
+                 redball.left=redball.left+1;
+                 redball.top=redball.top-1;
+                 redball.left=redball.left+1;
+                 redball.top=redball.top-1;
+                 redball.left=redball.left+1;
+                 redball.top=redball.top-1;
+                 redball.left=redball.left+1;redball.top=redball.top-1;
+                 redball.left=redball.left+1; */
+               
+               
+               /* var i = 0;
+                for(i=0; i<100; i++){
+                    moveUp();
+                    moveright();
+                    
+                }*/ //repeat using for
+                moveUp();
+                moveright()
+            }
+            
+            
+            
+            //From Das: another way to do this by reusing functions
+            function moveDownLeft(){
+                
+                var i = 0;
+                for(i=0; i<100; i++){
+                moveDown();
+                moveleft();
+                    
+                }
+            }
+            
+            // travel a  square path
+            function squarepath(){
+                var x = 0;
+                var y = 0;
+                
+                for(x=0; x<100; x++){
+                    moveright();
+                
+                } 
+                
+                for(y=0; y<50; y++){
+                    moveUp();
+                }
+                
+                for(x=100; x>0; x--){
+                    moveleft();
+                }
+                for(y=50; y>0; y--){
+                    moveDown();
+                }
+            }
+            
+            function trianglepath(){
+                
+                var x = 0;
+                
+                for( x=0; x<100; x++){
+                    moveright();
+                }
+                
+                for(x=100; x>50; x--){
+                    moveUp();
+                    moveleft();
+                }
+                
+                for(x=50; x>0; x--){
+                    moveDown();
+                    moveleft();
+                    
+                }
+
+            }
+           
+            function octagonpath(){
+                var x = 0
+                var y =0
+                
+                for(y=0; y<30;y++){
+                    moveUp();
+                }
+                
+        
+                for(x=0; x<30; x++){
+                    moveUp();
+                    moveright();
+                }
+                
+                for(x=30; x<90; x++){
+                    moveright();
+                }
+                
+                for(x=90; x<120; x++){
+                    moveDown();
+                    moveright();
+                }
+                
+                for(y=30; y>0; y--){
+                    moveDown();
+                }
+                
+                for(x=120; x>90; x--){
+                    moveDown();
+                    moveleft();
+                }
+                
+                for(x=90; x>30; x--){
+                    
+                    moveleft();
+                }
+                
+                for(x=30; x>0; x--){
+                    moveUp();
+                    moveleft();
+                }
+            }
+            
+            var i=0;
+            function movefastright(){
+               var x = 0;
+                var y = 0;
+                
+                for(x=0; x<100; x++){
+                    moveright();
+                
+                } 
+               
+            }
+            
+                
+        </script>
+        
+        <script type="text/javascript" src="https://storage.googleapis.com/ics-redball/redball.js">
+            
+        </script>
+        
+          
+        
+    </head>
+    
+        <body>
+        
+        <button onclick="alert('Hello World')" ><img src="http://vignette4.wikia.nocookie.net/sonic/images/7/71/Sonic_oh_well.png/revision/latest?cb=20150904114157" id="sonic"></button>
+        
+       
+        <img src="http://i261.photobucket.com/albums/ii64/megafrm/SonicRunGIF.gif" id="redball">
+        
+        <!--<img src="http://storage.googleapis.com/ics-redball/redball.jpg" id="redball">
+        
+        <img src="http://rs562.pbsrc.com/albums/ss69/sonicman0121/Sonicrunning.gif~c200" id="sonicrun"> -->
+       
+       <button onclick="sayhello()">Hello World</button>
+       
+       <button onclick="moveright()">Move Right</button>
+       
+       <button onclick="moveleft()">Move Left</button>
+       
+       <button onclick="moveDown()">Move Down</button>
+       
+       <button onclick="moveUp()">Move Up</button>
+       
+       <button onclick="moveDownLeft()">Down Left</button>
+       
+       <!-- <button onclick="window.location.href='http://becomingitalianwordbyword.typepad.com/.a/6a01053707c797970b0133f540e05f970b-pi'">Upper Right</button> -->
+       
+       <button onclick="moveUpperRight()">Up Right</button>
+       
+       
+       <button onclick="squarepath()">Square Path</button>
+        </body>
+       
+       <button onclick ="movefastright()">fast right</button>
+       
+       <button onclick="trianglepath()">Triangle Path</button>
+       
+       <button onclick="octagonpath()">octagon Path</button>
+      
+</html>

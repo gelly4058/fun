@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- link to stylesheet-->
+        <link rel="stylesheet" href="hello_world_style.css">
+        
+        
+         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+         <style>
+             #redball{
+                 position:absolute;
+             }
+         </style>
+            
+         <script>
+            function pfadeOut(){
+                var myparagraph=$("#gt");
+                myparagraph.fadeOut();
+            }
+            
+            function pfadeIn(){
+                var myparagraph=$("#gt");
+                myparagraph.fadeIn();
+            }
+            
+            function moveup(){
+                var ball=$("#redball");
+            
+            if(ball <= 0){
+                ball.animate({"top":"= 0"},0,"linear")
+            }else
+                ball.animate({"top":"-=100"},1000,"linear");
+            }
+            
+            function moveDown(){
+                var ball=$("#redball");
+                ball.animate({"top":"+=100"},1000,"linear");
+            }
+            
+            function moveleft(){
+                var ball=$("#redball");
+                ball.animate({"left":"-=100"},1000,"linear");
+            }
+            
+            function moveright(){
+                var ball=$("#redball");
+                ball.animate({"left":"+=100"},1000,"linear");
+            }
+            
+            function moveDownRight(){
+                var ball=$("#redball");
+                ball.animate({"top":"+=100","left":"+=100"},1000,"linear");
+                
+            }
+            
+            function moveDownLeft(){
+                var ball=$("#redball");
+                ball.animate({"top":"+=100", "left":"-=100"},1000,"linear");
+                
+            }
+            
+            function UpLeft(){
+                var ball=$("#redball");
+                ball.animate({"top":"-=100", "left":"-=100"},1000,"linear");
+                
+            }
+            
+            function UpRight(){
+                var ball=$("#redball");
+                ball.animate({"top":"-=100","left":"+=100"},1000,"linear");
+                //ball.animate({"left":"+=10"},1000,"linear");
+                     
+            }
+            
+            function squarepath(){
+                var ball=$("#redball");
+                 ball.animate({"left":"+=100"},500,"linear");
+                 ball.animate({"top":"-=100"},500,"linear");
+                 ball.animate({"left":"-=100"},500,"linear");
+                 ball.animate({"top":"+=100"},500,"linear");
+                
+            }
+            
+            function trianglepath(){
+                var ball=$("#redball");
+                ball.animate({"left":"+=100"},500,"linear");
+                ball.animate({"left":"-=50","top":"-=50"},500,"linear");
+                ball.animate({"left":"-=50","top":"+=50"},500,"linear");
+            }
+            
+            function octagonpath(){
+                var ball=$("#redball");
+                 ball.animate({"left":"+=100"},500,"linear");
+                 ball.animate({"left":"+=50","top":"-=50"},500,"linear");
+                 ball.animate({"top":"-=100"},500,"linear");
+                 ball.animate({"left":"-=50","top":"-=50"},500,"linear");
+                 ball.animate({"left":"-=100"},500,"linear");
+                 ball.animate({"left":"-=50","top":"+=50"},500,"linear");
+                 ball.animate({"top":"+=100"},500,"linear");
+                 ball.animate({"left":"+=50","top":"+=50"},500,"linear");
+                
+            }
+            
+            
+        </script>   
+        
+
+    </head>
+    
+        <body>
+        
+            <button onclick="alert('Hello World')" ><img src="http://vignette4.wikia.nocookie.net/sonic/images/7/71/Sonic_oh_well.png/revision/latest?cb=20150904114157" id="sonic"></button>
+
+            <img id ="redball" src="http://storage.googleapis.com/ics-redball/redball.jpg" > 
+       
+           <button onclick="sayhello()">Hello World</button>
+           
+           <button onclick="moveright()">Move Right</button>
+           
+           <button onclick="moveleft()">Move Left</button>
+           
+           <button onclick="moveDown()">Move Down</button>
+           
+           <button onclick="moveup()">Move Up</button>
+           
+           <button onclick="moveDownLeft()">Down Left</button>
+           
+           <button onclick="moveDownRight()">Down Right</button>
+           
+           <button onclick="UpRight()">Up Right</button>
+           
+           <button onclick="UpLeft()">Up Left</button>
+           
+           <button onclick="squarepath()">Square Path</button>
+           
+           <button onclick="trianglepath()">Triangle Path</button>
+           
+           <button onclick="octagonpath()">octagon Path</button>
+          
+          <button onclick="stopleft()">test</button>
+          
+          <p>My First Paragraph</p>
+          
+          <p id="gt">My Second Paragraph </p>
+          
+          <p>
+          <button onclick="pfadeIn()">Fade In</button>
+          <button onclick="pfadeOut()">Fade Out</button>
+               </p>
+           
+           
+           
+        </body>
+       
+</html>

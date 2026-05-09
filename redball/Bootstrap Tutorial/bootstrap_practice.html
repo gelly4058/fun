@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="window=device-width, initial scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="#"/>
+        
+        <!--Bootstrap core css-->
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/> 
+        
+        <!-- font-awesome core css-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+        
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    
+    <body style="background-image: url('../assets/sonic_back.jpg');">
+        
+    <!--
+    ==========================NAVBAR========================================= -->
+    
+    <div class="navbar-wrapper">
+        
+        <div class="container">
+            
+            <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+                
+                <div class="container">
+                    
+                    <div class="navbar-header">
+                        
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle Navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        
+                        <a class="navbar-brand" href="#">Website Name</a>
+                        
+                    </div><!-- end of navbar-header-->
+                    
+                        <div class="navbar-collapse collapse">
+                            
+                            <div class="right-inner-addon pull-right">
+                                
+                                <i class="fa fa-search"></i>
+                                <input type="search" class="form-control" placeholder="Search"/>
+                                
+                            </div><!--end of search-->
+                    
+                                <ul class="nav navbar-nav">
+                                    <li class="active"><a href="#">Home</a></li>
+                                    <li><a href="#about">About</a></li>
+                                    <li><a href="#contact">Contact Me</a></li>
+                                    
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<span class="caret"></span></a>
+                                        
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li class="dropdown-header">Social Media</li>
+                                            <li><a href="#">Twitter</a></li>
+                                            <li><a href="#">Facebook</a></li>
+                                            <li><a href="#">Google+</a></li>
+                                            <li><a href="#">Youtube</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            
+                        </div><!-- end of navbar collapse-->
+                    
+                </div><!-- end of container -->
+                
+            </div> <!-- end of Basic Navbar -->
+            
+        </div> <!-- end of container -->
+        
+    </div> <!-- end of navbar-wrapper -->
+    
+<!--
+==========================CAROUSEL========================================= -->
+
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+    
+    <ol class="carousel-indicators">
+        
+        <li data-target="#myCarousel" data-to-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-to-slide-to="1"></li>
+        <li data-target="#myCarousel" data-to-slide-to="2"></li>
+    </ol>
+    
+    <div class="carousel-inner">
+        
+        <div class="item active">
+            
+            <img src="../assets/sonic_1.jpg" alt="First Slide"/>
+            
+            <div class="container">
+            
+                <div class="carousel-caption">
+                    
+                    <h1>Example Headline</h1>
+                    <p>Sonic from generation to generation.</p>
+                    <p><a class="btn btn-lrg btn-primary" href="#" role="button">Button [1]</a></p>
+                    
+                    
+                </div> <!----end of carousel-caption--->
+                
+            </div> <!----end of container---->
+            
+        </div> <!----end of item (active)---->
+        
+        <div class="item">
+            
+            <img src="../assets/sonic_1.jpg" alt="Second Slide"/>
+            
+            <div class="container">
+            
+                <div class="carousel-caption">
+                    <h1>Example Headline</h1>
+                    <p>Sonic from generation to generation.</p>
+                    <p><a class="btn btn-lrg btn-primary" href="#" role="button">Button [2]</a></p>
+                    
+                    
+                </div> <!----end of carousel-caption--->
+                
+            </div> <!----end of container---->
+            
+        </div> <!----end of item ---->
+        
+        <div class="item">
+            
+            <img src="../assets/sonic_1.jpg" alt="Third Slide"/>
+            
+            <div class="container">
+            
+                <div class="carousel-caption">
+                    <h1>Example Headline</h1>
+                    <p>Sonic from generation to generation.</p>
+                    <p><a class="btn btn-lrg btn-primary" href="#" role="button">Button [3]</a></p>
+                    
+                    
+                </div> <!----end of carousel-caption--->
+                
+            </div> <!----end of container---->
+            
+        </div> <!----end of item ---->
+        
+    </div> <!----end of carousel-inner---->
+    
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-left">
+        
+    </span></a>
+    
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right">
+        
+    </span></a>
+    
+</div> <!-----end of myCarousel---->
+
+<!--
+==========================Featurettes====================================================================== -->
+
+<div class="container feature">
+    
+    
+    <div class="row">
+        
+        <div class="col-lg-4">
+            <img class="img-circle" src="../assets/sonic1_game.png" alt="Generic Placeholder Image" style="width: 140px; height: 140px;"/>
+            <h2>Sonic the Hedgehog</h2>
+            <p>Some words blah blah blah blah,Some words blah blah blah blah,Some words blah blah blah blah.</p>
+            <p><a class="btn btn-default" href="#" role="button">view details &raquo;</a></p>
+            
+        </div> <!----end of col-lg-4---->
+        
+        <div class="col-lg-4">
+            <img class="img-circle" src="../assets/sonic2_game.jpg" alt="Generic Placeholder Image" style="width: 140px; height: 140px;"/>
+            <h2>Sonic the Hedgehog 2</h2>
+            <p>Some words blah blah blah blah,Some words blah blah blah blah,Some words blah blah blah blah.</p>
+            <p><a class="btn btn-default" href="#" role="button">view details &raquo;</a></p>
+            
+        </div> <!----end of col-lg-4---->
+        
+        <div class="col-lg-4">
+            <img class="img-circle" src="../assets/sonic3_game.png" alt="Generic Placeholder Image" style="width: 140px; height: 140px;"/>
+            <h2>Sonic & Knuckles</h2>
+            <p>Some words blah blah blah blah,Some words blah blah blah blah,Some words blah blah blah blah.</p>
+            <p><a class="btn btn-default" href="#" role="button">view details &raquo;</a></p>
+            
+        </div> <!----end of col-lg-4---->
+        
+    </div> <!----end of row---->
+    
+</div> <!----end of container---->
+
+<!--
+==========================Footer====================================================================== -->
+       
+        <div class="nav navbar-default navbar-fixed-bottom">
+            
+            <div class="container">
+                
+                <p class="navbar-text pull-left">Site built by me</p>
+                <a href ="#" class="navbar-text pull-right">Back to the top.</a>
+                
+            </div><!---- end of container---->
+            
+        </div> <!----end of nav ---->
+<!--=============Bootstrap core JavaScript==================================================================-->
+<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
+    </body>
+</html>

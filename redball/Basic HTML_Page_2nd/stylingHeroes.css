@@ -1,0 +1,61 @@
+body {
+    background-color:black;
+    color:white;
+    
+}
+
+img {
+    border:white solid 3px;
+    width:270px;
+    height:200px;
+    float:right;
+}
+
+    
+
+h1 {
+    text-align: center;
+    padding:50px;
+    border:ridge white 5px;
+    background-image: url("http://www.tecstonegranite.com/images/swatches/large/Blue-Pearl.jpg")
+}
+
+#spider{
+    border:blue ridge 5px;
+    padding:15px;
+    text-align:center;
+    background-image:url("http://img05.deviantart.net/44e8/i/2012/195/8/b/spider_man_symbol_wp_by_chaomanceromega-d577vp4.png");
+}
+
+div {
+    border:white solid 2px ;
+    height:150px;
+    padding:30px;
+    background-color: black;S
+}
+
+#theBatman {
+    border:yellow ridge 5px;
+    padding:15px;
+    text-align:center;
+    background:Black;
+    color:yellow;
+}
+
+
+#bluBall {
+    border:red ridge 5px;
+    padding:15px;
+    text-align:center;
+    background:blue;
+    color:white;
+}
+
+
+#legend {
+    border:black ridge 5px;
+    padding:15px;
+    text-align:center;
+    background-image:url("http://previews.123rf.com/images/sirylok/sirylok1305/sirylok130500027/19694285-Yellow-anaconda-snake-skin-covered-in-textured-scales-animal-background-closeup--Stock-Photo.jpg");
+    color:white;
+}

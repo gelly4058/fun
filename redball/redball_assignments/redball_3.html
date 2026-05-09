@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="hello_world_style.css">
+        <script type="text/javascript">
+            function sayhello(){
+                alert('Hi There');
+            }
+            
+            //button right animation
+            
+            function moveright(){
+                if(redball.left>=550){
+                    redball.left=550;
+                }
+                else{
+                    redball.left=redball.left+1;
+                }
+            }
+            
+            function bRight(){
+                 var i = 0;
+                for(i=0; i<100; i++){
+                 moveright();
+                }
+            }
+            //button left animation
+            
+            function moveleft(){
+                if(redball.left<=0){
+                    redball.left=0;
+                }
+                else{
+                    redball.left=redball.left-1;
+                }
+            }
+            
+            function bLeft(){
+                var i = 0;
+                for(i=0; i<100; i++){
+                moveleft();
+                }   
+            }
+            
+            //button up animation
+            
+            function moveup(){
+                if(redball.top<=0){
+                   redball.top=0;
+                }
+                else{
+                    redball.top=redball.top-1;
+                }
+            }
+            
+            function bUp(){
+                var i = 0;
+                for(i=0; i<100; i++){
+                moveup();
+                }   
+            }
+        
+            //button down animation
+            
+            function movedown(){
+                
+                if(redball.top>=400){
+                    redball.top=400;
+                }
+                else{
+                    redball.top=redball.top+1;
+                }
+            }
+            
+            function bDown(){
+                var i = 0;
+                for(i=0; i<100; i++){
+                movedown();
+                }   
+            }
+               
+            //button up right animation
+            
+            function moveUpperRight(repeat){
+                
+               for(i=0;i<repeat;i++){
+                   moveup();
+                   moveright();
+               }
+                
+            }  
+            
+            //inputing value by call function
+            function bUpRight(){
+                moveUpperRight(100);
+            }    
+                
+            //button down left animation
+            
+            function bDownLeft(){
+                
+                var i = 0;
+                for(i=0; i<100; i++){
+                movedown();
+                moveleft();
+                    
+                }
+            }
+            
+            //button down right animation
+            
+            function bDownRight(){
+                for(i=0; i<100; i++){
+                    movedown();
+                    moveright();
+                }
+            }
+                
+            //button up left animation    
+                
+            function bUpLeft(){
+                for(i=0; i<100; i++){
+                    moveup();
+                    moveleft()
+                }
+            }
+                
+            //Test button
+            
+            function hexagonpath(){
+                var x = 0
+                var y =0
+                
+                
+                
+                 for(x=0; x<30; x++){
+                    moveup();
+                    moveright();
+                }
+                
+                for(x=30; x<90; x++){
+                    moveright();
+                }
+                
+                for(x=90; x<120; x++){
+                    movedown();
+                    moveright();
+                }
+                
+                
+                
+                for(x=120; x>90; x--){
+                    movedown();
+                    moveleft();
+                }
+                
+                for(x=90; x>30; x--){
+                     moveleft();
+                }
+                
+                for(x=30; x>0; x--){
+                    moveup();
+                    moveleft();
+                }
+            
+            }
+                
+            
+            // travel a  square path
+            function squarepath(){
+                var x = 0;
+                var y = 0;
+                
+                for(x=0; x<100; x++){
+                    moveright();
+                } 
+                
+                for(y=0; y<50; y++){
+                    moveup();
+                }
+                
+                for(x=100; x>0; x--){
+                    moveleft();
+                }
+                for(y=50; y>0; y--){
+                    movedown();
+                }
+            }
+            
+            // trianle path
+            function trianglepath(){
+                
+                var x = 0;
+                
+                for( x=0; x<100; x++){
+                    moveright();
+                }
+                
+                for(x=100; x>50; x--){
+                    moveup();
+                    moveleft();
+                }
+                
+                for(x=50; x>0; x--){
+                    movedown();
+                    moveleft();
+                    
+                }
+
+            }
+            
+            
+           
+           //octagon path
+            function octagonpath(){
+                var x = 0
+                var y =0
+                
+                for(y=0; y<30;y++){
+                    moveup();
+                }
+                
+                 for(x=0; x<30; x++){
+                    moveup();
+                    moveright();
+                }
+                
+                for(x=30; x<90; x++){
+                    moveright();
+                }
+                
+                for(x=90; x<120; x++){
+                    movedown();
+                    moveright();
+                }
+                
+                for(y=30; y>0; y--){
+                    movedown();
+                }
+                
+                for(x=120; x>90; x--){
+                    movedown();
+                    moveleft();
+                }
+                
+                for(x=90; x>30; x--){
+                     moveleft();
+                }
+                
+                for(x=30; x>0; x--){
+                    moveup();
+                    moveleft();
+                }
+            }
+           rect(10,20,20,100);
+        </script>
+        
+        <script type="text/javascript" src="https://storage.googleapis.com/ics-redball/redball.js">
+            
+        </script>
+        
+    </head>
+    
+        <body>
+        
+            
+
+            <!--<img src="http://storage.googleapis.com/ics-redball/redball.jpg" id="redball"> -->
+       
+           <button onclick="sayhello()">Hello World</button>
+           
+           <button onclick="bRight()">Move Right</button>
+           
+           <button onclick="bLeft()">Move Left</button>
+           
+           <button onclick="bDown()">Move Down</button>
+           
+           <button onclick="bUp()">Move Up</button>
+           
+           <button onclick="bDownLeft()">Down Left</button>
+           
+           <button onclick="bDownRight()">Down Right</button>
+           
+           <button onclick="bUpRight()">Up Right</button>
+           
+           <button onclick="bUpLeft()">Up Left</button>
+           
+           <button onclick="squarepath()">Square Path</button>
+           
+           <button onclick="trianglepath()">Triangle Path</button>
+           
+           <button onclick="octagonpath()">Octagon Path</button>
+          
+          <button onclick="hexagonpath()">Hexagon Path</button>
+               
+            <img id ="redball" src="http://storage.googleapis.com/ics-redball/redball.jpg" >
+           
+           
+        </body>
+       
+</html>
