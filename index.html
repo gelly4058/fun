@@ -100,60 +100,27 @@
                             <div class="search-container">
                                 <input type="text" id="search" placeholder="Search library..." onkeyup="filterGames()">
                                 <select id="sort-filter" onchange="sortGames()">
-                                    <option value="az">A-Z</option>
+                                    <option value="az" selected>A-Z</option>
                                     <option value="za">Z-A</option>
                                 </select>
                             </div>
                             <div class="grid" id="gameGrid">
-                                <div class="game-card" onclick="openFrame('./games/flappy/index.html', this)">
-                                    <img src="./icons/flappybirdicon.png" alt="Flappy"><p>Flappy Bird</p>
-                                </div>
-                                <div class="game-card" onclick="openFrame('./games/drivemad/index.html', this)">
-                                    <img src="./icons/drivemadicon.png" alt="Drive Mad"><p>Drive Mad</p>
-                                </div>
-                                <div class="game-card" onclick="openFrame('./games/bitlife/index.html', this)">
-                                    <img src="./icons/bitlifeicon.png" alt="BitLife"><p>BitLife</p>
-                                </div>
-                                <div class="game-card" onclick="openFrame('./games/geodash/index.html', this)">
-                                    <img src="./icons/geodashicon.png" alt="GD"><p>Geometry Dash</p>
-                                </div>
-                                <div class="game-card" onclick="openFrame('./games/tetris/index.html', this)">
-                                    <img src="./icons/tetrisicon.png" alt="Tetris"><p>Tetris</p>
-                                </div>
-                                <div class="game-card" onclick="openFrame('./games/cookieclicker/index.html', this)">
-                                    <img src="./icons/cookieclickericon.png" alt="Cookies"><p>Cookie Clicker</p>
-                                </div>
-                                <div class="game-card" onclick="openFrame('./games/slope/index.html', this)">
-                                    <img src="./icons/slopeicon.png" alt="Slope"><p>Slope</p>
-                                </div>
-                                <div class="game-card" onclick="openFrame('./games/stickmanhook/index.html', this)">
-                                    <img src="./icons/stickmanhookicon.png" alt="Hook"><p>Stickman Hook</p>
-                                </div>
-                                <div class="game-card" onclick="openFrame('./games/minecraft/index.html', this)">
-                                    <img src="./icons/minecrafticon.png" alt="MC"><p>Minecraft</p>
-                                </div>
-                                <div class="game-card" onclick="openFrame('./games/crossyroad/index.html', this)">
-                                    <img src="./icons/crossyroadicon.png" alt="Road"><p>Crossy Road</p>
-                                </div>
-                                <div class="game-card" onclick="openFrame('./games/redball/index.html', this)">
-                                    <img src="./icons/redballicon.png" alt="Red Ball 4"><p>Red Ball 4</p>
-                                </div>
-                                <div class="game-card" onclick="openFrame('./games/ducklife/index.html', this)">
-                                    <img src="./icons/ducklifeicon.png" alt="Duck Life 4"><p>Duck Life 4</p>
-                                </div>
-                                <!-- New Games -->
-                                <div class="game-card" onclick="openFrame('./games/paperio2/index.html', this)">
-                                    <img src="./icons/paperio2icon.png" alt="Paper.io 2"><p>Paper.io 2</p>
-                                </div>
-                                <div class="game-card" onclick="openFrame('./games/vex4/index.html', this)">
-                                    <img src="./icons/vex4icon.png" alt="Vex 4"><p>Vex 4</p>
-                                </div>
-                                <div class="game-card" onclick="openFrame('./games/dinogame/index.html', this)">
-                                    <img src="./icons/dinogameicon.png" alt="Dino Game"><p>Dino Game</p>
-                                </div>
-                                <div class="game-card" onclick="openFrame('./games/run3/index.html', this)">
-                                    <img src="./icons/run3icon.png" alt="Run 3"><p>Run 3</p>
-                                </div>
+                                <div class="game-card" onclick="openFrame('./games/flappy/index.html', this)"><img src="./icons/flappybirdicon.png" alt="Flappy"><p>Flappy Bird</p></div>
+                                <div class="game-card" onclick="openFrame('./games/drivemad/index.html', this)"><img src="./icons/drivemadicon.png" alt="Drive Mad"><p>Drive Mad</p></div>
+                                <div class="game-card" onclick="openFrame('./games/bitlife/index.html', this)"><img src="./icons/bitlifeicon.png" alt="BitLife"><p>BitLife</p></div>
+                                <div class="game-card" onclick="openFrame('./games/geodash/index.html', this)"><img src="./icons/geodashicon.png" alt="GD"><p>Geometry Dash</p></div>
+                                <div class="game-card" onclick="openFrame('./games/tetris/index.html', this)"><img src="./icons/tetrisicon.png" alt="Tetris"><p>Tetris</p></div>
+                                <div class="game-card" onclick="openFrame('./games/cookieclicker/index.html', this)"><img src="./icons/cookieclickericon.png" alt="Cookies"><p>Cookie Clicker</p></div>
+                                <div class="game-card" onclick="openFrame('./games/slope/index.html', this)"><img src="./icons/slopeicon.png" alt="Slope"><p>Slope</p></div>
+                                <div class="game-card" onclick="openFrame('./games/stickmanhook/index.html', this)"><img src="./icons/stickmanhookicon.png" alt="Hook"><p>Stickman Hook</p></div>
+                                <div class="game-card" onclick="openFrame('./games/minecraft/index.html', this)"><img src="./icons/minecrafticon.png" alt="MC"><p>Minecraft</p></div>
+                                <div class="game-card" onclick="openFrame('./games/crossyroad/index.html', this)"><img src="./icons/crossyroadicon.png" alt="Road"><p>Crossy Road</p></div>
+                                <div class="game-card" onclick="openFrame('./games/redball/index.html', this)"><img src="./icons/redballicon.png" alt="Red Ball 4"><p>Red Ball 4</p></div>
+                                <div class="game-card" onclick="openFrame('./games/ducklife/index.html', this)"><img src="./icons/ducklifeicon.png" alt="Duck Life 4"><p>Duck Life 4</p></div>
+                                <div class="game-card" onclick="openFrame('./games/paperio2/index.html', this)"><img src="./icons/paperio2icon.png" alt="Paper.io 2"><p>Paper.io 2</p></div>
+                                <div class="game-card" onclick="openFrame('./games/vex4/index.html', this)"><img src="./icons/vex4icon.png" alt="Vex 4"><p>Vex 4</p></div>
+                                <div class="game-card" onclick="openFrame('./games/run3/index.html', this)"><img src="./icons/run3icon.png" alt="Run 3"><p>Run 3</p></div>
+                                <div class="game-card" onclick="openFrame('./games/dino/index.html', this)"><img src="./icons/dinoicon.png" alt="Chrome Dino"><p>Chrome Dino</p></div>
                             </div>
                         </div>
 
@@ -165,9 +132,7 @@
                         </div>
 
                         <div id="player-container">
-                            <div id="loading-overlay">
-                                Please wait, this can take up to 2 minutes on ur first launch.
-                            </div>
+                            <div id="loading-overlay">Please wait, this can take up to 2 minutes on ur first launch.</div>
                             <div id="player-nav">
                                 <button class="gelly-btn" id="back-btn" onclick="closeFrame()">Back</button>
                                 <span id="game-display-name" style="font-size:12px; color:#eee; letter-spacing:2px; text-transform:uppercase; font-weight:bold;">System Active</span>
@@ -181,95 +146,33 @@
                     </div>
 
                     <script>
-                        function updateCount() {
-                            const count = document.getElementsByClassName('game-card').length;
-                            const display = document.getElementById('count-display');
-                            if(display) display.innerText = count + " Games Available";
-                        }
-                        
-                        setTimeout(updateCount, 100);
-
-                        function showPage(pageId) {
-                            if (pageId !== 'sounds') { document.getElementById('game-frame').src = ''; }
-                            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                            document.getElementById('player-container').style.display = 'none';
-                            document.getElementById('sidebar').classList.remove('hidden');
-                            document.querySelectorAll('.gelly-btn').forEach(b => {
-                                if (b.id !== 'back-btn') b.classList.remove('active');
-                            });
-                            let btn = document.getElementById('btn-' + pageId);
-                            if(btn) btn.classList.add('active');
-                            document.getElementById(pageId).classList.add('active');
-                            if(pageId === 'games') updateCount();
-                        }
-
-                        function openFrame(url, el) {
-                            var gameName = "System Active";
-                            if (el && el.querySelector('p')) {
-                                gameName = el.querySelector('p').innerText;
-                            } else if (el && el.innerText.includes('Launch')) {
-                                gameName = "Soundboard";
-                            }
-                            document.getElementById('game-display-name').innerText = gameName;
-                            document.getElementById('loading-overlay').style.display = 'flex';
-                            document.getElementById('sidebar').classList.add('hidden');
-                            setTimeout(() => {
-                                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                                document.getElementById('player-container').style.display = 'flex';
-                                document.getElementById('game-frame').src = url;
-                            }, 500);
-                        }
-
-                        function hideLoading() {
-                            document.getElementById('loading-overlay').style.display = 'none';
-                        }
-
-                        function closeFrame() {
-                            document.getElementById('game-frame').src = '';
-                            document.getElementById('player-container').style.display = 'none';
-                            document.getElementById('sidebar').classList.remove('hidden');
-                            showPage('games');
-                        }
-
+                        function updateCount() { const count = document.getElementsByClassName('game-card').length; const display = document.getElementById('count-display'); if(display) display.innerText = count + " Games Available"; }
+                        function showPage(pageId) { if (pageId !== 'sounds') { document.getElementById('game-frame').src = ''; } document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById('player-container').style.display = 'none'; document.getElementById('sidebar').classList.remove('hidden'); document.querySelectorAll('.gelly-btn').forEach(b => { if (b.id !== 'back-btn') b.classList.remove('active'); }); let btn = document.getElementById('btn-' + pageId); if(btn) btn.classList.add('active'); document.getElementById(pageId).classList.add('active'); if(pageId === 'games') updateCount(); }
+                        function openFrame(url, el) { var gameName = "System Active"; if (el && el.querySelector('p')) { gameName = el.querySelector('p').innerText; } else if (el && el.innerText.includes('Launch')) { gameName = "Soundboard"; } document.getElementById('game-display-name').innerText = gameName; document.getElementById('loading-overlay').style.display = 'flex'; document.getElementById('sidebar').classList.add('hidden'); setTimeout(() => { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById('player-container').style.display = 'flex'; document.getElementById('game-frame').src = url; }, 500); }
+                        function hideLoading() { document.getElementById('loading-overlay').style.display = 'none'; }
+                        function closeFrame() { document.getElementById('game-frame').src = ''; document.getElementById('player-container').style.display = 'none'; document.getElementById('sidebar').classList.remove('hidden'); showPage('games'); }
                         function panicMode() { window.location.href = 'https://google.com'; }
-
-                        function toggleFull() {
-                            var frame = document.getElementById("game-frame");
-                            if (frame.requestFullscreen) frame.requestFullscreen();
-                            else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
+                        function toggleFull() { var frame = document.getElementById("game-frame"); if (frame.requestFullscreen) frame.requestFullscreen(); else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen(); }
+                        function filterGames() { let input = document.getElementById('search').value.toLowerCase(); let cards = document.querySelectorAll('.game-card'); let visibleCount = 0; cards.forEach(card => { let title = card.innerText.toLowerCase(); if(title.includes(input)) { card.style.display = "block"; visibleCount++; } else { card.style.display = "none"; } }); const display = document.getElementById('count-display'); if(display) display.innerText = visibleCount + " Games Found"; }
+                        
+                        function sortGames() { 
+                            const grid = document.getElementById('gameGrid'); 
+                            const cards = Array.from(grid.getElementsByClassName('game-card')); 
+                            const mode = document.getElementById('sort-filter').value; 
+                            cards.sort((a, b) => { 
+                                const nameA = a.querySelector('p').innerText.toLowerCase(); 
+                                const nameB = b.querySelector('p').innerText.toLowerCase(); 
+                                if (mode === 'az') return nameA.localeCompare(nameB); 
+                                if (mode === 'za') return nameB.localeCompare(nameA); 
+                            }); 
+                            cards.forEach(card => grid.appendChild(card)); 
                         }
 
-                        function filterGames() {
-                            let input = document.getElementById('search').value.toLowerCase();
-                            let cards = document.querySelectorAll('.game-card');
-                            let visibleCount = 0;
-                            cards.forEach(card => {
-                                let title = card.innerText.toLowerCase();
-                                if(title.includes(input)) {
-                                    card.style.display = "block";
-                                    visibleCount++;
-                                } else {
-                                    card.style.display = "none";
-                                }
-                            });
-                            const display = document.getElementById('count-display');
-                            if(display) display.innerText = visibleCount + " Games Found";
-                        }
-
-                        function sortGames() {
-                            const grid = document.getElementById('gameGrid');
-                            const cards = Array.from(grid.getElementsByClassName('game-card'));
-                            const mode = document.getElementById('sort-filter').value;
-
-                            cards.sort((a, b) => {
-                                const nameA = a.querySelector('p').innerText.toLowerCase();
-                                const nameB = b.querySelector('p').innerText.toLowerCase();
-                                if (mode === 'az') return nameA.localeCompare(nameB);
-                                if (mode === 'za') return nameB.localeCompare(nameA);
-                            });
-
-                            cards.forEach(card => grid.appendChild(card));
-                        }
+                        // This auto-sorts to A-Z and updates count immediately on launch
+                        setTimeout(() => {
+                            sortGames();
+                            updateCount();
+                        }, 100);
                     <\/script>
                 </body>
                 </html>
