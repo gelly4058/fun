@@ -1,41 +1,92 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>gelly soundboard</title>
+    <title>Gelly Soundboard</title>
     <style>
-        body { background-color: #0b0b0b; color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 60px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; box-sizing: border-box; }
-        h1 { font-size: 64px; font-weight: 800; letter-spacing: -2px; margin: 0 0 10px 0; color: #fff; }
-        .status-header { font-size: 11px; color: #333; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 40px; }
+        body { 
+            background-color: #0b0b0b; 
+            color: #eee; 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            padding: 60px; 
+            padding-bottom: 120px;
+            min-height: 100vh;
+        }
 
-        /* Controls in a straight line bottom right */
+        h1 { font-size: 64px; font-weight: 800; letter-spacing: -2px; margin: 0; color: #fff; }
+        .status-header { font-size: 11px; color: #333; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 40px; display: block; }
+
+        /* The Grid - Matches your Games Page */
+        .soundboard-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 25px;
+            width: 100%;
+        }
+
+        /* The Sound Card */
+        .sound-card {
+            background: #151515;
+            padding: 20px;
+            border-radius: 18px;
+            text-align: center;
+            border: 1px solid #222;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .sound-card:hover { transform: translateY(-10px); background: #1c1c1c; border-color: #333; }
+
+        /* The White Play Button */
+        .play-btn {
+            width: 50px;
+            height: 50px;
+            background: #eee;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+        }
+
+        .play-btn:hover { background: #fff; transform: scale(1.1); }
+
+        /* Play Icon (Small Black Triangle) */
+        .play-btn::after {
+            content: '';
+            display: block;
+            width: 0; height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 12px solid #111;
+            margin-left: 4px;
+        }
+
+        .sound-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #bbb;
+            text-transform: lowercase;
+        }
+
+        /* Lowercase Bottom Controls */
         .controls { position: fixed; bottom: 30px; right: 30px; display: flex; gap: 10px; z-index: 1000; }
         .gelly-btn { background: #151515; color: #888; border: 1px solid #222; padding: 12px 20px; cursor: pointer; font-size: 13px; border-radius: 10px; transition: 0.3s; font-weight: 600; text-transform: lowercase; }
         .gelly-btn:hover { background: #eee; color: #111; }
-
-        /* The Grid */
-        .sound-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; width: 100%; max-width: 1200px; }
-        .sound-card { background: #151515; padding: 25px 15px; border-radius: 18px; text-align: center; cursor: pointer; border: 1px solid #222; transition: all 0.4s ease; color: #bbb; font-size: 15px; font-weight: 600; }
-        .sound-card:hover { transform: translateY(-10px); background: #1c1c1c; border-color: #333; color: #fff; }
     </style>
 </head>
 <body>
 
     <h1>gelly soundboard.</h1>
-    <span class="status-header">v2.0 // audio engine online</span>
+    <span class="status-header">v2.0 // audio engine active</span>
 
-    <div class="sound-grid">
-        <!-- ADD YOUR SOUNDS HERE MANUALLY TO ENSURE THEY SHOW UP -->
-        <div class="sound-card" onclick="play('fart')">fart</div>
-        <div class="sound-card" onclick="play('bruh')">bruh</div>
-        <div class="sound-card" onclick="play('vine-boom')">vine boom</div>
-        <!-- Add more like the ones above -->
-    </div>
-
-    <!-- Hidden Audio Elements for Chaos Mode -->
-    <div id="audio-vault" style="display:none">
-        <audio id="sound-fart" src="sounds/fart.mp3"></audio>
-        <audio id="sound-bruh" src="sounds/bruh.mp3"></audio>
-        <audio id="sound-vine-boom" src="sounds/vine-boom.mp3"></audio>
+    <div class="soundboard-container" id="soundboard">
+        <!-- Buttons will be injected here by loader.js -->
     </div>
 
     <div class="controls">
@@ -43,21 +94,25 @@
         <button class="gelly-btn" onclick="playAll()">chaos mode</button>
     </div>
 
-    <script>
-        function play(id) {
-            const s = document.getElementById('sound-' + id);
-            s.currentTime = 0;
-            s.play();
-        }
+    <!-- Ensure your loader.js is in the same folder -->
+    <script src="loader.js"></script>
 
+    <script>
+        // Fix for Chaos Mode to actually play every sound on the page
         function playAll() {
-            const sounds = document.querySelectorAll('audio');
-            sounds.forEach(s => { s.currentTime = 0; s.play(); });
+            const audios = document.querySelectorAll('audio');
+            audios.forEach(a => {
+                a.currentTime = 0;
+                a.play();
+            });
         }
 
         function stopAll() {
-            const sounds = document.querySelectorAll('audio');
-            sounds.forEach(s => { s.pause(); s.currentTime = 0; });
+            const audios = document.querySelectorAll('audio');
+            audios.forEach(a => {
+                a.pause();
+                a.currentTime = 0;
+            });
         }
     </script>
 </body>
