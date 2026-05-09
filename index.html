@@ -18,14 +18,9 @@
     <button class="transfer-btn" id="launchPortal">Transfer</button>
 
     <script>
-        // Kill Switch: Redirects to Google if the page is opened directly or reloaded
-        if (window.name === 'gelly_portal' || window.opener) {
-            window.location.replace('https://google.com');
-        }
-
         document.getElementById('launchPortal').onclick = function() {
-            // Launch the site into a new tab named 'gelly_portal'
-            var win = window.open('about:blank', 'gelly_portal');
+            // 1. Open the portal
+            var win = window.open('about:blank', '_blank');
             var doc = win.document;
 
             var html = `
@@ -112,14 +107,14 @@
                                 </select>
                             </div>
                             <div class="grid" id="gameGrid">
-                                <!-- Your existing game cards go here -->
+                                <!-- INSERT YOUR CARDS HERE MANUALLY SO I DON'T OVERWRITE THEM -->
                             </div>
                         </div>
 
                         <div id="sounds" class="page">
                             <div style="margin-top:20vh; text-align:center;">
                                 <h2 style="font-size:32px; letter-spacing:-1px;">Sound Engine</h2>
-                                <button class="gelly-btn active" style="margin:20px auto; padding: 15px 40px; text-align:center;" onclick="openFrame('./soundboard/index.html', this)">Launch Soundboard</button>
+                                <button class="gelly-btn active" style="margin:20px auto; padding: 15px 40px; text-align:center;" onclick="openFrame('https://github.io', this)">Launch Soundboard</button>
                             </div>
                         </div>
 
@@ -149,15 +144,18 @@
                         function filterGames() { let input = document.getElementById('search').value.toLowerCase(); let cards = document.querySelectorAll('.game-card'); let visibleCount = 0; cards.forEach(card => { let title = card.innerText.toLowerCase(); if(title.includes(input)) { card.style.display = "block"; visibleCount++; } else { card.style.display = "none"; } }); const display = document.getElementById('count-display'); if(display) display.innerText = visibleCount + " Games Found"; }
                         function sortGames() { const grid = document.getElementById('gameGrid'); const cards = Array.from(grid.getElementsByClassName('game-card')); const mode = document.getElementById('sort-filter').value; if (mode === 'oldest') { initialOrder.forEach(card => grid.appendChild(card)); return; } cards.sort((a, b) => { const nameA = a.querySelector('p').innerText.toLowerCase(); const nameB = b.querySelector('p').innerText.toLowerCase(); if (mode === 'az') return nameA.localeCompare(nameB); if (mode === 'za') return nameB.localeCompare(nameA); }); cards.forEach(card => grid.appendChild(card)); }
                         setTimeout(() => { const grid = document.getElementById('gameGrid'); initialOrder = Array.from(grid.getElementsByClassName('game-card')); sortGames(); updateCount(); }, 100);
-                    <\/script>
+                    </script>
                 </body>
                 </html>
             `;
             doc.write(html);
             doc.close();
 
-            // Redirect this original tab to Google Classroom immediately
-            window.location.replace('https://google.com');
+            // 2. Kill this GitHub tab and redirect to Classroom as a fallback
+            window.close();
+            setTimeout(function() {
+                window.location.replace('https://google.com');
+            }, 100);
         };
     </script>
 </body>
