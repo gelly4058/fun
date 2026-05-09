@@ -1,2 +1,111 @@
-<!--an unminifed version is at og.html-->
-<!DOCTYPE html><html> <head> <link rel="stylesheet" href="css/styles.css"/> <link rel="icon" href="img/mlg-favicon.png"/> <link rel="shortcut icon" href="img/mlg-favicon.png" type="image/x-icon"/> <link rel="apple-touch-icon" href="img/mlg-favicon.png" type="image/x-icon"/> <title>Online Soundboard</title> <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <meta name="title" content="Online Soundboard"/> <meta name="description" content="A collection of sounds to play out of context. Perfect for school! Just play it when your teacher is talking and I bet they will love it!"/> <meta name="robots" content="index, follow"/> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <link rel="manifest" href="./manifest.json"/> <link rel="stylesheet" href="css/spinner.css"/> <script>if ("serviceWorker" in navigator){navigator.serviceWorker .register("/sw.js") .then(function (registration){console.log("Service worker registered:", registration);}) .catch(function (error){console.log("Service worker registration failed:", error);});}</script> </head> <body> <h1>Online Soundboard</h1> <h2> Just click on the colorful buttons to play the sound.<br/> <a href="https://forms.gle/hoiTBEZ4p14iupXH6">Click here to submit a sound to be added!</a><br/> </h2> <div class="control"> Audio Controls <button class="woah" onclick="javascript:playAll()">Provoke Chaos</button> <button class="woah" onclick="javascript:stopAll()">Stop Everything</button> </div><div class="soundboard-container"> <div class="flex-container"> <div class="spinner"></div></div></div><p id="footer">3kh0 © 2023</p><script type="application/javascript" src="loader.js"></script> </body></html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gelly Soundboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        body { 
+            background-color: #0b0b0b; 
+            color: #eee; 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            padding: 40px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
+
+        h1 { 
+            font-size: 42px; 
+            font-weight: 800; 
+            letter-spacing: -2px; 
+            margin-bottom: 10px; 
+            color: #fff;
+        }
+
+        h2 { 
+            font-size: 14px; 
+            color: #666; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            margin-bottom: 40px; 
+            font-weight: 500;
+        }
+
+        /* Controls in a straight line */
+        .control { 
+            display: flex; 
+            gap: 15px; 
+            margin-bottom: 50px; 
+            padding: 20px;
+            background: #121212;
+            border: 1px solid #222;
+            border-radius: 15px;
+        }
+
+        .woah { 
+            background: #1d1d1d; 
+            color: #888; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        .woah:hover { background: #eee; color: #111; }
+
+        /* The Grid for sounds */
+        .soundboard-container { 
+            width: 100%; 
+            max-width: 1000px; 
+        }
+
+        .flex-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+            gap: 15px; 
+        }
+
+        /* Styling the auto-generated buttons from loader.js */
+        button.sound-button {
+            background: #151515;
+            color: #bbb;
+            border: 1px solid #222;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-family: inherit;
+        }
+
+        button.sound-button:hover {
+            background: #1c1c1c;
+            color: #fff;
+            border-color: #333;
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>gelly soundboard.</h1>
+    <h2>Audio Engine Active</h2>
+
+    <div class="control">
+        <button class="woah" onclick="playAll()">Chaos Mode</button>
+        <button class="woah" onclick="stopAll()">Mute All</button>
+    </div>
+
+    <div class="soundboard-container">
+        <div class="flex-container" id="sound-grid">
+            <!-- loader.js will automatically put buttons here -->
+        </div>
+    </div>
+
+    <script type="application/javascript" src="loader.js"></script>
+</body>
+</html>
