@@ -2,110 +2,114 @@
 <html>
 <head>
     <title>Gelly Soundboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <style>
+        /* Exact match for Gelly Dashboard Theme */
         body { 
             background-color: #0b0b0b; 
             color: #eee; 
-            font-family: 'Segoe UI', sans-serif; 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
             margin: 0; 
-            padding: 40px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
+            padding: 60px; 
+            overflow-y: auto; 
+            height: 100vh;
+            box-sizing: border-box;
         }
 
         h1 { 
-            font-size: 42px; 
+            font-size: 64px; 
             font-weight: 800; 
             letter-spacing: -2px; 
-            margin-bottom: 10px; 
+            margin: 0 0 10px 0;
             color: #fff;
         }
 
-        h2 { 
-            font-size: 14px; 
-            color: #666; 
+        .status-header {
+            font-size: 11px; 
+            color: #333; 
+            font-weight: 600; 
             text-transform: uppercase; 
-            letter-spacing: 2px; 
-            margin-bottom: 40px; 
-            font-weight: 500;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+            display: block;
         }
 
-        /* Controls in a straight line */
-        .control { 
+        /* Nav Group Style Controls */
+        .controls { 
             display: flex; 
             gap: 15px; 
-            margin-bottom: 50px; 
-            padding: 20px;
-            background: #121212;
-            border: 1px solid #222;
-            border-radius: 15px;
+            margin-bottom: 40px;
         }
 
-        .woah { 
-            background: #1d1d1d; 
+        .gelly-btn { 
+            background: transparent; 
             color: #888; 
-            border: none; 
-            padding: 10px 20px; 
-            border-radius: 8px; 
+            border: 1px solid #222; 
+            padding: 12px 24px; 
             cursor: pointer; 
-            font-weight: 600; 
-            transition: 0.3s;
-            font-family: inherit;
-        }
-
-        .woah:hover { background: #eee; color: #111; }
-
-        /* The Grid for sounds */
-        .soundboard-container { 
-            width: 100%; 
-            max-width: 1000px; 
-        }
-
-        .flex-container { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
-            gap: 15px; 
-        }
-
-        /* Styling the auto-generated buttons from loader.js */
-        button.sound-button {
-            background: #151515;
-            color: #bbb;
-            border: 1px solid #222;
-            padding: 15px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            font-size: 15px; 
+            border-radius: 10px; 
+            transition: all 0.3s ease; 
             font-weight: 500;
             font-family: inherit;
         }
 
-        button.sound-button:hover {
-            background: #1c1c1c;
-            color: #fff;
+        .gelly-btn:hover { 
+            background: #1d1d1d; 
+            color: #fff; 
             border-color: #333;
-            transform: translateY(-5px);
+        }
+
+        /* Sound Button Grid - Matches your Game Grid */
+        .soundboard-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 25px;
+            width: 100%;
+        }
+
+        /* This targets the buttons created by loader.js */
+        button {
+            background: #151515;
+            padding: 25px 15px;
+            border-radius: 18px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #222;
+            transition: all 0.4s ease;
+            color: #bbb;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+        }
+
+        button:hover { 
+            transform: translateY(-10px); 
+            background: #1c1c1c; 
+            border-color: #333;
+            color: #fff;
         }
     </style>
 </head>
 <body>
 
     <h1>gelly soundboard.</h1>
-    <h2>Audio Engine Active</h2>
+    <span class="status-header">v2.0 // Audio Engine Online</span>
 
-    <div class="control">
-        <button class="woah" onclick="playAll()">Chaos Mode</button>
-        <button class="woah" onclick="stopAll()">Mute All</button>
+    <div class="controls">
+        <button class="gelly-btn" onclick="stopAll()">Stop All</button>
+        <button class="gelly-btn" onclick="playAll()">Chaos Mode</button>
     </div>
 
+    <!-- The loader.js targets the container to inject buttons -->
     <div class="soundboard-container">
-        <div class="flex-container" id="sound-grid">
-            <!-- loader.js will automatically put buttons here -->
-        </div>
+        <!-- Buttons will appear here -->
     </div>
 
-    <script type="application/javascript" src="loader.js"></script>
+    <script src="loader.js"></script>
 </body>
 </html>
