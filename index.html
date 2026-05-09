@@ -10,7 +10,7 @@
             --bg: #050505;
             --sidebar: #0a0a0a;
             --card: #111111;
-            --accent: #ffffff;
+            --accent: #00ff88; /* swapped purple for mint green */
             --secondary: #1a1a1a;
             --text: #eeeeee;
             --subtext: #777777;
@@ -21,6 +21,7 @@
         * {
             box-sizing: border-box;
             cursor: default;
+            text-transform: lowercase;
         }
 
         body, html {
@@ -30,24 +31,21 @@
             color: var(--text);
             font-family: 'Inter', sans-serif;
             overflow: hidden;
-            text-transform: lowercase;
         }
 
-        /* --- Animations --- */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 
-        .animate { animation: fadeIn var(--transition); }
-
-        /* --- Landing Screen --- */
+        /* --- Landing --- */
         #landing {
             height: 100vh;
             width: 100vw;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
             background: var(--bg);
+            position: fixed;
+            z-index: 9999;
         }
 
         .transfer-btn {
@@ -57,7 +55,6 @@
             color: var(--text);
             border-radius: 100px;
             font-size: 14px;
-            letter-spacing: 1px;
             transition: var(--transition);
             cursor: pointer;
         }
@@ -68,14 +65,14 @@
             transform: scale(1.05);
         }
 
-        /* --- Main Layout --- */
+        /* --- Layout --- */
         #main-ui {
             display: none;
             height: 100vh;
+            width: 100vw;
             display: flex;
         }
 
-        /* --- Sidebar --- */
         #sidebar {
             width: 240px;
             background: var(--sidebar);
@@ -92,18 +89,17 @@
             margin-bottom: 50px;
             padding-left: 10px;
             letter-spacing: -1px;
+            color: var(--accent);
         }
 
         .nav-item {
             padding: 12px 15px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             border-radius: 12px;
             color: var(--subtext);
             transition: var(--transition);
             font-weight: 600;
             cursor: pointer;
-            display: flex;
-            align-items: center;
         }
 
         .nav-item:hover, .nav-item.active {
@@ -111,23 +107,18 @@
             color: var(--accent);
         }
 
-        /* --- Content Area --- */
         .viewport {
             flex: 1;
             padding: 40px;
             overflow-y: auto;
+            position: relative;
         }
 
         .section { display: none; animation: fadeIn 0.5s ease; }
         .section.active { display: block; }
 
-        /* --- Games Grid --- */
-        .controls {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 40px;
-        }
-
+        /* --- Games --- */
+        .controls { display: flex; gap: 15px; margin-bottom: 40px; }
         input, select {
             background: var(--secondary);
             border: none;
@@ -135,9 +126,7 @@
             padding: 12px 20px;
             border-radius: 12px;
             outline: none;
-            font-family: inherit;
         }
-
         input { flex: 1; }
 
         .grid {
@@ -155,22 +144,11 @@
             text-align: center;
         }
 
-        .game-card:hover {
-            transform: scale(1.05);
-            background: var(--secondary);
-        }
+        .game-card:hover { transform: scale(1.05); background: var(--secondary); }
+        .game-card img { width: 100%; aspect-ratio: 1/1; border-radius: 15px; margin-bottom: 10px; object-fit: cover; }
+        .game-card span { font-size: 13px; color: var(--subtext); font-weight: 600; }
 
-        .game-card img {
-            width: 100%;
-            aspect-ratio: 1/1;
-            border-radius: 15px;
-            margin-bottom: 10px;
-            object-fit: cover;
-        }
-
-        .game-card span { font-size: 13px; font-weight: 600; color: var(--subtext); }
-
-        /* --- Player Overlay --- */
+        /* --- Player --- */
         #player {
             display: none;
             position: fixed;
@@ -187,11 +165,7 @@
             background: var(--sidebar);
         }
 
-        .top-right {
-            margin-left: auto;
-            display: flex;
-            gap: 15px;
-        }
+        .top-right { margin-left: auto; display: flex; gap: 15px; }
 
         .btn {
             background: var(--secondary);
@@ -201,12 +175,21 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 13px;
         }
 
         .btn-panic { color: var(--panic); }
 
         iframe { width: 100%; height: calc(100% - 60px); border: none; }
+
+        /* --- Update Marker --- */
+        #version-tag {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            font-size: 12px;
+            color: #222;
+            pointer-events: none;
+        }
 
         .hidden { display: none !important; }
     </style>
@@ -220,24 +203,23 @@
     <div id="main-ui" class="hidden">
         <div id="sidebar">
             <div class="brand">gelly</div>
-            <div class="nav-item active" onclick="showTab('home', this)">home</div>
-            <div class="nav-item" onclick="showTab('games', this)">games</div>
-            <div class="nav-item" onclick="showTab('sounds', this)">soundboard</div>
+            <div class="nav-item active" onclick="tab('home', this)">home</div>
+            <div class="nav-item" onclick="tab('games', this)">games</div>
+            <div class="nav-item" onclick="tab('sounds', this)">soundboard</div>
         </div>
 
         <div class="viewport">
             <div id="home" class="section active">
-                <h1 style="font-size: 48px; font-weight: 900; margin: 0;">gelly</h1>
-                <p style="color: var(--subtext); max-width: 450px; line-height: 1.6; margin-top: 20px;">
-                    welcome to gelly. a smooth, dark, and animated hub for games and sounds. 
-                    everything is built to be fast and minimalist.
+                <h1 style="font-size: 48px; font-weight: 900;">gelly</h1>
+                <p style="color: var(--subtext); max-width: 400px; line-height: 1.6;">
+                    a minimalist, high-speed arcade hub. strictly dark mode. strictly smooth.
                 </p>
             </div>
 
             <div id="games" class="section">
                 <div class="controls">
-                    <input type="text" id="search" placeholder="search games..." oninput="render()">
-                    <select id="sort" onchange="render()">
+                    <input type="text" id="search" placeholder="search..." oninput="draw()">
+                    <select id="sort" onchange="draw()">
                         <option value="az">a-z</option>
                         <option value="za">z-a</option>
                     </select>
@@ -262,75 +244,79 @@
         <iframe id="game-frame" src=""></iframe>
     </div>
 
+    <div id="version-tag">a</div>
+
     <script>
-        const games = [
-            { name: "2048", id: "2048", icon: "2048icon.png" },
-            { name: "bitlife", id: "bitlife", icon: "bitlifeicon.png" },
-            { name: "cookie clicker", id: "cookieclicker", icon: "cookieclickericon.png" },
-            { name: "crossy road", id: "crossyroad", icon: "crossyroadicon.png" },
-            { name: "dino game", id: "dinogame", icon: "dinogameicon.png" },
-            { name: "doodle jump", id: "doodlejump", icon: "doodlejumpicon.png" },
-            { name: "drive mad", id: "drivemad", icon: "drivemadicon.png" },
-            { name: "duck life", id: "ducklife", icon: "ducklifeicon.png" },
-            { name: "flappy bird", id: "flappy", icon: "flappybirdicon.png" },
-            { name: "geometry dash", id: "geodash", icon: "geodashicon.png" },
-            { name: "minecraft", id: "minecraft", icon: "minecrafticon.png" },
-            { name: "paper.io 2", id: "paperio2", icon: "paperio2icon.png" },
-            { name: "red ball", id: "redball", icon: "redballicon.png" },
-            { name: "run 3", id: "run3", icon: "run3icon.png" },
-            { name: "slope", id: "slope", icon: "slopeicon.png" },
-            { name: "stickman hook", id: "stickmanhook", icon: "stickmanhookicon.png" },
-            { name: "tetris", id: "tetris", icon: "tetrisicon.png" },
-            { name: "vex 4", id: "vex4", icon: "vex4icon.png" }
+        const gameData = [
+            { name: "2048", id: "2048", img: "2048icon.png" },
+            { name: "bitlife", id: "bitlife", img: "bitlifeicon.png" },
+            { name: "cookie clicker", id: "cookieclicker", img: "cookieclickericon.png" },
+            { name: "crossy road", id: "crossyroad", img: "crossyroadicon.png" },
+            { name: "dino game", id: "dinogame", img: "dinogameicon.png" },
+            { name: "doodle jump", id: "doodlejump", img: "doodlejumpicon.png" },
+            { name: "drive mad", id: "drivemad", img: "drivemadicon.png" },
+            { name: "duck life", id: "ducklife", img: "ducklifeicon.png" },
+            { name: "flappy bird", id: "flappy", img: "flappybirdicon.png" },
+            { name: "geometry dash", id: "geodash", img: "geodashicon.png" },
+            { name: "minecraft", id: "minecraft", img: "minecrafticon.png" },
+            { name: "paper.io 2", id: "paperio2", img: "paperio2icon.png" },
+            { name: "red ball", id: "redball", img: "redballicon.png" },
+            { name: "run 3", id: "run3", img: "run3icon.png" },
+            { name: "slope", id: "slope", img: "slopeicon.png" },
+            { name: "stickman hook", id: "stickmanhook", img: "stickmanhookicon.png" },
+            { name: "tetris", id: "tetris", img: "tetrisicon.png" },
+            { name: "vex 4", id: "vex4", img: "vex4icon.png" }
         ];
 
         function transfer() {
-            let win = window.open();
-            if (!win) {
-                alert("please allow popups.");
-                return;
-            }
+            const win = window.open();
+            if (!win) return alert("allow popups");
+
             win.document.body.style.margin = '0';
             win.document.body.style.height = '100vh';
             win.document.body.style.background = '#050505';
-            let ifr = win.document.createElement('iframe');
+
+            const ifr = win.document.createElement('iframe');
             ifr.style = "border:none; width:100%; height:100%;";
-            ifr.src = window.location.href;
+            // We pass a hash so the new window knows to skip the landing page
+            ifr.src = window.location.href + "#cloaked";
+            
             win.document.body.appendChild(ifr);
             window.location.replace("https://classroom.google.com");
         }
 
-        // Auto-load UI if already cloaked
-        if (window.self !== window.top) {
+        // Check if we are cloaked (via iframe or hash)
+        if (window.self !== window.top || window.location.hash === "#cloaked") {
             document.getElementById('landing').classList.add('hidden');
             document.getElementById('main-ui').classList.remove('hidden');
+            document.getElementById('main-ui').style.display = 'flex';
         }
 
-        function showTab(tabId, el) {
+        function tab(id, el) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+            document.getElementById(id).classList.add('active');
             el.classList.add('active');
         }
 
-        function render() {
+        function draw() {
             const grid = document.getElementById('game-grid');
-            const search = document.getElementById('search').value.toLowerCase();
+            const term = document.getElementById('search').value.toLowerCase();
             const sort = document.getElementById('sort').value;
 
-            let filtered = games.filter(g => g.name.includes(search));
-            filtered.sort((a, b) => sort === 'az' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
+            let list = gameData.filter(g => g.name.includes(term));
+            list.sort((a, b) => sort === 'az' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
 
             grid.innerHTML = '';
-            filtered.forEach(g => {
-                const card = document.createElement('div');
-                card.className = 'game-card animate';
-                card.onclick = () => {
+            list.forEach(g => {
+                const div = document.createElement('div');
+                div.className = 'game-card';
+                div.onclick = () => {
                     document.getElementById('player').style.display = 'block';
                     document.getElementById('game-frame').src = `games/${g.id}/index.html`;
                 };
-                card.innerHTML = `<img src="icons/${g.icon}"><span>${g.name}</span>`;
-                grid.appendChild(card);
+                div.innerHTML = `<img src="icons/${g.img}"><span>${g.name}</span>`;
+                grid.appendChild(div);
             });
         }
 
@@ -340,14 +326,13 @@
         }
 
         function panic() { window.location.href = "https://classroom.google.com"; }
-
         function toggleFS() {
             let f = document.getElementById('game-frame');
             if (f.requestFullscreen) f.requestFullscreen();
             else if (f.webkitRequestFullscreen) f.webkitRequestFullscreen();
         }
 
-        render();
+        draw();
     </script>
 </body>
 </html>
