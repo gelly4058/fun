@@ -19,7 +19,6 @@
 
     <script>
         document.getElementById('launchPortal').onclick = function() {
-            // 1. Open the portal
             var win = window.open('about:blank', '_blank');
             var doc = win.document;
 
@@ -63,15 +62,7 @@
                         .game-card p { margin: 0; font-size: 15px; font-weight: 600; color: #bbb; }
 
                         #player-container { display: none; width: 100%; height: 100%; background: #000; flex-direction: column; position: relative; }
-                        
-                        #loading-overlay {
-                            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-                            background: #000; display: flex; flex-direction: column;
-                            justify-content: center; align-items: center; z-index: 5;
-                            text-align: center; color: #444; font-size: 14px;
-                            letter-spacing: 1px; font-weight: 600; text-transform: uppercase;
-                        }
-
+                        #loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 5; text-align: center; color: #444; font-size: 14px; letter-spacing: 1px; font-weight: 600; text-transform: uppercase; }
                         #player-nav { background: #0f0f0f; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; z-index: 10; }
                         iframe { width: 100%; flex-grow: 1; border: none; z-index: 6; }
                     </style>
@@ -107,14 +98,22 @@
                                 </select>
                             </div>
                             <div class="grid" id="gameGrid">
-                                <!-- INSERT YOUR CARDS HERE MANUALLY SO I DON'T OVERWRITE THEM -->
-                            </div>
-                        </div>
-
-                        <div id="sounds" class="page">
-                            <div style="margin-top:20vh; text-align:center;">
-                                <h2 style="font-size:32px; letter-spacing:-1px;">Sound Engine</h2>
-                                <button class="gelly-btn active" style="margin:20px auto; padding: 15px 40px; text-align:center;" onclick="openFrame('https://github.io', this)">Launch Soundboard</button>
+                                <div class="game-card" onclick="openFrame('./games/flappy/index.html', this)"><img src="./icons/flappybirdicon.png" alt="Flappy Bird"><p>Flappy Bird</p></div>
+                                <div class="game-card" onclick="openFrame('./games/drivemad/index.html', this)"><img src="./icons/drivemadicon.png" alt="Drive Mad"><p>Drive Mad</p></div>
+                                <div class="game-card" onclick="openFrame('./games/bitlife/index.html', this)"><img src="./icons/bitlifeicon.png" alt="BitLife"><p>BitLife</p></div>
+                                <div class="game-card" onclick="openFrame('./games/geodash/index.html', this)"><img src="./icons/geodashicon.png" alt="Geometry Dash"><p>Geometry Dash</p></div>
+                                <div class="game-card" onclick="openFrame('./games/tetris/index.html', this)"><img src="./icons/tetrisicon.png" alt="Tetris"><p>Tetris</p></div>
+                                <div class="game-card" onclick="openFrame('./games/cookieclicker/index.html', this)"><img src="./icons/cookieclickericon.png" alt="Cookies"><p>Cookie Clicker</p></div>
+                                <div class="game-card" onclick="openFrame('./games/slope/index.html', this)"><img src="./icons/slopeicon.png" alt="Slope"><p>Slope</p></div>
+                                <div class="game-card" onclick="openFrame('./games/stickmanhook/index.html', this)"><img src="./icons/stickmanhookicon.png" alt="Stickman Hook"><p>Stickman Hook</p></div>
+                                <div class="game-card" onclick="openFrame('./games/minecraft/index.html', this)"><img src="./icons/minecrafticon.png" alt="MC"><p>Minecraft</p></div>
+                                <div class="game-card" onclick="openFrame('./games/crossyroad/index.html', this)"><img src="./icons/crossyroadicon.png" alt="Crossy Road"><p>Crossy Road</p></div>
+                                <div class="game-card" onclick="openFrame('./games/redball/index.html', this)"><img src="./icons/redballicon.png" alt="Red Ball 4"><p>Red Ball 4</p></div>
+                                <div class="game-card" onclick="openFrame('./games/ducklife/index.html', this)"><img src="./icons/ducklifeicon.png" alt="Duck Life 4"><p>Duck Life 4</p></div>
+                                <div class="game-card" onclick="openFrame('./games/paperio2/index.html', this)"><img src="./icons/paperio2icon.png" alt="Paper.io 2"><p>Paper.io 2</p></div>
+                                <div class="game-card" onclick="openFrame('./games/vex4/index.html', this)"><img src="./icons/vex4icon.png" alt="Vex 4"><p>Vex 4</p></div>
+                                <div class="game-card" onclick="openFrame('./games/run3/index.html', this)"><img src="./icons/run3icon.png" alt="Run 3"><p>Run 3</p></div>
+                                <div class="game-card" onclick="openFrame('./games/dinogame/index.html', this)"><img src="./icons/dinogameicon.png" alt="Dino Game"><p>Dino Game</p></div>
                             </div>
                         </div>
 
@@ -136,7 +135,7 @@
                         let initialOrder = [];
                         function updateCount() { const count = document.getElementsByClassName('game-card').length; const display = document.getElementById('count-display'); if(display) display.innerText = count + " Games Available"; }
                         function showPage(pageId) { if (pageId !== 'sounds') { document.getElementById('game-frame').src = ''; } document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById('player-container').style.display = 'none'; document.getElementById('sidebar').classList.remove('hidden'); document.querySelectorAll('.gelly-btn').forEach(b => { if (b.id !== 'back-btn') b.classList.remove('active'); }); let btn = document.getElementById('btn-' + pageId); if(btn) btn.classList.add('active'); document.getElementById(pageId).classList.add('active'); if(pageId === 'games') updateCount(); }
-                        function openFrame(url, el) { var gameName = "System Active"; if (el && el.querySelector('p')) { gameName = el.querySelector('p').innerText; } else if (el && el.innerText.includes('Launch')) { gameName = "Soundboard"; } document.getElementById('game-display-name').innerText = gameName; document.getElementById('loading-overlay').style.display = 'flex'; document.getElementById('sidebar').classList.add('hidden'); setTimeout(() => { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById('player-container').style.display = 'flex'; document.getElementById('game-frame').src = url; }, 500); }
+                        function openFrame(url, el) { var gameName = "System Active"; if (el && el.querySelector('p')) { gameName = el.querySelector('p').innerText; } document.getElementById('game-display-name').innerText = gameName; document.getElementById('loading-overlay').style.display = 'flex'; document.getElementById('sidebar').classList.add('hidden'); setTimeout(() => { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById('player-container').style.display = 'flex'; document.getElementById('game-frame').src = url; }, 500); }
                         function hideLoading() { document.getElementById('loading-overlay').style.display = 'none'; }
                         function closeFrame() { document.getElementById('game-frame').src = ''; document.getElementById('player-container').style.display = 'none'; document.getElementById('sidebar').classList.remove('hidden'); showPage('games'); }
                         function panicMode() { window.location.href = 'https://google.com'; }
@@ -151,11 +150,9 @@
             doc.write(html);
             doc.close();
 
-            // 2. Kill this GitHub tab and redirect to Classroom as a fallback
+            // Kills the GitHub tab and sends to Google Classroom
             window.close();
-            setTimeout(function() {
-                window.location.replace('https://google.com');
-            }, 100);
+            setTimeout(function() { window.location.replace('https://google.com'); }, 100);
         };
     </script>
 </body>
