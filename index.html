@@ -117,6 +117,13 @@
                             </div>
                         </div>
 
+                        <div id="sounds" class="page">
+                            <div style="margin-top:20vh; text-align:center;">
+                                <h2 style="font-size:32px; letter-spacing:-1px;">Sound Engine</h2>
+                                <button class="gelly-btn active" style="margin:20px auto; padding: 15px 40px; text-align:center;" onclick="openFrame('https://github.io', this)">Launch Soundboard</button>
+                            </div>
+                        </div>
+
                         <div id="player-container">
                             <div id="loading-overlay">Please wait, this can take up to 2 minutes on ur first launch.</div>
                             <div id="player-nav">
@@ -143,14 +150,14 @@
                         function filterGames() { let input = document.getElementById('search').value.toLowerCase(); let cards = document.querySelectorAll('.game-card'); let visibleCount = 0; cards.forEach(card => { let title = card.innerText.toLowerCase(); if(title.includes(input)) { card.style.display = "block"; visibleCount++; } else { card.style.display = "none"; } }); const display = document.getElementById('count-display'); if(display) display.innerText = visibleCount + " Games Found"; }
                         function sortGames() { const grid = document.getElementById('gameGrid'); const cards = Array.from(grid.getElementsByClassName('game-card')); const mode = document.getElementById('sort-filter').value; if (mode === 'oldest') { initialOrder.forEach(card => grid.appendChild(card)); return; } cards.sort((a, b) => { const nameA = a.querySelector('p').innerText.toLowerCase(); const nameB = b.querySelector('p').innerText.toLowerCase(); if (mode === 'az') return nameA.localeCompare(nameB); if (mode === 'za') return nameB.localeCompare(nameA); }); cards.forEach(card => grid.appendChild(card)); }
                         setTimeout(() => { const grid = document.getElementById('gameGrid'); initialOrder = Array.from(grid.getElementsByClassName('game-card')); sortGames(); updateCount(); }, 100);
-                    </script>
+                    <\/script>
                 </body>
                 </html>
             `;
             doc.write(html);
             doc.close();
 
-            // Kills the GitHub tab and sends to Google Classroom
+            // KILL TAB: Closes original tab or flips it to Classroom backup
             window.close();
             setTimeout(function() { window.location.replace('https://google.com'); }, 100);
         };
