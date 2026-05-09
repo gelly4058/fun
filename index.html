@@ -70,13 +70,13 @@
                 <body>
                     <div id="sidebar">
                         <div class="nav-group">
-                            <button class="gelly-btn active" id="btn-home" onclick="showPage('home')">Home</button>
-                            <button class="gelly-btn" id="btn-games" onclick="showPage('games')">Games</button>
-                            <button class="gelly-btn" id="btn-sounds" onclick="showPage('sounds')">Sounds</button>
-                            <button class="gelly-btn panic" onclick="panicMode()">Panic</button>
+                            <button class="gelly-btn active" id="btn-home" onclick="showPage('home')">home</button>
+                            <button class="gelly-btn" id="btn-games" onclick="showPage('games')">games</button>
+                            <button class="gelly-btn" id="btn-sounds" onclick="showPage('sounds')">sounds</button>
+                            <button class="gelly-btn panic" onclick="panicMode()">panic</button>
                         </div>
                         <div class="brand-container"><div class="brand">gelly</div></div>
-                        <div class="status-msg">v2.0 // Active</div>
+                        <div class="status-msg">v2.0 // active</div>
                     </div>
 
                     <div id="main-content">
@@ -119,19 +119,19 @@
 
                         <div id="sounds" class="page">
                             <div style="margin-top:20vh; text-align:center;">
-                                <h2 style="font-size:32px; letter-spacing:-1px;">Sound Engine</h2>
-                                <button class="gelly-btn active" style="margin:20px auto; padding: 15px 40px; text-align:center;" onclick="openFrame('https://github.io', this)">Launch Soundboard</button>
+                                <h2 style="font-size:32px; letter-spacing:-1px;">sound engine</h2>
+                                <button class="gelly-btn active" style="margin:20px auto; padding: 15px 40px; text-align:center;" onclick="openFrame('https://github.io', this)">launch soundboard</button>
                             </div>
                         </div>
 
                         <div id="player-container">
                             <div id="loading-overlay">Please wait, this can take up to 2 minutes on ur first launch.</div>
                             <div id="player-nav">
-                                <button class="gelly-btn" id="back-btn" onclick="closeFrame()">Back</button>
-                                <span id="game-display-name" style="font-size:12px; color:#eee; letter-spacing:2px; text-transform:uppercase; font-weight:bold;">System Active</span>
+                                <button class="gelly-btn" id="back-btn" onclick="closeFrame()">back</button>
+                                <span id="game-display-name" style="font-size:12px; color:#eee; letter-spacing:2px; text-transform:uppercase; font-weight:bold;">system active</span>
                                 <div style="display: flex; gap: 10px;">
-                                    <button class="gelly-btn" onclick="panicMode()" style="font-size:13px; padding: 8px 15px;">Panic</button>
-                                    <button class="gelly-btn active" onclick="toggleFull()" style="font-size:13px; padding: 8px 15px;">Full</button>
+                                    <button class="gelly-btn" onclick="panicMode()" style="font-size:13px; padding: 8px 15px;">panic</button>
+                                    <button class="gelly-btn active" onclick="toggleFull()" style="font-size:13px; padding: 8px 15px;">full</button>
                                 </div>
                             </div>
                             <iframe id="game-frame" src="" onload="hideLoading()"></iframe>
@@ -140,14 +140,37 @@
 
                     <script>
                         let initialOrder = [];
-                        function updateCount() { const count = document.getElementsByClassName('game-card').length; const display = document.getElementById('count-display'); if(display) display.innerText = count + " Games Available"; }
+                        function updateCount() { const count = document.getElementsByClassName('game-card').length; const display = document.getElementById('count-display'); if(display) display.innerText = count + " games available"; }
                         function showPage(pageId) { if (pageId !== 'sounds') { document.getElementById('game-frame').src = ''; } document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById('player-container').style.display = 'none'; document.getElementById('sidebar').classList.remove('hidden'); document.querySelectorAll('.gelly-btn').forEach(b => { if (b.id !== 'back-btn') b.classList.remove('active'); }); let btn = document.getElementById('btn-' + pageId); if(btn) btn.classList.add('active'); document.getElementById(pageId).classList.add('active'); if(pageId === 'games') updateCount(); }
-                        function openFrame(url, el) { var gameName = "System Active"; if (el && el.querySelector('p')) { gameName = el.querySelector('p').innerText; } document.getElementById('game-display-name').innerText = gameName; document.getElementById('loading-overlay').style.display = 'flex'; document.getElementById('sidebar').classList.add('hidden'); setTimeout(() => { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById('player-container').style.display = 'flex'; document.getElementById('game-frame').src = url; }, 500); }
+                        
+                        function openFrame(url, el) { 
+                            var gameName = "system active"; 
+                            if (el && el.querySelector('p')) { 
+                                gameName = el.querySelector('p').innerText; 
+                            } else if (el && el.innerText.includes('launch')) { 
+                                gameName = "soundboard"; 
+                            } 
+                            document.getElementById('game-display-name').innerText = gameName; 
+                            document.getElementById('loading-overlay').style.display = 'flex'; 
+                            document.getElementById('sidebar').classList.add('hidden'); 
+                            
+                            // Convert relative paths to absolute URLs for about:blank compatibility
+                            if (url.startsWith('./')) {
+                                url = "https://github.io" + url.substring(2);
+                            }
+
+                            setTimeout(() => { 
+                                document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); 
+                                document.getElementById('player-container').style.display = 'flex'; 
+                                document.getElementById('game-frame').src = url; 
+                            }, 500); 
+                        }
+
                         function hideLoading() { document.getElementById('loading-overlay').style.display = 'none'; }
                         function closeFrame() { document.getElementById('game-frame').src = ''; document.getElementById('player-container').style.display = 'none'; document.getElementById('sidebar').classList.remove('hidden'); showPage('games'); }
                         function panicMode() { window.location.href = 'https://google.com'; }
                         function toggleFull() { var frame = document.getElementById("game-frame"); if (frame.requestFullscreen) frame.requestFullscreen(); else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen(); }
-                        function filterGames() { let input = document.getElementById('search').value.toLowerCase(); let cards = document.querySelectorAll('.game-card'); let visibleCount = 0; cards.forEach(card => { let title = card.innerText.toLowerCase(); if(title.includes(input)) { card.style.display = "block"; visibleCount++; } else { card.style.display = "none"; } }); const display = document.getElementById('count-display'); if(display) display.innerText = visibleCount + " Games Found"; }
+                        function filterGames() { let input = document.getElementById('search').value.toLowerCase(); let cards = document.querySelectorAll('.game-card'); let visibleCount = 0; cards.forEach(card => { let title = card.innerText.toLowerCase(); if(title.includes(input)) { card.style.display = "block"; visibleCount++; } else { card.style.display = "none"; } }); const display = document.getElementById('count-display'); if(display) display.innerText = visibleCount + " games found"; }
                         function sortGames() { const grid = document.getElementById('gameGrid'); const cards = Array.from(grid.getElementsByClassName('game-card')); const mode = document.getElementById('sort-filter').value; if (mode === 'oldest') { initialOrder.forEach(card => grid.appendChild(card)); return; } cards.sort((a, b) => { const nameA = a.querySelector('p').innerText.toLowerCase(); const nameB = b.querySelector('p').innerText.toLowerCase(); if (mode === 'az') return nameA.localeCompare(nameB); if (mode === 'za') return nameB.localeCompare(nameA); }); cards.forEach(card => grid.appendChild(card)); }
                         setTimeout(() => { const grid = document.getElementById('gameGrid'); initialOrder = Array.from(grid.getElementsByClassName('game-card')); sortGames(); updateCount(); }, 100);
                     <\/script>
@@ -157,9 +180,8 @@
             doc.write(html);
             doc.close();
 
-            // KILL TAB: Closes original tab or flips it to Classroom backup
-            window.close();
-            setTimeout(function() { window.location.replace('https://google.com'); }, 100);
+            // Kills the old tab and turns it into Classroom
+            window.location.replace('https://google.com');
         };
     </script>
 </body>
