@@ -90,7 +90,6 @@
             z-index: 10;
         }
 
-        /* the rescaling logic */
         .sidebar-hidden #sidebar {
             margin-left: -260px;
             opacity: 0;
@@ -105,6 +104,8 @@
             letter-spacing: -1px;
             color: var(--accent);
         }
+
+        .nav-items { flex: 1; }
 
         .nav-item, .btn {
             padding: 12px 18px;
@@ -127,6 +128,15 @@
             color: var(--accent);
         }
 
+        /* version tag styling */
+        .sidebar-footer {
+            padding: 10px;
+            font-size: 11px;
+            color: #222; /* very subtle dark text */
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
         .viewport {
             flex: 1;
             height: 100vh;
@@ -138,7 +148,25 @@
         .section { display: none; animation: fadeIn 0.5s ease; height: 100%; }
         .section.active { display: block; }
         
-        #home, #games { padding: 40px; }
+        /* --- home page adjustments --- */
+        #home { 
+            padding: 60px 80px; /* moved right and down via padding */
+        }
+
+        #home h1 {
+            font-size: 56px; 
+            font-weight: 900; 
+            margin-bottom: 20px; /* message pushed down further from title */
+            letter-spacing: -2px;
+        }
+
+        #home p {
+            color: var(--subtext); 
+            font-size: 18px;
+            margin-left: 4px; /* subtle nudge right for the subtext */
+        }
+
+        #games { padding: 40px; }
 
         #sounds { width: 100%; height: 100%; padding: 0; }
         #sounds iframe { width: 100%; height: 100%; border: none; }
@@ -204,16 +232,6 @@
 
         #game-frame { width: 100%; height: calc(100% - 70px); border: none; }
 
-        #version-tag {
-            position: fixed;
-            bottom: 15px;
-            right: 15px;
-            font-size: 12px;
-            color: #1e1e1e;
-            pointer-events: none;
-            z-index: 10001;
-        }
-
         .hidden { display: none !important; }
     </style>
 </head>
@@ -226,15 +244,18 @@
     <div id="main-ui" class="hidden">
         <div id="sidebar">
             <div class="brand">gelly</div>
-            <div class="nav-item active" onclick="tab('home', this)">home</div>
-            <div class="nav-item" onclick="tab('games', this)">games</div>
-            <div class="nav-item" onclick="tab('sounds', this)">soundboard</div>
+            <div class="nav-items">
+                <div class="nav-item active" onclick="tab('home', this)">home</div>
+                <div class="nav-item" onclick="tab('games', this)">games</div>
+                <div class="nav-item" onclick="tab('sounds', this)">soundboard</div>
+            </div>
+            <div class="sidebar-footer">v2.0</div>
         </div>
 
         <div class="viewport" id="viewport-main">
             <div id="home" class="section active">
-                <h1 style="font-size: 48px; font-weight: 900; margin-bottom: 5px;">gelly</h1>
-                <p style="color: var(--subtext); font-size: 18px;">welcomewelcome to uhhh idk</p>
+                <h1>gelly</h1>
+                <p>welcomewelcome to uhhh idk</p>
             </div>
 
             <div id="games" class="section">
@@ -264,8 +285,6 @@
             </div>
         </div>
     </div>
-
-    <div id="version-tag">k</div>
 
     <script>
         const gameData = [
@@ -331,7 +350,6 @@
                 const div = document.createElement('div');
                 div.className = 'game-card';
                 div.onclick = () => {
-                    // Rescale animation trigger
                     document.getElementById('main-ui').classList.add('sidebar-hidden');
                     const player = document.getElementById('player');
                     player.classList.add('active');
