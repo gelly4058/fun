@@ -227,6 +227,7 @@
         </div>
     </div>
 
+
     <script>
         const gameData = [
             { name: "2048", id: "2048", img: "2048icon.png" },
@@ -237,7 +238,7 @@
             { name: "doodle jump", id: "doodlejump", img: "doodlejumpicon.png" },
             { name: "drive mad", id: "drivemad", img: "drivemadicon.png" },
             { name: "duck life", id: "ducklife", img: "ducklifeicon.png" },
-            { name: "eggy car", id: "eggycar", img: "eggycaricon.png" },
+            // Eggy Car removed here
             { name: "flappy bird", id: "flappy", img: "flappybirdicon.png" },
             { name: "geometry dash", id: "geodash", img: "geodashicon.png" },
             { name: "getting over it", id: "gettingoverit", img: "gettingoveriticon.png" },
@@ -251,6 +252,8 @@
             { name: "tiny fishing", id: "tinyfishing", img: "tinyfishingicon.png" },
             { name: "vex 4", id: "vex4", img: "vex4icon.png" }
         ];
+
+
 
         let favorites = JSON.parse(localStorage.getItem('gelly-favs')) || [];
         let currentSort = localStorage.getItem('gelly-sort') || 'az';
