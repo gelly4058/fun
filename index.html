@@ -39,34 +39,43 @@
             transition: background-color 0.3s ease;
         }
 
-        /* LANDING PAGE FIX */
+        /* FIXED LANDING BUTTON TO TOP LEFT & SIDEBAR STYLE */
         #landing {
             height: 100vh;
             width: 100vw;
-            display: flex; /* Ensure it starts visible */
-            align-items: center;
-            justify-content: center;
+            display: flex;
             background: #0b0b0b;
             position: fixed;
             top: 0; left: 0;
             z-index: 9999;
+            padding: 30px 20px; /* Match sidebar padding */
         }
 
         .transfer-btn {
-            padding: 12px 24px;
-            background: #111;
-            border: 1px solid #222;
+            position: absolute;
+            top: 42px; /* Match brand/nav vertical alignment */
+            left: 20px;
+            padding: 12px 18px;
+            background: #151515;
+            border: none;
             color: #777;
             border-radius: 12px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
+            width: auto;
+            min-width: 120px;
+            text-align: left;
         }
-        .transfer-btn:hover { background: #fff; color: #000; }
+        
+        .transfer-btn:hover {
+            background: #1e1e1e;
+            color: #fff;
+        }
 
         #main-ui {
-            display: none; /* Starts hidden until cloaked */
+            display: none;
             height: 100vh;
             width: 100vw;
             overflow: hidden;
@@ -95,8 +104,10 @@
             color: var(--subtext); background: none; border: none;
             transition: var(--transition); font-weight: 600; text-align: left;
             font-size: 14px; display: block; width: 100%; cursor: pointer;
+            font-family: inherit;
         }
         .nav-item:hover, .nav-item.active { background: var(--secondary); color: var(--accent); }
+        
         .sidebar-footer { padding: 10px; font-size: 11px; color: #222; font-weight: 600; letter-spacing: 1px; }
 
         .viewport { flex: 1; height: 100vh; overflow-y: auto; position: relative; transition: var(--transition); }
@@ -124,7 +135,8 @@
         }
         .settings-footer.visible { opacity: 1; pointer-events: all; }
         .warning-text { color: var(--panic); font-size: 13px; font-weight: 600; }
-        .save-btn { background: var(--secondary); color: #ffffff; border: none; border-radius: 12px; padding: 12px 25px; font-weight: 600; cursor: pointer; }
+        .save-btn { background: var(--secondary); color: #ffffff; border: none; border-radius: 12px; padding: 12px 25px; font-weight: 600; cursor: pointer; transition: var(--transition); }
+        .save-btn:hover { background: var(--accent); color: var(--bg); }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 20px; }
         .game-card { background: var(--card); border-radius: 18px; padding: 10px; transition: var(--transition); text-align: center; cursor: pointer; }
@@ -139,7 +151,7 @@
         #player.active { display: block; opacity: 1; }
         .top-bar { height: 70px; display: flex; align-items: center; padding: 0 20px; background: var(--sidebar); border-bottom: 1px solid var(--secondary); }
         .top-right { margin-left: auto; display: flex; gap: 10px; }
-        .btn-action { padding: 10px 20px; border-radius: 10px; background: none; border: 1px solid var(--secondary); color: var(--subtext); font-weight: 600; cursor: pointer; }
+        .btn-action { padding: 10px 20px; border-radius: 10px; background: none; border: 1px solid var(--secondary); color: var(--subtext); font-weight: 600; cursor: pointer; transition: var(--transition); font-family: inherit; }
         .btn-panic { color: var(--panic); }
         .btn-panic:hover { background: var(--panic); color: #fff; }
 
@@ -162,7 +174,7 @@
                 <button class="nav-item" onclick="tab('sounds', this)">soundboard</button>
                 <button class="nav-item" onclick="tab('settings', this)">settings</button>
             </div>
-            <div class="sidebar-footer">v3.4</div>
+            <div class="sidebar-footer">v3.5</div>
         </div>
 
         <div class="viewport" id="viewport-main">
@@ -315,7 +327,6 @@
             window.close();
         }
 
-        /* UPDATED CLOAK CHECK LOGIC */
         if (window.self !== window.top || window.location.hash === "#cloaked") {
             landing.style.display = 'none';
             mainUI.style.display = 'flex';
