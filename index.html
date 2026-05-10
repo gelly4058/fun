@@ -60,16 +60,9 @@
             font-family: inherit;
         }
         
-        .transfer-btn:hover {
-            background: var(--secondary);
-            color: var(--accent);
-        }
+        .transfer-btn:hover { background: var(--secondary); color: var(--accent); }
 
-        #main-ui {
-            display: none; height: 100vh; width: 100vw;
-            overflow: hidden; opacity: 0;
-            transition: opacity 0.5s ease;
-        }
+        #main-ui { display: none; height: 100vh; width: 100vw; overflow: hidden; opacity: 0; transition: opacity 0.5s ease; }
 
         #sidebar {
             width: 260px; min-width: 260px;
@@ -112,20 +105,14 @@
         }
         #search { flex: 1; }
 
-        .filter-fav-btn {
-            display: flex; align-items: center; justify-content: center;
-            min-width: 45px; transition: var(--transition);
-        }
+        .filter-fav-btn { display: flex; align-items: center; justify-content: center; min-width: 45px; transition: var(--transition); }
         .filter-fav-btn.active { background: var(--accent); color: var(--bg); }
         .filter-fav-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.5; }
         .filter-fav-btn.active svg { fill: currentColor; }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 20px; }
         
-        .game-card { 
-            background: var(--card); border-radius: 18px; padding: 10px; 
-            transition: var(--transition); text-align: center; position: relative;
-        }
+        .game-card { background: var(--card); border-radius: 18px; padding: 10px; transition: var(--transition); text-align: center; position: relative; }
         .game-card:hover { transform: scale(1.03); background: var(--secondary); }
         .game-card img { width: 100%; aspect-ratio: 1/1; border-radius: 12px; margin-bottom: 8px; object-fit: cover; }
         
@@ -137,33 +124,29 @@
         .fav-icon { width: 16px; height: 16px; fill: none; stroke: var(--subtext); stroke-width: 2.5; transition: var(--transition); }
         .fav-btn.active .fav-icon { fill: var(--accent); stroke: var(--accent); }
 
-        #player {
-            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg); z-index: 20; opacity: 0; transition: opacity 0.5s var(--transition);
-        }
+        /* PLAYER BAR STYLES */
+        #player { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 20; opacity: 0; transition: opacity 0.5s var(--transition); }
         #player.active { display: block; opacity: 1; }
         .top-bar { height: 70px; display: flex; align-items: center; padding: 0 20px; background: var(--sidebar); border-bottom: 1px solid var(--secondary); }
-        .btn-action { padding: 10px 20px; border-radius: 10px; background: none; border: 1px solid var(--secondary); color: var(--subtext); font-weight: 600; transition: var(--transition); font-family: inherit; }
+        
+        .top-right { margin-left: auto; display: flex; gap: 10px; }
 
+        .btn-action { 
+            padding: 10px 18px; border-radius: 12px; background: none; border: none;
+            color: var(--subtext); font-weight: 600; transition: var(--transition); 
+            font-family: inherit; font-size: 14px;
+        }
+        .btn-action:hover { background: var(--secondary); color: var(--accent); }
+        .btn-panic { color: var(--panic); }
+        .btn-panic:hover { background: var(--panic); color: white; }
+
+        /* SETTINGS CONTROLS */
         .settings-group { max-width: 500px; margin-bottom: 30px; display: flex; flex-direction: column; }
         .settings-label { color: var(--subtext); font-size: 12px; font-weight: 600; margin-bottom: 12px; padding-left: 5px; }
-        
-        #settings-controls {
-            position: absolute; bottom: 60px; left: 80px; right: 80px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-
-        #save-status {
-            color: var(--subtext); font-size: 14px; font-weight: 600;
-            opacity: 0; transition: opacity 0.3s ease;
-        }
+        #settings-controls { position: absolute; bottom: 60px; left: 80px; right: 80px; display: flex; justify-content: space-between; align-items: center; }
+        #save-status { color: var(--subtext); font-size: 14px; font-weight: 600; opacity: 0; transition: opacity 0.3s ease; }
         #save-status.visible { opacity: 1; }
-
-        .save-btn { 
-            background: var(--secondary); color: var(--text); border: none; 
-            border-radius: 12px; padding: 12px 25px; font-weight: 600; 
-            transition: var(--transition); font-family: inherit;
-        }
+        .save-btn { background: var(--secondary); color: var(--text); border: none; border-radius: 12px; padding: 12px 25px; font-weight: 600; transition: var(--transition); font-family: inherit; }
         .save-btn:hover { background: var(--accent); color: var(--bg); }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -184,7 +167,7 @@
                 <button class="nav-item" onclick="tab('sounds', this)">soundboard</button>
                 <button class="nav-item" onclick="tab('settings', this)">settings</button>
             </div>
-            <div class="sidebar-footer">v4.2</div>
+            <div class="sidebar-footer">v4.3</div>
         </div>
 
         <div class="viewport">
@@ -197,7 +180,7 @@
                 <span class="counter-label" id="game-count">loading...</span>
                 <div class="controls">
                     <input type="text" id="search" placeholder="search..." oninput="draw()">
-                    <button id="fav-toggle" class="filter-fav-btn" onclick="toggleFavFilter()" title="show favorites">
+                    <button id="fav-toggle" class="filter-fav-btn" onclick="toggleFavFilter()">
                         <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                     </button>
                     <select id="sort" onchange="updateSort(this.value)">
@@ -225,7 +208,6 @@
                     <span class="settings-label">panic url</span>
                     <input type="text" id="panic-input" placeholder="https://google.com" oninput="handleSettingChange()">
                 </div>
-                
                 <div id="settings-controls">
                     <div id="save-status">unsaved changes</div>
                     <button class="save-btn" onclick="saveSettings()">save settings</button>
@@ -235,6 +217,10 @@
             <div id="player">
                 <div class="top-bar">
                     <button class="btn-action" onclick="closeGame()">back</button>
+                    <div class="top-right">
+                        <button class="btn-action btn-panic" onclick="panic()">panic</button>
+                        <button class="btn-action" onclick="toggleFS()">fullscreen</button>
+                    </div>
                 </div>
                 <iframe id="game-frame" src="" style="width:100%; height:calc(100% - 70px); border:none;"></iframe>
             </div>
@@ -272,10 +258,11 @@
         let hasUnsavedChanges = false;
 
         function init() {
-            document.getElementById('panic-input').value = localStorage.getItem('gelly-panic') || 'https://google.com';
+            const panic = localStorage.getItem('gelly-panic') || 'https://google.com';
             const theme = localStorage.getItem('gelly-theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', theme);
+            document.getElementById('panic-input').value = panic;
             document.getElementById('theme-select').value = theme;
+            document.documentElement.setAttribute('data-theme', theme);
             updateSoundboard(theme);
             if(favFilterActive) document.getElementById('fav-toggle').classList.add('active');
             draw();
@@ -289,73 +276,47 @@
         }
 
         function saveSettings() {
-            localStorage.setItem('gelly-theme', document.getElementById('theme-select').value);
-            localStorage.setItem('gelly-panic', document.getElementById('panic-input').value);
-            updateSoundboard(document.getElementById('theme-select').value);
-            
+            const theme = document.getElementById('theme-select').value;
+            const panic = document.getElementById('panic-input').value;
+            localStorage.setItem('gelly-theme', theme);
+            localStorage.setItem('gelly-panic', panic);
+            updateSoundboard(theme);
             hasUnsavedChanges = false;
             const status = document.getElementById('save-status');
             status.innerText = "settings saved";
-            status.classList.add('visible');
-            setTimeout(() => {
-                if (!hasUnsavedChanges) status.classList.remove('visible');
-            }, 3000);
+            setTimeout(() => { if(!hasUnsavedChanges) status.classList.remove('visible'); }, 3000);
         }
 
         function tab(id, el) {
+            // Revert unsaved theme preview when leaving settings
+            if (hasUnsavedChanges) {
+                const savedTheme = localStorage.getItem('gelly-theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                updateSoundboard(savedTheme);
+            }
+
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             el.classList.add('active');
 
-            // Logic for warnings when entering settings
             if (id === 'settings') {
-                const status = document.getElementById('save-status');
-                // Re-sync input with saved data in case they left without saving
-                document.getElementById('panic-input').value = localStorage.getItem('gelly-panic') || 'https://google.com';
-                const theme = localStorage.getItem('gelly-theme') || 'dark';
-                document.getElementById('theme-select').value = theme;
-                document.documentElement.setAttribute('data-theme', theme);
-                
                 hasUnsavedChanges = false;
-                status.innerText = "unsaved changes";
-                status.classList.remove('visible');
+                init(); // Refresh fields
+                document.getElementById('save-status').classList.remove('visible');
             }
         }
 
-        function updateSort(val) {
-            currentSort = val;
-            localStorage.setItem('gelly-sort', val);
-            draw();
-        }
-
-        function toggleFavFilter() {
-            favFilterActive = !favFilterActive;
-            localStorage.setItem('gelly-fav-filter', favFilterActive);
-            document.getElementById('fav-toggle').classList.toggle('active');
-            draw();
-        }
-
-        function toggleFav(id, event) {
-            event.stopPropagation();
-            if (favorites.includes(id)) {
-                favorites = favorites.filter(f => f !== id);
-            } else {
-                favorites.push(id);
-            }
-            localStorage.setItem('gelly-favs', JSON.stringify(favorites));
-            draw();
-        }
+        function panic() { window.top.location.href = localStorage.getItem('gelly-panic') || 'https://google.com'; }
+        function toggleFS() { let f = document.getElementById('game-frame'); if (f.requestFullscreen) f.requestFullscreen(); }
 
         function draw() {
             const grid = document.getElementById('game-grid');
             const term = document.getElementById('search').value.toLowerCase();
-            document.getElementById('sort').value = currentSort;
             let list = gameData.filter(g => g.name.includes(term));
             if (favFilterActive) list = list.filter(g => favorites.includes(g.id));
             if (currentSort === 'az') list.sort((a, b) => a.name.localeCompare(b.name));
             else list.sort((a, b) => b.name.localeCompare(a.name));
-            document.getElementById('game-count').innerText = `${list.length} games available`;
             grid.innerHTML = '';
             list.forEach(g => {
                 const isFav = favorites.includes(g.id);
@@ -366,25 +327,29 @@
                     document.getElementById('player').classList.add('active');
                     document.getElementById('game-frame').src = `games/${g.id}/index.html`;
                 };
-                div.innerHTML = `
-                    <img src="icons/${g.img}">
-                    <div class="card-footer">
-                        <span>${g.name}</span>
-                        <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFav('${g.id}', event)">
-                            <svg class="fav-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                        </button>
-                    </div>
-                `;
+                div.innerHTML = `<img src="icons/${g.img}"><div class="card-footer"><span>${g.name}</span><button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFav('${g.id}', event)"><svg class="fav-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></button></div>`;
                 grid.appendChild(div);
             });
         }
 
-        function previewTheme(t) { document.documentElement.setAttribute('data-theme', t); }
-
-        function updateSoundboard(theme) {
-            const path = theme === 'light' ? 'soundboardlight' : 'soundboarddark';
-            document.getElementById('sound-frame').src = `${path}/index.html`;
+        function toggleFav(id, event) {
+            event.stopPropagation();
+            if (favorites.includes(id)) favorites = favorites.filter(f => f !== id);
+            else favorites.push(id);
+            localStorage.setItem('gelly-favs', JSON.stringify(favorites));
+            draw();
         }
+
+        function toggleFavFilter() {
+            favFilterActive = !favFilterActive;
+            localStorage.setItem('gelly-fav-filter', favFilterActive);
+            document.getElementById('fav-toggle').classList.toggle('active');
+            draw();
+        }
+
+        function updateSort(val) { currentSort = val; localStorage.setItem('gelly-sort', val); draw(); }
+        function previewTheme(t) { document.documentElement.setAttribute('data-theme', t); updateSoundboard(t); }
+        function updateSoundboard(t) { document.getElementById('sound-frame').src = (t === 'light' ? 'soundboardlight' : 'soundboarddark') + '/index.html'; }
 
         function transfer() {
             const win = window.open();
