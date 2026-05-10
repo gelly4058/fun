@@ -51,13 +51,12 @@
             z-index: 9999;
         }
 
-        /* Updated Transfer Button Styling */
         .transfer-btn {
             position: absolute;
             top: 20px;
             left: 20px;
             padding: 12px 18px; 
-            background: none; /* No background by default */
+            background: none;
             border: none; 
             color: var(--subtext);
             border-radius: 12px; 
@@ -65,10 +64,11 @@
             font-weight: 600; 
             transition: var(--transition);
             font-family: inherit;
+            display: none; /* Hidden until code is typed */
         }
         
         .transfer-btn:hover { 
-            background: var(--secondary); /* Sidebar style hover */
+            background: var(--secondary);
             color: var(--accent); 
         }
 
@@ -163,7 +163,7 @@
 <body oncontextmenu="return false;">
 
     <div id="landing">
-        <button class="transfer-btn" onclick="transfer()">transfer</button>
+        <button class="transfer-btn" id="secret-btn" onclick="transfer()">transfer</button>
     </div>
 
     <div id="main-ui">
@@ -175,7 +175,7 @@
                 <button class="nav-item" onclick="tab('sounds', this)">soundboard</button>
                 <button class="nav-item" onclick="tab('settings', this)">settings</button>
             </div>
-            <div class="sidebar-footer">v4.8</div>
+            <div class="sidebar-footer">v4.9</div>
         </div>
 
         <div class="viewport">
@@ -236,12 +236,21 @@
     </div>
 
     <script>
-        // Disable Right Click and Shortcuts
+        // Secret Code Logic
+        let keys = "";
         document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && (e.shiftKey && e.keyCode === 73)) e.preventDefault(); // Ctrl+Shift+I
-            if (e.ctrlKey && (e.shiftKey && e.keyCode === 74)) e.preventDefault(); // Ctrl+Shift+J
-            if (e.ctrlKey && e.keyCode === 85) e.preventDefault(); // Ctrl+U (View Source)
-            if (e.keyCode === 123) e.preventDefault(); // F12
+            // Existing shortcut disables
+            if (e.ctrlKey && (e.shiftKey && e.keyCode === 73)) e.preventDefault(); 
+            if (e.ctrlKey && (e.shiftKey && e.keyCode === 74)) e.preventDefault(); 
+            if (e.ctrlKey && e.keyCode === 85) e.preventDefault(); 
+            if (e.keyCode === 123) e.preventDefault(); 
+
+            // Secret Code Detection
+            keys += e.key;
+            if (keys.length > 4) keys = keys.substring(keys.length - 4);
+            if (keys === "gg55") {
+                document.getElementById('secret-btn').style.display = 'block';
+            }
         });
 
         const gameData = [
