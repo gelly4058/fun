@@ -70,30 +70,19 @@
         #save-status.visible { opacity: 1; }
         .save-btn-container { position: absolute; bottom: 40px; right: 60px; }
 
+        /* Player Styles */
         #player { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg); z-index: 200; opacity: 0; pointer-events: none; transform: scale(1.05); transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         #player.active { opacity: 1; pointer-events: all; transform: scale(1); }
+        .player-bar { height: 70px; background: var(--nav); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; border-bottom: 1px solid var(--secondary); position: relative; }
+        #player-title { position: absolute; left: 50%; transform: translateX(-50%); font-weight: 900; font-size: 18px; color: var(--accent); letter-spacing: -0.5px; }
+        
         .loader-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; color: var(--subtext); font-weight: 600; pointer-events: none; width: 100%; text-align: center; }
         #game-frame { position: relative; width: 100%; height: calc(100vh - 70px); border: none; z-index: 2; background: transparent; }
 
         #landing { height: 100vh; width: 100vw; display: flex; background: #0b0b0b; position: fixed; z-index: 9999; pointer-events: none; }
-        
-        #secret-btn { 
-            position: absolute; top: 20px; left: 20px; 
-            padding: 10px 18px; background: none; border: none; border-radius: 10px; 
-            color: var(--subtext); font-weight: 600; 
-            transition: var(--transition); font-family: inherit;
-            /* STRICT REMOVAL UNTIL CODE ENTERED */
-            display: none; 
-            pointer-events: none;
-            cursor: default;
-        }
-        #secret-btn.active { 
-            display: block !important; 
-            pointer-events: all !important; 
-            cursor: pointer !important; 
-        }
+        #secret-btn { position: absolute; top: 20px; left: 20px; padding: 10px 18px; background: none; border: none; border-radius: 10px; color: var(--subtext); font-weight: 600; transition: var(--transition); font-family: inherit; visibility: hidden; pointer-events: none; }
+        #secret-btn.active { visibility: visible !important; pointer-events: all !important; cursor: pointer !important; }
         #secret-btn.active:hover { color: var(--accent); background: var(--secondary); }
-        
         #code-dots { position: fixed; bottom: 10px; left: 10px; display: flex; gap: 4px; }
         .dot { width: 4px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 50%; }
 
@@ -121,7 +110,7 @@
 
     <div class="viewport">
         <div id="home" class="section active">
-            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">gelly v7.2</h1>
+            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">gelly v2.0.1</h1>
             <p class="home-desc">welcome to uhhhh i forgot sorry</p>
         </div>
 
@@ -145,8 +134,9 @@
     </div>
 
     <div id="player">
-        <div class="player-bar" style="height: 70px; background: var(--nav); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; border-bottom: 1px solid var(--secondary);">
+        <div class="player-bar">
             <button class="icon-btn" onclick="closeGame()"><svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/></svg></button>
+            <div id="player-title"></div>
             <div class="nav-right">
                 <button class="icon-btn" onclick="panic()"><svg viewBox="0 0 24 24"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg></button>
                 <button class="icon-btn" onclick="toggleFS()"><svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
@@ -190,8 +180,7 @@
             if (inputSequence.length > 4) inputSequence = inputSequence.slice(-4);
             updateDots(inputSequence.length);
             if (inputSequence === "gg55") {
-                const btn = document.getElementById('secret-btn');
-                btn.classList.add('active');
+                document.getElementById('secret-btn').classList.add('active');
             }
         });
 
@@ -211,22 +200,26 @@
             filtered.forEach(g => {
                 const div = document.createElement('div');
                 div.className = 'game-card';
-                div.onclick = () => openGame(g.id);
+                div.onclick = () => openGame(g.id, g.name);
                 div.innerHTML = `<img src="icons/${g.img}"><span>${g.name}</span>`;
                 grid.appendChild(div);
             });
         }
 
-        function openGame(id) {
+        function openGame(id, name) {
             document.getElementById('navbar').classList.add('hidden');
             document.getElementById('player').classList.add('active');
+            document.getElementById('player-title').innerText = name;
             document.getElementById('game-frame').src = `games/${id}/index.html`;
         }
 
         function closeGame() {
             document.getElementById('navbar').classList.remove('hidden');
             document.getElementById('player').classList.remove('active');
-            setTimeout(() => { document.getElementById('game-frame').src = ''; }, 400);
+            setTimeout(() => { 
+                document.getElementById('game-frame').src = ''; 
+                document.getElementById('player-title').innerText = '';
+            }, 400);
         }
 
         function tab(id, el) {
