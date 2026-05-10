@@ -1,284 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gelly</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0b0b0b;
-            --nav: #080808;
-            --card: #141414;
-            --accent: #ffffff;
-            --secondary: #1e1e1e;
-            --text: #eeeeee;
-            --subtext: #777777;
-            --panic: #ff4444;
-            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gelly</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0b0b;
+            --nav: #080808;
+            --card: #141414;
+            --accent: #ffffff;
+            --secondary: #1e1e1e;
+            --text: #eeeeee;
+            --subtext: #777777;
+            --panic: #ff4444;
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-        [data-theme="light"] {
-            --bg: #ffffff;
-            --nav: #f5f5f5;
-            --card: #eeeeee;
-            --accent: #000000;
-            --secondary: #e0e0e0;
-            --text: #111111;
-            --subtext: #666666;
-        }
+        [data-theme="light"] {
+            --bg: #ffffff;
+            --nav: #f5f5f5;
+            --card: #eeeeee;
+            --accent: #000000;
+            --secondary: #e0e0e0;
+            --text: #111111;
+            --subtext: #666666;
+        }
 
-        * { box-sizing: border-box; text-transform: lowercase; user-select: none; outline: none; }
-        body, html { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; }
-        
-        #navbar {
-            height: 70px; background: var(--nav); border-bottom: 1px solid var(--secondary);
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 30px; position: fixed; top: 0; width: 100%; z-index: 100;
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
-        }
-        #navbar.hidden { transform: translateY(-70px); opacity: 0; pointer-events: none; }
+        * { box-sizing: border-box; text-transform: lowercase; user-select: none; outline: none; }
+        body, html { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; }
+        
+        #navbar {
+            height: 70px; background: var(--nav); border-bottom: 1px solid var(--secondary);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 30px; position: fixed; top: 0; width: 100%; z-index: 100;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+        }
+        #navbar.hidden { transform: translateY(-70px); opacity: 0; pointer-events: none; }
 
-        .nav-left, .nav-right { display: flex; gap: 10px; align-items: center; }
-        .nav-btn { padding: 10px 18px; border-radius: 10px; color: var(--subtext); background: none; border: none; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: inherit; }
-        .nav-btn:hover, .nav-btn.active { color: var(--accent); background: var(--secondary); }
-        
-        .icon-btn { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; color: var(--subtext); cursor: pointer; transition: var(--transition); }
-        .icon-btn svg { width: 22px; height: 22px; fill: currentColor; }
-        .icon-btn:hover, .icon-btn.active { background: var(--secondary); color: var(--accent); }
+        .nav-left, .nav-right { display: flex; gap: 10px; align-items: center; }
+        .nav-btn { padding: 10px 18px; border-radius: 10px; color: var(--subtext); background: none; border: none; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: inherit; }
+        .nav-btn:hover, .nav-btn.active { color: var(--accent); background: var(--secondary); }
+        
+        .icon-btn { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; color: var(--subtext); cursor: pointer; transition: var(--transition); }
+        .icon-btn svg { width: 22px; height: 22px; fill: currentColor; }
+        .icon-btn:hover, .icon-btn.active { background: var(--secondary); color: var(--accent); }
 
-        .viewport { padding-top: 70px; height: 100vh; overflow-y: auto; }
-        .section { display: none; padding: 40px 60px; animation: fadeIn 0.4s ease forwards; min-height: calc(100vh - 70px); position: relative; }
-        .section.active { display: block; }
+        .viewport { padding-top: 70px; height: 100vh; overflow-y: auto; }
+        .section { display: none; padding: 40px 60px; animation: fadeIn 0.4s ease forwards; min-height: calc(100vh - 70px); position: relative; }
+        .section.active { display: block; }
 
-        #sounds.section { padding: 0; height: calc(100vh - 70px); overflow: hidden; }
-        #sound-frame { width: 100%; height: 100%; border: none; display: block; }
+        #sounds.section { padding: 0; height: calc(100vh - 70px); overflow: hidden; }
+        #sound-frame { width: 100%; height: 100%; border: none; display: block; }
 
-        .home-desc { color: var(--subtext); margin-top: 25px; font-weight: 600; font-size: 16px; line-height: 1.5; }
+        .home-desc { color: var(--subtext); margin-top: 25px; font-weight: 600; font-size: 16px; line-height: 1.5; }
 
-        .search-container { margin-bottom: 30px; width: 100%; max-width: 400px; }
-        #game-search { width: 100%; padding: 12px 20px; background: var(--card); border: 1px solid var(--secondary); border-radius: 12px; color: var(--text); font-family: inherit; transition: var(--transition); }
-        
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; }
-        .game-card { background: var(--card); border-radius: 15px; padding: 10px; text-align: center; transition: var(--transition); cursor: pointer; }
-        .game-card:hover { transform: translateY(-5px); background: var(--secondary); }
-        .game-card img { width: 100%; border-radius: 10px; aspect-ratio: 1; object-fit: cover; margin-bottom: 10px; }
-        .game-card span { font-size: 13px; font-weight: 600; color: var(--subtext); transition: var(--transition); display: block; }
-        .game-card:hover span { color: var(--accent); }
+        .search-container { margin-bottom: 30px; width: 100%; max-width: 400px; }
+        #game-search { width: 100%; padding: 12px 20px; background: var(--card); border: 1px solid var(--secondary); border-radius: 12px; color: var(--text); font-family: inherit; transition: var(--transition); }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; }
+        .game-card { background: var(--card); border-radius: 15px; padding: 10px; text-align: center; transition: var(--transition); cursor: pointer; }
+        .game-card:hover { transform: translateY(-5px); background: var(--secondary); }
+        .game-card img { width: 100%; border-radius: 10px; aspect-ratio: 1; object-fit: cover; margin-bottom: 10px; }
+        .game-card span { font-size: 13px; font-weight: 600; color: var(--subtext); transition: var(--transition); display: block; }
+        .game-card:hover span { color: var(--accent); }
 
-        #save-status { position: absolute; bottom: 45px; left: 60px; font-size: 13px; font-weight: 600; color: var(--subtext); opacity: 0; transition: opacity 0.3s ease; }
-        #save-status.visible { opacity: 1; }
-        .save-btn-container { position: absolute; bottom: 40px; right: 60px; }
+        #save-status { position: absolute; bottom: 45px; left: 60px; font-size: 13px; font-weight: 600; color: var(--subtext); opacity: 0; transition: opacity 0.3s ease; }
+        #save-status.visible { opacity: 1; }
+        .save-btn-container { position: absolute; bottom: 40px; right: 60px; }
 
-        #player { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg); z-index: 200; opacity: 0; pointer-events: none; transform: scale(1.05); transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        #player.active { opacity: 1; pointer-events: all; transform: scale(1); }
-        .player-bar { height: 70px; background: var(--nav); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; border-bottom: 1px solid var(--secondary); position: relative; }
-        #player-title { position: absolute; left: 50%; transform: translateX(-50%); font-weight: 600; font-size: 16px; color: var(--subtext); }
-        
-        .loader-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; color: var(--subtext); font-weight: 600; pointer-events: none; width: 100%; text-align: center; }
-        #game-frame { position: relative; width: 100%; height: calc(100vh - 70px); border: none; z-index: 2; background: transparent; }
+        #player { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg); z-index: 200; opacity: 0; pointer-events: none; transform: scale(1.05); transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        #player.active { opacity: 1; pointer-events: all; transform: scale(1); }
+        .player-bar { height: 70px; background: var(--nav); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; border-bottom: 1px solid var(--secondary); position: relative; }
+        #player-title { position: absolute; left: 50%; transform: translateX(-50%); font-weight: 600; font-size: 16px; color: var(--subtext); }
+        
+        .loader-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; color: var(--subtext); font-weight: 600; pointer-events: none; width: 100%; text-align: center; }
+        #game-frame { position: relative; width: 100%; height: calc(100vh - 70px); border: none; z-index: 2; background: transparent; }
 
-        #landing { height: 100vh; width: 100vw; display: flex; background: #0b0b0b; position: fixed; z-index: 9999; pointer-events: none; }
-        #secret-btn { position: absolute; top: 20px; left: 20px; padding: 10px 18px; background: none; border: none; border-radius: 10px; color: var(--subtext); font-weight: 600; transition: var(--transition); font-family: inherit; visibility: hidden; pointer-events: none; }
-        #secret-btn.active { visibility: visible !important; pointer-events: all !important; cursor: pointer !important; }
-        #secret-btn.active:hover { color: var(--accent); background: var(--secondary); }
-        #code-dots { position: fixed; bottom: 10px; left: 10px; display: flex; gap: 4px; }
-        .dot { width: 4px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 50%; }
+        #landing { height: 100vh; width: 100vw; display: flex; background: #0b0b0b; position: fixed; z-index: 9999; pointer-events: none; }
+        #secret-btn { position: absolute; top: 20px; left: 20px; padding: 10px 18px; background: none; border: none; border-radius: 10px; color: var(--subtext); font-weight: 600; transition: var(--transition); font-family: inherit; visibility: hidden; pointer-events: none; }
+        #secret-btn.active { visibility: visible !important; pointer-events: all !important; cursor: pointer !important; }
+        #secret-btn.active:hover { color: var(--accent); background: var(--secondary); }
+        #code-dots { position: fixed; bottom: 10px; left: 10px; display: flex; gap: 4px; }
+        .dot { width: 4px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 50%; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body oncontextmenu="return false;">
 
-    <div id="landing">
-        <button id="secret-btn" onclick="transfer()">transfer</button>
-        <div id="code-dots"></div>
-    </div>
+    <div id="landing">
+        <button id="secret-btn" onclick="transfer()">transfer</button>
+        <div id="code-dots"></div>
+    </div>
 
-    <div id="navbar">
-        <div class="nav-left">
-            <button class="nav-btn active" onclick="tab('home', this)">home</button>
-            <button class="nav-btn" onclick="tab('games', this)">games</button>
-            <button class="nav-btn" onclick="tab('sounds', this)">soundboard</button>
-        </div>
-        <div class="nav-right">
-            <button class="icon-btn" onclick="panic()"><svg viewBox="0 0 24 24"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg></button>
-            <button class="icon-btn" onclick="tab('settings', this)"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.13,5.91,7.62,6.29L5.23,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.72,8.87 c-0.11,0.2,0.06,0.47,0.12,0.61l2.03,1.58C4.82,11.36,4.8,11.68,4.8,12c0,0.33,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></button>
-        </div>
-    </div>
+    <div id="navbar">
+        <div class="nav-left">
+            <button class="nav-btn active" onclick="tab('home', this)">home</button>
+            <button class="nav-btn" onclick="tab('games', this)">games</button>
+            <button class="nav-btn" onclick="tab('sounds', this)">soundboard</button>
+        </div>
+        <div class="nav-right">
+            <button class="icon-btn" onclick="panic()"><svg viewBox="0 0 24 24"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg></button>
+            <button class="icon-btn" onclick="tab('settings', this)"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.13,5.91,7.62,6.29L5.23,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.72,8.87 c-0.11,0.2,0.06,0.47,0.12,0.61l2.03,1.58C4.82,11.36,4.8,11.68,4.8,12c0,0.33,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></button>
+        </div>
+    </div>
 
-    <div class="viewport">
-        <div id="home" class="section active">
-            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">gelly v2.0.4</h1>
-            <p class="home-desc">welcome to uhhhh i forgot sorry</p>
-        </div>
+    <div class="viewport">
+        <div id="home" class="section active">
+            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">gelly v2.0.5</h1>
+            <p class="home-desc">welcome to uhhhh i forgot sorry</p>
+        </div>
 
-        <div id="games" class="section">
-            <div class="search-container"><input type="text" id="game-search" placeholder="search games..." oninput="draw(this.value)"></div>
-            <div class="grid" id="game-grid"></div>
-        </div>
+        <div id="games" class="section">
+            <div class="search-container"><input type="text" id="game-search" placeholder="search games..." oninput="draw(this.value)"></div>
+            <div class="grid" id="game-grid"></div>
+        </div>
 
-        <div id="sounds" class="section">
-            <iframe id="sound-frame"></iframe>
-        </div>
+        <div id="sounds" class="section">
+            <iframe id="sound-frame"></iframe>
+        </div>
 
-        <div id="settings" class="section">
-            <p style="color: var(--subtext); font-weight: 600;">theme</p>
-            <select id="theme-select" onchange="markUnsaved()" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 200px; cursor: pointer;"><option value="dark">dark</option><option value="light">light</option></select>
-            <p style="color: var(--subtext); font-weight: 600; margin-top: 30px;">panic url</p>
-            <input type="text" id="panic-input" oninput="markUnsaved()" placeholder="https://google.com" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 350px;">
-            <span id="save-status">press save changes to save these</span>
-            <div class="save-btn-container"><button class="nav-btn active" onclick="saveSettings()">save changes</button></div>
-        </div>
-    </div>
+        <div id="settings" class="section">
+            <p style="color: var(--subtext); font-weight: 600;">theme</p>
+            <select id="theme-select" onchange="markUnsaved()" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 200px; cursor: pointer;"><option value="dark">dark</option><option value="light">light</option></select>
+            <p style="color: var(--subtext); font-weight: 600; margin-top: 30px;">panic url</p>
+            <input type="text" id="panic-input" oninput="markUnsaved()" placeholder="https://google.com" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 350px;">
+            <span id="save-status">press save changes to save these</span>
+            <div class="save-btn-container"><button class="nav-btn active" onclick="saveSettings()">save changes</button></div>
+        </div>
+    </div>
 
-    <div id="player">
-        <div class="player-bar">
-            <button class="icon-btn" onclick="closeGame()"><svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/></svg></button>
-            <div id="player-title"></div>
-            <div class="nav-right">
-                <button class="icon-btn" onclick="panic()"><svg viewBox="0 0 24 24"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg></button>
-                <button class="icon-btn" onclick="toggleFS()"><svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
-            </div>
-        </div>
-        <div class="loader-text"><p>this can take up to 2 minutes on your first launch.</p></div>
-        <iframe id="game-frame"></iframe>
-    </div>
+    <div id="player">
+        <div class="player-bar">
+            <button class="icon-btn" onclick="closeGame()"><svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/></svg></button>
+            <div id="player-title"></div>
+            <div class="nav-right">
+                <button class="icon-btn" onclick="panic()"><svg viewBox="0 0 24 24"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg></button>
+                <button class="icon-btn" onclick="toggleFS()"><svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
+            </div>
+        </div>
+        <div class="loader-text"><p>this can take up to 2 minutes on your first launch.</p></div>
+        <iframe id="game-frame"></iframe>
+    </div>
 
-    <script>
-        let inputSequence = "";
-        let hasUnsavedChanges = false;
-        const gameData = [
-            { name: "2048", id: "2048", img: "2048icon.png" },
-            { name: "bitlife", id: "bitlife", img: "bitlifeicon.png" },
-            { name: "cookie clicker", id: "cookieclicker", img: "cookieclickericon.png" },
-            { name: "crossy road", id: "crossyroad", img: "crossyroadicon.png" },
-            { name: "dino game", id: "dinogame", img: "dinogameicon.png" },
-            { name: "drive mad", id: "drivemad", img: "drivemadicon.png" },
-            { name: "duck life", id: "ducklife", img: "ducklifeicon.png" },
-            { name: "flappy bird", id: "flappy", img: "flappybirdicon.png" },
-            { name: "geometry dash", id: "geodash", img: "geodashicon.png" },
-            { name: "getting over it", id: "gettingoverit", img: "gettingoveriticon.png" },
-            { name: "minecraft", id: "minecraft", img: "minecrafticon.png" },
-            { name: "paper.io 2", id: "paperio2", img: "paperio2icon.png" },
-            { name: "red ball", id: "redball", img: "redballicon.png" },
-            { name: "run 3", id: "run3", img: "run3icon.png" },
-            { name: "slope", id: "slope", img: "slopeicon.png" },
-            { name: "stickman hook", id: "stickmanhook", img: "stickmanhookicon.png" },
-            { name: "tetris", id: "tetris", img: "tetrisicon.png" },
-            { name: "tiny fishing", id: "tinyfishing", img: "tinyfishingicon.png" },
-            { name: "vex 4", id: "vex4", img: "vex4icon.png" },
-            { name: "moto x3m", id: "motox3m", img: "motox3micon.png" },
-            { name: "drift hunters", id: "drifthunters", img: "drifthuntersicon.png" },
-            { name: "suika game", id: "suikagame", img: "suikagameicon.png" },
-            { name: "traffic run", id: "trafficrun", img: "trafficrunicon.png" },
-            { name: "worlds hardest game", id: "worldshardestgame", img: "worldshardestgameicon.png" }
-        ];
+    <script>
+        let inputSequence = "";
+        let hasUnsavedChanges = false;
+        const gameData = [
+            { name: "2048", id: "2048", img: "2048icon.png" },
+            { name: "bitlife", id: "bitlife", img: "bitlifeicon.png" },
+            { name: "cookie clicker", id: "cookieclicker", img: "cookieclickericon.png" },
+            { name: "crossy road", id: "crossyroad", img: "crossyroadicon.png" },
+            { name: "dino game", id: "dinogame", img: "dinogameicon.png" },
+            { name: "drive mad", id: "drivemad", img: "drivemadicon.png" },
+            { name: "duck life", id: "ducklife", img: "ducklifeicon.png" },
+            { name: "flappy bird", id: "flappy", img: "flappybirdicon.png" },
+            { name: "geometry dash", id: "geodash", img: "geodashicon.png" },
+            { name: "getting over it", id: "gettingoverit", img: "gettingoveriticon.png" },
+            { name: "minecraft", id: "minecraft", img: "minecrafticon.png" },
+            { name: "paper.io 2", id: "paperio2", img: "paperio2icon.png" },
+            { name: "red ball", id: "redball", img: "redballicon.png" },
+            { name: "run 3", id: "run3", img: "run3icon.png" },
+            { name: "slope", id: "slope", img: "slopeicon.png" },
+            { name: "stickman hook", id: "stickmanhook", img: "stickmanhookicon.png" },
+            { name: "tetris", id: "tetris", img: "tetrisicon.png" },
+            { name: "tiny fishing", id: "tinyfishing", img: "tinyfishingicon.png" },
+            { name: "vex 4", id: "vex4", img: "vex4icon.png" },
+            { name: "moto x3m", id: "motox3m", img: "motox3micon.png" },
+            { name: "drift hunters", id: "drifthunters", img: "drifthuntersicon.png" },
+            { name: "suika game", id: "suikagame", img: "suikagameicon.png" },
+            { name: "traffic run", id: "trafficrun", img: "trafficrunicon.png" },
+            { name: "worlds hardest game", id: "worldshardestgame", img: "whgicon.png" }
+        ];
 
-        document.addEventListener('keydown', (e) => {
-            inputSequence += e.key.toLowerCase();
-            if (inputSequence.length > 4) inputSequence = inputSequence.slice(-4);
-            updateDots(inputSequence.length);
-            if (inputSequence === "gg55") {
-                document.getElementById('secret-btn').classList.add('active');
-            }
-        });
+        document.addEventListener('keydown', (e) => {
+            inputSequence += e.key.toLowerCase();
+            if (inputSequence.length > 4) inputSequence = inputSequence.slice(-4);
+            updateDots(inputSequence.length);
+            if (inputSequence === "gg55") {
+                document.getElementById('secret-btn').classList.add('active');
+            }
+        });
 
-        function updateDots(count) {
-            const dots = document.getElementById('code-dots');
-            dots.innerHTML = '';
-            for(let i=0; i<count; i++) {
-                let d = document.createElement('div'); d.className = 'dot';
-                dots.appendChild(d);
-            }
-        }
+        function updateDots(count) {
+            const dots = document.getElementById('code-dots');
+            dots.innerHTML = '';
+            for(let i=0; i<count; i++) {
+                let d = document.createElement('div'); d.className = 'dot';
+                dots.appendChild(d);
+            }
+        }
 
-        function draw(query = "") {
-            const grid = document.getElementById('game-grid');
-            grid.innerHTML = '';
-            const filtered = gameData.filter(g => g.name.toLowerCase().includes(query.toLowerCase()));
-            filtered.forEach(g => {
-                const div = document.createElement('div');
-                div.className = 'game-card';
-                div.onclick = () => openGame(g.id, g.name);
-                div.innerHTML = `<img src="icons/${g.img}"><span>${g.name}</span>`;
-                grid.appendChild(div);
-            });
-        }
+        function draw(query = "") {
+            const grid = document.getElementById('game-grid');
+            grid.innerHTML = '';
+            const filtered = gameData.filter(g => g.name.toLowerCase().includes(query.toLowerCase()));
+            filtered.forEach(g => {
+                const div = document.createElement('div');
+                div.className = 'game-card';
+                div.onclick = () => openGame(g.id, g.name);
+                div.innerHTML = `<img src="icons/${g.img}"><span>${g.name}</span>`;
+                grid.appendChild(div);
+            });
+        }
 
-        function openGame(id, name) {
-            document.getElementById('navbar').classList.add('hidden');
-            document.getElementById('player').classList.add('active');
-            document.getElementById('player-title').innerText = name;
-            document.getElementById('game-frame').src = `games/${id}/index.html`;
-        }
+        function openGame(id, name) {
+            document.getElementById('navbar').classList.add('hidden');
+            document.getElementById('player').classList.add('active');
+            document.getElementById('player-title').innerText = name;
+            document.getElementById('game-frame').src = `games/${id}/index.html`;
+        }
 
-        function closeGame() {
-            document.getElementById('navbar').classList.remove('hidden');
-            document.getElementById('player').classList.remove('active');
-            setTimeout(() => { 
-                document.getElementById('game-frame').src = ''; 
-                document.getElementById('player-title').innerText = '';
-            }, 400);
-        }
+        function closeGame() {
+            document.getElementById('navbar').classList.remove('hidden');
+            document.getElementById('player').classList.remove('active');
+            setTimeout(() => { 
+                document.getElementById('game-frame').src = ''; 
+                document.getElementById('player-title').innerText = '';
+            }, 400);
+        }
 
-        function tab(id, el) {
-            if (hasUnsavedChanges && id !== 'settings') revertSettings();
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-btn, .icon-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            if(el) el.classList.add('active');
-        }
+        function tab(id, el) {
+            if (hasUnsavedChanges && id !== 'settings') revertSettings();
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn, .icon-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(el) el.classList.add('active');
+        }
 
-        function markUnsaved() {
-            hasUnsavedChanges = true;
-            document.getElementById('save-status').innerText = "press save changes to save these";
-            document.getElementById('save-status').classList.add('visible');
-        }
+        function markUnsaved() {
+            hasUnsavedChanges = true;
+            document.getElementById('save-status').innerText = "press save changes to save these";
+            document.getElementById('save-status').classList.add('visible');
+        }
 
-        function saveSettings() {
-            localStorage.setItem('gelly-theme', document.getElementById('theme-select').value);
-            localStorage.setItem('gelly-panic', document.getElementById('panic-input').value);
-            hasUnsavedChanges = false;
-            document.getElementById('save-status').innerText = "saved changes";
-            applyTheme(localStorage.getItem('gelly-theme'));
-            setTimeout(() => { if (!hasUnsavedChanges) document.getElementById('save-status').classList.remove('visible'); }, 2000);
-        }
+        function saveSettings() {
+            localStorage.setItem('gelly-theme', document.getElementById('theme-select').value);
+            localStorage.setItem('gelly-panic', document.getElementById('panic-input').value);
+            hasUnsavedChanges = false;
+            document.getElementById('save-status').innerText = "saved changes";
+            applyTheme(localStorage.getItem('gelly-theme'));
+            setTimeout(() => { if (!hasUnsavedChanges) document.getElementById('save-status').classList.remove('visible'); }, 2000);
+        }
 
-        function revertSettings() {
-            document.getElementById('theme-select').value = localStorage.getItem('gelly-theme') || 'dark';
-            document.getElementById('panic-input').value = localStorage.getItem('gelly-panic') || 'https://google.com';
-            hasUnsavedChanges = false;
-            document.getElementById('save-status').classList.remove('visible');
-            applyTheme(localStorage.getItem('gelly-theme') || 'dark');
-        }
+        function revertSettings() {
+            document.getElementById('theme-select').value = localStorage.getItem('gelly-theme') || 'dark';
+            document.getElementById('panic-input').value = localStorage.getItem('gelly-panic') || 'https://google.com';
+            hasUnsavedChanges = false;
+            document.getElementById('save-status').classList.remove('visible');
+            applyTheme(localStorage.getItem('gelly-theme') || 'dark');
+        }
 
-        function applyTheme(t) {
-            document.documentElement.setAttribute('data-theme', t);
-            const folder = t === 'light' ? 'soundboardlight' : 'soundboarddark';
-            document.getElementById('sound-frame').src = `soundboards/${folder}/index.html`;
-        }
+        function applyTheme(t) {
+            document.documentElement.setAttribute('data-theme', t);
+            const folder = t === 'light' ? 'soundboardlight' : 'soundboarddark';
+            document.getElementById('sound-frame').src = `soundboards/${folder}/index.html`;
+        }
 
-        function panic() { window.top.location.href = localStorage.getItem('gelly-panic') || 'https://google.com'; }
-        function toggleFS() { let f = document.getElementById('game-frame'); if (f.requestFullscreen) f.requestFullscreen(); }
+        function panic() { window.top.location.href = localStorage.getItem('gelly-panic') || 'https://google.com'; }
+        function toggleFS() { let f = document.getElementById('game-frame'); if (f.requestFullscreen) f.requestFullscreen(); }
 
-        function transfer() {
-            const win = window.open();
-            if (!win) return;
-            win.document.body.style.margin = '0';
-            const ifr = win.document.createElement('iframe');
-            ifr.style = "border:none; width:100%; height:100vh;";
-            ifr.src = window.location.href + "#cloaked";
-            win.document.body.appendChild(ifr);
-            window.close();
-        }
+        function transfer() {
+            const win = window.open();
+            if (!win) return;
+            win.document.body.style.margin = '0';
+            const ifr = win.document.createElement('iframe');
+            ifr.style = "border:none; width:100%; height:100vh;";
+            ifr.src = window.location.href + "#cloaked";
+            win.document.body.appendChild(ifr);
+            window.close();
+        }
 
-        if (window.self !== window.top || window.location.hash === "#cloaked") {
-            document.getElementById('landing').style.display = 'none';
-        }
+        if (window.self !== window.top || window.location.hash === "#cloaked") {
+            document.getElementById('landing').style.display = 'none';
+        }
 
-        draw();
-        revertSettings();
-    </script>
+        draw();
+        revertSettings();
+    </script>
 </body>
 </html>
