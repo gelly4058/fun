@@ -1,21 +1,70 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>World's Hardest Game</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>worlds hardest game</title>
     <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
-  </head>
-  <body>
-    <object height="700" width="1350">
-      <param name="movie" value="worldshardestgame2.swf">
-      <embed src="worldshardestgame2.swf">
-    </embed>
-    </object>
-    <noscript>
-      <object height="700" width="1350">
-        <param name="movie" value="worldshardestgame2.swf">
-        <embed src="worldshardestgame2.swf">
-      </embed>
-      </object>
-    </noscript>
-  </body>
+    <style>
+        /* Removes all spacing and ensures the body fills the screen */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000; /* Black background for letterboxing */
+        }
+
+        /* Makes the game container fill the entire viewport */
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Ensures the Flash object takes up all available space */
+        object, embed, ruffle-player {
+            width: 100% !important;
+            height: 100% !important;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <object>
+            <param name="movie" value="worldshardestgame2.swf">
+            <param name="quality" value="high">
+            <param name="bgcolor" value="#000000">
+            <param name="allowScriptAccess" value="always">
+            <param name="allowFullScreen" value="true">
+            <param name="scale" value="showAll"> <embed src="worldshardestgame2.swf" 
+                   quality="high" 
+                   bgcolor="#000000" 
+                   width="100%" 
+                   height="100%" 
+                   name="game" 
+                   align="middle" 
+                   allowScriptAccess="always" 
+                   allowFullScreen="true" 
+                   type="application/x-shockwave-flash" 
+                   pluginspage="http://www.macromedia.com/go/getflashplayer">
+        </object>
+    </div>
+
+    <script>
+        // Ruffle configuration to ensure it handles scaling correctly
+        window.RufflePlayer = window.RufflePlayer || {};
+        window.RufflePlayer.config = {
+            "letterbox": "on",
+            "autostart": true,
+            "showSwfDownload": false
+        };
+    </script>
+
+</body>
 </html>
