@@ -28,15 +28,10 @@
             --subtext: #666666;
         }
 
-        * {
-            box-sizing: border-box;
-            text-transform: lowercase;
-            cursor: default;
-        }
+        * { box-sizing: border-box; text-transform: lowercase; cursor: default; }
 
         body, html {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             background-color: var(--bg);
             color: var(--text);
             font-family: 'Inter', sans-serif;
@@ -44,37 +39,34 @@
             transition: background-color 0.3s ease;
         }
 
-        button, .nav-item, .game-card, .game-card *, select, input {
-            cursor: pointer;
-        }
-        input[type="text"] { cursor: text; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
+        /* LANDING PAGE FIX */
         #landing {
             height: 100vh;
             width: 100vw;
-            display: flex;
+            display: flex; /* Ensure it starts visible */
+            align-items: center;
+            justify-content: center;
             background: #0b0b0b;
             position: fixed;
+            top: 0; left: 0;
             z-index: 9999;
         }
 
         .transfer-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 10px 20px;
-            background: none;
-            border: 1px solid transparent;
+            padding: 12px 24px;
+            background: #111;
+            border: 1px solid #222;
             color: #777;
             border-radius: 12px;
-            font-size: 13px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
             transition: var(--transition);
         }
+        .transfer-btn:hover { background: #fff; color: #000; }
 
         #main-ui {
-            display: flex;
+            display: none; /* Starts hidden until cloaked */
             height: 100vh;
             width: 100vw;
             overflow: hidden;
@@ -94,58 +86,20 @@
             z-index: 10;
         }
 
-        .sidebar-hidden #sidebar {
-            margin-left: -260px;
-            opacity: 0;
-        }
+        .sidebar-hidden #sidebar { margin-left: -260px; opacity: 0; }
 
-        .brand {
-            font-size: 24px;
-            font-weight: 900;
-            margin-bottom: 50px;
-            padding-left: 10px;
-            letter-spacing: -1px;
-            color: var(--accent);
-        }
-
+        .brand { font-size: 24px; font-weight: 900; margin-bottom: 50px; padding-left: 10px; letter-spacing: -1px; color: var(--accent); }
         .nav-items { flex: 1; }
-
         .nav-item {
-            padding: 12px 18px;
-            margin-bottom: 8px;
-            border-radius: 12px;
-            color: var(--subtext);
-            background: none;
-            border: none;
-            transition: var(--transition);
-            font-weight: 600;
-            text-align: left;
-            font-size: 14px;
-            display: block;
-            width: 100%;
+            padding: 12px 18px; margin-bottom: 8px; border-radius: 12px;
+            color: var(--subtext); background: none; border: none;
+            transition: var(--transition); font-weight: 600; text-align: left;
+            font-size: 14px; display: block; width: 100%; cursor: pointer;
         }
+        .nav-item:hover, .nav-item.active { background: var(--secondary); color: var(--accent); }
+        .sidebar-footer { padding: 10px; font-size: 11px; color: #222; font-weight: 600; letter-spacing: 1px; }
 
-        .nav-item:hover, .nav-item.active {
-            background: var(--secondary);
-            color: var(--accent);
-        }
-
-        .sidebar-footer {
-            padding: 10px;
-            font-size: 11px;
-            color: #222;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-
-        .viewport {
-            flex: 1;
-            height: 100vh;
-            overflow-y: auto;
-            position: relative;
-            transition: var(--transition);
-        }
-
+        .viewport { flex: 1; height: 100vh; overflow-y: auto; position: relative; transition: var(--transition); }
         .section { display: none; animation: fadeIn 0.5s ease; height: 100%; position: relative; }
         .section.active { display: block; }
         
@@ -154,122 +108,255 @@
         #home p { color: var(--subtext); font-size: 18px; margin-left: 4px; }
 
         #games { padding: 40px; }
-
-        .counter-label {
-            font-size: 12px;
-            color: var(--subtext);
-            font-weight: 600;
-            margin-bottom: 15px;
-            padding-left: 5px;
-            display: block;
-        }
-
+        .counter-label { font-size: 12px; color: var(--subtext); font-weight: 600; margin-bottom: 15px; padding-left: 5px; display: block; }
         .controls { display: flex; gap: 15px; margin-bottom: 50px; }
 
-        input, select {
-            background: var(--secondary);
-            border: none;
-            color: var(--text);
-            padding: 12px 20px;
-            border-radius: 12px;
-            outline: none;
-            font-family: inherit;
-        }
-
+        input, select { background: var(--secondary); border: none; color: var(--text); padding: 12px 20px; border-radius: 12px; outline: none; font-family: inherit; }
         #search { flex: 1; }
 
-        /* FIXED SETTINGS GROUPS */
-        .settings-group {
-            max-width: 500px;
-            margin-bottom: 30px;
-            display: flex;
-            flex-direction: column; /* Label on top, input on bottom */
-        }
-        
-        .settings-label {
-            color: var(--subtext);
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            padding-left: 5px;
-        }
+        .settings-group { max-width: 500px; margin-bottom: 30px; display: flex; flex-direction: column; }
+        .settings-label { color: var(--subtext); font-size: 12px; font-weight: 600; margin-bottom: 12px; padding-left: 5px; }
 
         .settings-footer {
-            position: absolute;
-            bottom: 40px;
-            left: 80px;
-            right: 80px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: 0.3s ease;
+            position: absolute; bottom: 40px; left: 80px; right: 80px;
+            display: flex; justify-content: space-between; align-items: center;
+            opacity: 0; pointer-events: none; transition: 0.3s ease;
         }
+        .settings-footer.visible { opacity: 1; pointer-events: all; }
+        .warning-text { color: var(--panic); font-size: 13px; font-weight: 600; }
+        .save-btn { background: var(--secondary); color: #ffffff; border: none; border-radius: 12px; padding: 12px 25px; font-weight: 600; cursor: pointer; }
 
-        .settings-footer.visible {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .warning-text {
-            color: var(--panic);
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .save-btn {
-            background: var(--secondary);
-            color: #ffffff;
-            border: none;
-            border-radius: 12px;
-            padding: 12px 25px;
-            font-weight: 600;
-            font-family: inherit;
-            transition: var(--transition);
-        }
-
-        .save-btn:hover { background: var(--accent); color: var(--bg); }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 20px;
-        }
-
-        .game-card {
-            background: var(--card);
-            border-radius: 18px;
-            padding: 10px;
-            transition: var(--transition);
-            text-align: center;
-        }
-
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 20px; }
+        .game-card { background: var(--card); border-radius: 18px; padding: 10px; transition: var(--transition); text-align: center; cursor: pointer; }
         .game-card:hover { transform: scale(1.03); background: var(--secondary); }
         .game-card img { width: 100%; aspect-ratio: 1/1; border-radius: 12px; margin-bottom: 8px; object-fit: cover; }
         .game-card span { font-size: 12px; color: var(--subtext); font-weight: 600; }
 
         #player {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg);
-            z-index: 20;
-            opacity: 0;
-            transition: opacity 0.5s var(--transition);
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); z-index: 20; opacity: 0; transition: opacity 0.5s var(--transition);
         }
-
         #player.active { display: block; opacity: 1; }
+        .top-bar { height: 70px; display: flex; align-items: center; padding: 0 20px; background: var(--sidebar); border-bottom: 1px solid var(--secondary); }
+        .top-right { margin-left: auto; display: flex; gap: 10px; }
+        .btn-action { padding: 10px 20px; border-radius: 10px; background: none; border: 1px solid var(--secondary); color: var(--subtext); font-weight: 600; cursor: pointer; }
+        .btn-panic { color: var(--panic); }
+        .btn-panic:hover { background: var(--panic); color: #fff; }
 
-        .top-bar {
-            height: 70px;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            background: var(--sidebar);
-            border-bottom: 1px solid var(--secondary);
+        .hidden { display: none !important; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div id="landing">
+        <button class="transfer-btn" onclick="transfer()">transfer</button>
+    </div>
+
+    <div id="main-ui">
+        <div id="sidebar">
+            <div class="brand">gelly</div>
+            <div class="nav-items">
+                <button class="nav-item active" onclick="tab('home', this)">home</button>
+                <button class="nav-item" onclick="tab('games', this)">games</button>
+                <button class="nav-item" onclick="tab('sounds', this)">soundboard</button>
+                <button class="nav-item" onclick="tab('settings', this)">settings</button>
+            </div>
+            <div class="sidebar-footer">v3.4</div>
+        </div>
+
+        <div class="viewport" id="viewport-main">
+            <div id="home" class="section active">
+                <h1>gelly</h1>
+                <p>welcome to uhhh i forgot sorry</p>
+            </div>
+
+            <div id="games" class="section">
+                <span class="counter-label" id="game-count">loading...</span>
+                <div class="controls">
+                    <input type="text" id="search" placeholder="search..." oninput="draw()">
+                    <select id="sort" onchange="draw()">
+                        <option value="az">a-z</option>
+                        <option value="za">z-a</option>
+                    </select>
+                </div>
+                <div class="grid" id="game-grid"></div>
+            </div>
+
+            <div id="sounds" class="section">
+                <iframe id="sound-frame" src="" style="width:100%; height:100%; border:none;"></iframe>
+            </div>
+
+            <div id="settings" class="section">
+                <h1>settings</h1>
+                <div class="settings-group">
+                    <span class="settings-label">theme</span>
+                    <select id="theme-select" onchange="previewTheme(this.value)">
+                        <option value="dark">dark</option>
+                        <option value="light">light</option>
+                    </select>
+                </div>
+                <div class="settings-group">
+                    <span class="settings-label">panic url</span>
+                    <input type="text" id="panic-input" placeholder="https://google.com" oninput="checkSettings()">
+                </div>
+                <div id="settings-footer" class="settings-footer">
+                    <div class="warning-text">press save to apply these settings</div>
+                    <button class="save-btn" onclick="saveSettings()">save settings</button>
+                </div>
+            </div>
+
+            <div id="player">
+                <div class="top-bar">
+                    <button class="btn-action" onclick="closeGame()">back</button>
+                    <div class="top-right">
+                        <button class="btn-action btn-panic" onclick="panic()">panic</button>
+                        <button class="btn-action" onclick="toggleFS()">fullscreen</button>
+                    </div>
+                </div>
+                <iframe id="game-frame" src="" style="width:100%; height:calc(100% - 70px); border:none;"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const gameData = [
+            { name: "2048", id: "2048", img: "2048icon.png" },
+            { name: "bitlife", id: "bitlife", img: "bitlifeicon.png" },
+            { name: "cookie clicker", id: "cookieclicker", img: "cookieclickericon.png" },
+            { name: "crossy road", id: "crossyroad", img: "crossyroadicon.png" },
+            { name: "dino game", id: "dinogame", img: "dinogameicon.png" },
+            { name: "doodle jump", id: "doodlejump", img: "doodlejumpicon.png" },
+            { name: "drive mad", id: "drivemad", img: "drivemadicon.png" },
+            { name: "duck life", id: "ducklife", img: "ducklifeicon.png" },
+            { name: "eggy car", id: "eggycar", img: "eggycaricon.png" },
+            { name: "flappy bird", id: "flappy", img: "flappybirdicon.png" },
+            { name: "geometry dash", id: "geodash", img: "geodashicon.png" },
+            { name: "getting over it", id: "gettingoverit", img: "gettingoveriticon.png" },
+            { name: "minecraft", id: "minecraft", img: "minecrafticon.png" },
+            { name: "paper.io 2", id: "paperio2", img: "paperio2icon.png" },
+            { name: "red ball", id: "redball", img: "redballicon.png" },
+            { name: "run 3", id: "run3", img: "run3icon.png" },
+            { name: "slope", id: "slope", img: "slopeicon.png" },
+            { name: "stickman hook", id: "stickmanhook", img: "stickmanhookicon.png" },
+            { name: "tetris", id: "tetris", img: "tetrisicon.png" },
+            { name: "tiny fishing", id: "tinyfishing", img: "tinyfishingicon.png" },
+            { name: "vex 4", id: "vex4", img: "vex4icon.png" }
+        ];
+
+        let savedPanicUrl = localStorage.getItem('gelly-panic') || 'https://google.com';
+        let savedTheme = localStorage.getItem('gelly-theme') || 'dark';
+
+        const mainUI = document.getElementById('main-ui');
+        const landing = document.getElementById('landing');
+        const panicInput = document.getElementById('panic-input');
+        const themeSelect = document.getElementById('theme-select');
+        const settingsFooter = document.getElementById('settings-footer');
+        const soundFrame = document.getElementById('sound-frame');
+
+        function init() {
+            panicInput.value = savedPanicUrl;
+            themeSelect.value = savedTheme;
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateSoundboardPath(savedTheme);
         }
 
-        .top-right { margin-left: auto; display: flex; gap: 10px; }
-        .btn-panic { color: var(--panic); border: 1px solid transparent; }
-        .btn-panic:hover { background: var(--panic); color
+        function updateSoundboardPath(theme) {
+            const folder = theme === 'light' ? 'soundboardlight' : 'soundboarddark';
+            soundFrame.src = `${folder}/index.html`;
+        }
+
+        function previewTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            checkSettings();
+        }
+
+        function checkSettings() {
+            const hasChanged = (panicInput.value !== savedPanicUrl) || (themeSelect.value !== savedTheme);
+            if (hasChanged) settingsFooter.classList.add('visible');
+            else settingsFooter.classList.remove('visible');
+        }
+
+        function saveSettings() {
+            savedPanicUrl = panicInput.value;
+            savedTheme = themeSelect.value;
+            localStorage.setItem('gelly-panic', savedPanicUrl);
+            localStorage.setItem('gelly-theme', savedTheme);
+            settingsFooter.classList.remove('visible');
+            updateSoundboardPath(savedTheme);
+        }
+
+        function resetUnsaved() {
+            panicInput.value = savedPanicUrl;
+            themeSelect.value = savedTheme;
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            settingsFooter.classList.remove('visible');
+        }
+
+        function tab(id, el) {
+            if (id !== 'settings') resetUnsaved();
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            el.classList.add('active');
+        }
+
+        function panic() { window.top.location.href = savedPanicUrl; }
+
+        function transfer() {
+            const win = window.open();
+            if (!win) return alert("allow popups");
+            win.document.body.style.margin = '0';
+            win.document.body.style.background = '#0b0b0b';
+            const ifr = win.document.createElement('iframe');
+            ifr.style = "border:none; width:100%; height:100vh;";
+            ifr.src = window.location.href + "#cloaked";
+            win.document.body.appendChild(ifr);
+            window.close();
+        }
+
+        /* UPDATED CLOAK CHECK LOGIC */
+        if (window.self !== window.top || window.location.hash === "#cloaked") {
+            landing.style.display = 'none';
+            mainUI.style.display = 'flex';
+            setTimeout(() => { mainUI.style.opacity = '1'; }, 50);
+        }
+
+        function draw() {
+            const grid = document.getElementById('game-grid');
+            const term = document.getElementById('search').value.toLowerCase();
+            const sort = document.getElementById('sort').value;
+            const counter = document.getElementById('game-count');
+            let list = gameData.filter(g => g.name.includes(term));
+            counter.innerText = `${list.length} games available`;
+            list.sort((a, b) => sort === 'az' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
+            grid.innerHTML = '';
+            list.forEach(g => {
+                const div = document.createElement('div');
+                div.className = 'game-card';
+                div.onclick = () => {
+                    mainUI.classList.add('sidebar-hidden');
+                    document.getElementById('player').classList.add('active');
+                    document.getElementById('game-frame').src = `games/${g.id}/index.html`;
+                };
+                div.innerHTML = `<img src="icons/${g.img}"><span>${g.name}</span>`;
+                grid.appendChild(div);
+            });
+        }
+
+        function closeGame() {
+            mainUI.classList.remove('sidebar-hidden');
+            document.getElementById('player').classList.remove('active');
+            setTimeout(() => { document.getElementById('game-frame').src = ''; }, 600);
+        }
+
+        function toggleFS() {
+            let f = document.getElementById('game-frame');
+            if (f.requestFullscreen) f.requestFullscreen();
+        }
+
+        init();
+        draw();
+    </script>
+</body>
+</html>
