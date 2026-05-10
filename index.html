@@ -30,7 +30,6 @@
 
         * { box-sizing: border-box; text-transform: lowercase; }
 
-        /* GLOBAL CURSOR RESET */
         body, html {
             margin: 0; padding: 0;
             background-color: var(--bg);
@@ -41,8 +40,7 @@
             cursor: default;
         }
 
-        /* FORCE POINTER ON ALL INTERACTIVES */
-        button, .nav-item, .game-card, .game-card *, select, .save-btn, .btn-action, .transfer-btn {
+        button, .nav-item, .game-card, .game-card *, select, .save-btn, .btn-action, .transfer-btn, .fav-btn {
             cursor: pointer !important;
         }
 
@@ -50,16 +48,16 @@
             height: 100vh; width: 100vw;
             display: flex; background: #0b0b0b;
             position: fixed; top: 0; left: 0;
-            z-index: 9999; padding: 30px 20px;
+            z-index: 9999;
         }
 
+        /* TRANSFER BUTTON: TRUE TOP LEFT */
         .transfer-btn {
-            position: absolute; top: 42px; left: 20px;
+            position: absolute; top: 30px; left: 20px;
             padding: 12px 18px; background: transparent;
             border: none; color: var(--subtext);
             border-radius: 12px; font-size: 14px;
             font-weight: 600; transition: var(--transition);
-            width: auto; min-width: 120px; text-align: left;
             font-family: inherit;
         }
         
@@ -103,7 +101,6 @@
         
         #home, #settings { padding: 60px 80px; }
         #home h1, #settings h1 { font-size: 56px; font-weight: 900; margin-bottom: 35px; letter-spacing: -2px; }
-        #home p { color: var(--subtext); font-size: 18px; margin-left: 4px; }
 
         #games { padding: 40px; }
         .counter-label { font-size: 12px; color: var(--subtext); font-weight: 600; margin-bottom: 15px; padding-left: 5px; display: block; }
@@ -117,33 +114,33 @@
         input[type="text"] { cursor: text !important; }
         #search { flex: 1; }
 
-        .settings-group { max-width: 500px; margin-bottom: 30px; display: flex; flex-direction: column; }
-        .settings-label { color: var(--subtext); font-size: 12px; font-weight: 600; margin-bottom: 12px; padding-left: 5px; }
-
-        .settings-footer {
-            position: absolute; bottom: 40px; left: 80px; right: 80px;
-            display: flex; justify-content: space-between; align-items: center;
-            opacity: 0; pointer-events: none; transition: 0.3s ease;
-        }
-        .settings-footer.visible { opacity: 1; pointer-events: all; }
-        .warning-text { color: var(--panic); font-size: 13px; font-weight: 600; }
-        
-        .save-btn { 
-            background: var(--secondary); color: #ffffff; border: none; 
-            border-radius: 12px; padding: 12px 25px; font-weight: 600; 
-            transition: var(--transition); font-family: inherit;
-        }
-        .save-btn:hover { background: var(--accent); color: var(--bg); }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 20px; }
         
         .game-card { 
             background: var(--card); border-radius: 18px; padding: 10px; 
-            transition: var(--transition); text-align: center; 
+            transition: var(--transition); text-align: center; position: relative;
         }
         .game-card:hover { transform: scale(1.03); background: var(--secondary); }
         .game-card img { width: 100%; aspect-ratio: 1/1; border-radius: 12px; margin-bottom: 8px; object-fit: cover; }
-        .game-card span { font-size: 12px; color: var(--subtext); font-weight: 600; }
+        
+        .card-footer { display: flex; align-items: center; justify-content: space-between; padding: 0 4px; }
+        .game-card span { font-size: 12px; color: var(--subtext); font-weight: 600; text-align: left; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        /* FAVORITE BUTTON STYLING */
+        .fav-btn {
+            background: none; border: none; padding: 5px;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s ease;
+        }
+        .fav-btn:hover { transform: scale(1.2); }
+        .fav-icon {
+            width: 16px; height: 16px;
+            fill: none; stroke: var(--subtext); stroke-width: 2.5;
+            transition: var(--transition);
+        }
+        .fav-btn.active .fav-icon {
+            fill: var(--accent); stroke: var(--accent);
+        }
 
         #player {
             display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -151,15 +148,7 @@
         }
         #player.active { display: block; opacity: 1; }
         .top-bar { height: 70px; display: flex; align-items: center; padding: 0 20px; background: var(--sidebar); border-bottom: 1px solid var(--secondary); }
-        .top-right { margin-left: auto; display: flex; gap: 10px; }
-        
-        .btn-action { 
-            padding: 10px 20px; border-radius: 10px; background: none; 
-            border: 1px solid var(--secondary); color: var(--subtext); 
-            font-weight: 600; transition: var(--transition); font-family: inherit; 
-        }
-        .btn-panic { color: var(--panic); }
-        .btn-panic:hover { background: var(--panic); color: #fff; }
+        .btn-action { padding: 10px 20px; border-radius: 10px; background: none; border: 1px solid var(--secondary); color: var(--subtext); font-weight: 600; transition: var(--transition); font-family: inherit; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -179,10 +168,10 @@
                 <button class="nav-item" onclick="tab('sounds', this)">soundboard</button>
                 <button class="nav-item" onclick="tab('settings', this)">settings</button>
             </div>
-            <div class="sidebar-footer">v3.8</div>
+            <div class="sidebar-footer">v3.9</div>
         </div>
 
-        <div class="viewport" id="viewport-main">
+        <div class="viewport">
             <div id="home" class="section active">
                 <h1>gelly</h1>
                 <p>welcome to uhhh i forgot sorry</p>
@@ -192,9 +181,10 @@
                 <span class="counter-label" id="game-count">loading...</span>
                 <div class="controls">
                     <input type="text" id="search" placeholder="search..." oninput="draw()">
-                    <select id="sort" onchange="draw()">
+                    <select id="sort" onchange="updateSort(this.value)">
                         <option value="az">a-z</option>
                         <option value="za">z-a</option>
+                        <option value="fav">favorites</option>
                     </select>
                 </div>
                 <div class="grid" id="game-grid"></div>
@@ -206,30 +196,12 @@
 
             <div id="settings" class="section">
                 <h1>settings</h1>
-                <div class="settings-group">
-                    <span class="settings-label">theme</span>
-                    <select id="theme-select" onchange="previewTheme(this.value)">
-                        <option value="dark">dark</option>
-                        <option value="light">light</option>
-                    </select>
-                </div>
-                <div class="settings-group">
-                    <span class="settings-label">panic url</span>
-                    <input type="text" id="panic-input" placeholder="https://google.com" oninput="checkSettings()">
-                </div>
-                <div id="settings-footer" class="settings-footer">
-                    <div class="warning-text">press save to apply these settings</div>
-                    <button class="save-btn" onclick="saveSettings()">save settings</button>
-                </div>
+                <button class="save-btn" onclick="saveSettings()">save settings</button>
             </div>
 
             <div id="player">
                 <div class="top-bar">
                     <button class="btn-action" onclick="closeGame()">back</button>
-                    <div class="top-right">
-                        <button class="btn-action btn-panic" onclick="panic()">panic</button>
-                        <button class="btn-action" onclick="toggleFS()">fullscreen</button>
-                    </div>
                 </div>
                 <iframe id="game-frame" src="" style="width:100%; height:calc(100% - 70px); border:none;"></iframe>
             </div>
@@ -261,64 +233,68 @@
             { name: "vex 4", id: "vex4", img: "vex4icon.png" }
         ];
 
-        let savedPanicUrl = localStorage.getItem('gelly-panic') || 'https://google.com';
-        let savedTheme = localStorage.getItem('gelly-theme') || 'dark';
+        let favorites = JSON.parse(localStorage.getItem('gelly-favs')) || [];
+        let currentSort = localStorage.getItem('gelly-sort') || 'az';
 
-        const mainUI = document.getElementById('main-ui');
-        const landing = document.getElementById('landing');
-        const panicInput = document.getElementById('panic-input');
-        const themeSelect = document.getElementById('theme-select');
-        const settingsFooter = document.getElementById('settings-footer');
-        const soundFrame = document.getElementById('sound-frame');
-
-        function init() {
-            panicInput.value = savedPanicUrl;
-            themeSelect.value = savedTheme;
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            updateSoundboardPath(savedTheme);
+        function updateSort(val) {
+            currentSort = val;
+            localStorage.setItem('gelly-sort', val);
+            draw();
         }
 
-        function updateSoundboardPath(theme) {
-            const folder = theme === 'light' ? 'soundboardlight' : 'soundboarddark';
-            soundFrame.src = `${folder}/index.html`;
+        function toggleFav(id, event) {
+            event.stopPropagation();
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(f => f !== id);
+            } else {
+                favorites.push(id);
+            }
+            localStorage.setItem('gelly-favs', JSON.stringify(favorites));
+            draw();
         }
 
-        function previewTheme(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-            checkSettings();
-        }
+        function draw() {
+            const grid = document.getElementById('game-grid');
+            const term = document.getElementById('search').value.toLowerCase();
+            const sortSelect = document.getElementById('sort');
+            sortSelect.value = currentSort;
 
-        function checkSettings() {
-            const hasChanged = (panicInput.value !== savedPanicUrl) || (themeSelect.value !== savedTheme);
-            if (hasChanged) settingsFooter.classList.add('visible');
-            else settingsFooter.classList.remove('visible');
-        }
+            let list = gameData.filter(g => g.name.includes(term));
 
-        function saveSettings() {
-            savedPanicUrl = panicInput.value;
-            savedTheme = themeSelect.value;
-            localStorage.setItem('gelly-panic', savedPanicUrl);
-            localStorage.setItem('gelly-theme', savedTheme);
-            settingsFooter.classList.remove('visible');
-            updateSoundboardPath(savedTheme);
-        }
+            if (currentSort === 'fav') {
+                list = list.filter(g => favorites.includes(g.id));
+            } else if (currentSort === 'az') {
+                list.sort((a, b) => a.name.localeCompare(b.name));
+            } else {
+                list.sort((a, b) => b.name.localeCompare(a.name));
+            }
 
-        function resetUnsaved() {
-            panicInput.value = savedPanicUrl;
-            themeSelect.value = savedTheme;
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            settingsFooter.classList.remove('visible');
-        }
+            document.getElementById('game-count').innerText = `${list.length} games available`;
+            grid.innerHTML = '';
 
-        function tab(id, el) {
-            if (id !== 'settings') resetUnsaved();
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            el.classList.add('active');
+            list.forEach(g => {
+                const isFav = favorites.includes(g.id);
+                const div = document.createElement('div');
+                div.className = 'game-card';
+                div.onclick = () => {
+                    document.getElementById('main-ui').classList.add('sidebar-hidden');
+                    document.getElementById('player').classList.add('active');
+                    document.getElementById('game-frame').src = `games/${g.id}/index.html`;
+                };
+                div.innerHTML = `
+                    <img src="icons/${g.img}">
+                    <div class="card-footer">
+                        <span>${g.name}</span>
+                        <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFav('${g.id}', event)">
+                            <svg class="fav-icon" viewBox="0 0 24 24">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(div);
+            });
         }
-
-        function panic() { window.top.location.href = savedPanicUrl; }
 
         function transfer() {
             const win = window.open();
@@ -333,45 +309,24 @@
         }
 
         if (window.self !== window.top || window.location.hash === "#cloaked") {
-            landing.style.display = 'none';
-            mainUI.style.display = 'flex';
-            setTimeout(() => { mainUI.style.opacity = '1'; }, 50);
-        }
-
-        function draw() {
-            const grid = document.getElementById('game-grid');
-            const term = document.getElementById('search').value.toLowerCase();
-            const sort = document.getElementById('sort').value;
-            const counter = document.getElementById('game-count');
-            let list = gameData.filter(g => g.name.includes(term));
-            counter.innerText = `${list.length} games available`;
-            list.sort((a, b) => sort === 'az' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
-            grid.innerHTML = '';
-            list.forEach(g => {
-                const div = document.createElement('div');
-                div.className = 'game-card';
-                div.onclick = () => {
-                    mainUI.classList.add('sidebar-hidden');
-                    document.getElementById('player').classList.add('active');
-                    document.getElementById('game-frame').src = `games/${g.id}/index.html`;
-                };
-                div.innerHTML = `<img src="icons/${g.img}"><span>${g.name}</span>`;
-                grid.appendChild(div);
-            });
+            document.getElementById('landing').style.display = 'none';
+            document.getElementById('main-ui').style.display = 'flex';
+            setTimeout(() => { document.getElementById('main-ui').style.opacity = '1'; }, 50);
         }
 
         function closeGame() {
-            mainUI.classList.remove('sidebar-hidden');
+            document.getElementById('main-ui').classList.remove('sidebar-hidden');
             document.getElementById('player').classList.remove('active');
             setTimeout(() => { document.getElementById('game-frame').src = ''; }, 600);
         }
 
-        function toggleFS() {
-            let f = document.getElementById('game-frame');
-            if (f.requestFullscreen) f.requestFullscreen();
+        function tab(id, el) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            el.classList.add('active');
         }
 
-        init();
         draw();
     </script>
 </body>
