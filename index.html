@@ -145,8 +145,8 @@
         .section { display: none; animation: fadeIn 0.5s ease; height: 100%; }
         .section.active { display: block; }
         
-        #home { padding: 60px 80px; }
-        #home h1 { font-size: 56px; font-weight: 900; margin-bottom: 35px; letter-spacing: -2px; }
+        #home, #settings { padding: 60px 80px; }
+        #home h1, #settings h1 { font-size: 56px; font-weight: 900; margin-bottom: 35px; letter-spacing: -2px; }
         #home p { color: var(--subtext); font-size: 18px; margin-left: 4px; }
 
         #games { padding: 40px; }
@@ -164,6 +164,21 @@
         #sounds iframe { width: 100%; height: 100%; border: none; }
 
         .controls { display: flex; gap: 15px; margin-bottom: 40px; }
+        
+        .settings-group {
+            max-width: 400px;
+            margin-bottom: 30px;
+        }
+        
+        .settings-label {
+            display: block;
+            color: var(--subtext);
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-left: 5px;
+        }
+
         input, select {
             background: var(--secondary);
             border: none;
@@ -172,8 +187,9 @@
             border-radius: 12px;
             outline: none;
             font-family: inherit;
+            width: 100%;
         }
-        input#search { flex: 1; }
+        input#search { flex: 1; width: auto; }
 
         .grid {
             display: grid;
@@ -245,21 +261,22 @@
                 <div class="nav-item active" onclick="tab('home', this)">home</div>
                 <div class="nav-item" onclick="tab('games', this)">games</div>
                 <div class="nav-item" onclick="tab('sounds', this)">soundboard</div>
+                <div class="nav-item" onclick="tab('settings', this)">settings</div>
             </div>
-            <div class="sidebar-footer">v2.6</div>
+            <div class="sidebar-footer">v2.7</div>
         </div>
 
         <div class="viewport" id="viewport-main">
             <div id="home" class="section active">
                 <h1>gelly</h1>
-                <p>welcomewelcome to uhhh idk</p>
+                <p>your clean, minimal hub for everything.</p>
             </div>
 
             <div id="games" class="section">
                 <span class="counter-label" id="game-count">loading games...</span>
                 <div class="controls">
                     <input type="text" id="search" placeholder="search..." oninput="draw()">
-                    <select id="sort" onchange="draw()">
+                    <select id="sort" onchange="draw()" style="width: auto;">
                         <option value="az">a-z</option>
                         <option value="za">z-a</option>
                     </select>
@@ -269,6 +286,14 @@
 
             <div id="sounds" class="section">
                 <iframe src="soundboard/index.html"></iframe>
+            </div>
+
+            <div id="settings" class="section">
+                <h1>settings</h1>
+                <div class="settings-group">
+                    <span class="settings-label">panic url</span>
+                    <input type="text" id="panic-input" placeholder="https://classroom.google.com" oninput="updatePanicUrl(this.value)">
+                </div>
             </div>
 
             <div id="player">
@@ -294,6 +319,7 @@
             { name: "doodle jump", id: "doodlejump", img: "doodlejumpicon.png" },
             { name: "drive mad", id: "drivemad", img: "drivemadicon.png" },
             { name: "duck life", id: "ducklife", img: "ducklifeicon.png" },
+            { name: "eggy car", id: "eggycar", img: "eggycaricon.png" },
             { name: "flappy bird", id: "flappy", img: "flappybirdicon.png" },
             { name: "geometry dash", id: "geodash", img: "geodashicon.png" },
             { name: "getting over it", id: "gettingoverit", img: "gettingoveriticon.png" },
@@ -308,9 +334,17 @@
             { name: "vex 4", id: "vex4", img: "vex4icon.png" }
         ];
 
+        // Panic Logic
+        let panicUrl = localStorage.getItem('gelly-panic') || 'https://google.com';
+        document.getElementById('panic-input').value = panicUrl;
+
+        function updatePanicUrl(val) {
+            panicUrl = val;
+            localStorage.setItem('gelly-panic', val);
+        }
+
         function panic() {
-            window.top.close();
-            window.top.location.href = "about:blank";
+            window.top.location.href = panicUrl;
         }
 
         function transfer() {
@@ -345,9 +379,9 @@
             const sort = document.getElementById('sort').value;
             const counter = document.getElementById('game-count');
             
-            counter.innerText = `${gameData.length} games available`;
-
             let list = gameData.filter(g => g.name.includes(term));
+            counter.innerText = `${list.length} games available`;
+
             list.sort((a, b) => sort === 'az' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
             grid.innerHTML = '';
             list.forEach(g => {
