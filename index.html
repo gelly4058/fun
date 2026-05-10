@@ -124,7 +124,6 @@
         .fav-icon { width: 16px; height: 16px; fill: none; stroke: var(--subtext); stroke-width: 2.5; transition: var(--transition); }
         .fav-btn.active .fav-icon { fill: var(--accent); stroke: var(--accent); }
 
-        /* PLAYER BAR STYLES */
         #player { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 20; opacity: 0; transition: opacity 0.5s var(--transition); }
         #player.active { display: block; opacity: 1; }
         .top-bar { height: 70px; display: flex; align-items: center; padding: 0 20px; background: var(--sidebar); border-bottom: 1px solid var(--secondary); }
@@ -140,7 +139,6 @@
         .btn-panic { color: var(--panic); }
         .btn-panic:hover { background: var(--panic); color: white; }
 
-        /* SETTINGS CONTROLS */
         .settings-group { max-width: 500px; margin-bottom: 30px; display: flex; flex-direction: column; }
         .settings-label { color: var(--subtext); font-size: 12px; font-weight: 600; margin-bottom: 12px; padding-left: 5px; }
         #settings-controls { position: absolute; bottom: 60px; left: 80px; right: 80px; display: flex; justify-content: space-between; align-items: center; }
@@ -167,7 +165,7 @@
                 <button class="nav-item" onclick="tab('sounds', this)">soundboard</button>
                 <button class="nav-item" onclick="tab('settings', this)">settings</button>
             </div>
-            <div class="sidebar-footer">v4.3</div>
+            <div class="sidebar-footer">v4.5</div>
         </div>
 
         <div class="viewport">
@@ -180,7 +178,7 @@
                 <span class="counter-label" id="game-count">loading...</span>
                 <div class="controls">
                     <input type="text" id="search" placeholder="search..." oninput="draw()">
-                    <button id="fav-toggle" class="filter-fav-btn" onclick="toggleFavFilter()">
+                    <button id="fav-toggle" class="filter-fav-btn" onclick="toggleFavFilter()" title="show favorites">
                         <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                     </button>
                     <select id="sort" onchange="updateSort(this.value)">
@@ -227,7 +225,6 @@
         </div>
     </div>
 
-
     <script>
         const gameData = [
             { name: "2048", id: "2048", img: "2048icon.png" },
@@ -238,7 +235,6 @@
             { name: "doodle jump", id: "doodlejump", img: "doodlejumpicon.png" },
             { name: "drive mad", id: "drivemad", img: "drivemadicon.png" },
             { name: "duck life", id: "ducklife", img: "ducklifeicon.png" },
-            // Eggy Car removed here
             { name: "flappy bird", id: "flappy", img: "flappybirdicon.png" },
             { name: "geometry dash", id: "geodash", img: "geodashicon.png" },
             { name: "getting over it", id: "gettingoverit", img: "gettingoveriticon.png" },
@@ -253,20 +249,20 @@
             { name: "vex 4", id: "vex4", img: "vex4icon.png" }
         ];
 
-
-
         let favorites = JSON.parse(localStorage.getItem('gelly-favs')) || [];
         let currentSort = localStorage.getItem('gelly-sort') || 'az';
         let favFilterActive = localStorage.getItem('gelly-fav-filter') === 'true';
         let hasUnsavedChanges = false;
 
         function init() {
-            const panic = localStorage.getItem('gelly-panic') || 'https://google.com';
+            const panicUrl = localStorage.getItem('gelly-panic') || 'https://google.com';
             const theme = localStorage.getItem('gelly-theme') || 'dark';
-            document.getElementById('panic-input').value = panic;
+            
+            document.getElementById('panic-input').value = panicUrl;
             document.getElementById('theme-select').value = theme;
             document.documentElement.setAttribute('data-theme', theme);
             updateSoundboard(theme);
+            
             if(favFilterActive) document.getElementById('fav-toggle').classList.add('active');
             draw();
         }
@@ -280,9 +276,9 @@
 
         function saveSettings() {
             const theme = document.getElementById('theme-select').value;
-            const panic = document.getElementById('panic-input').value;
+            const panicUrl = document.getElementById('panic-input').value;
             localStorage.setItem('gelly-theme', theme);
-            localStorage.setItem('gelly-panic', panic);
+            localStorage.setItem('gelly-panic', panicUrl);
             updateSoundboard(theme);
             hasUnsavedChanges = false;
             const status = document.getElementById('save-status');
@@ -291,21 +287,18 @@
         }
 
         function tab(id, el) {
-            // Revert unsaved theme preview when leaving settings
             if (hasUnsavedChanges) {
                 const savedTheme = localStorage.getItem('gelly-theme') || 'dark';
                 document.documentElement.setAttribute('data-theme', savedTheme);
                 updateSoundboard(savedTheme);
             }
-
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             el.classList.add('active');
-
             if (id === 'settings') {
                 hasUnsavedChanges = false;
-                init(); // Refresh fields
+                init();
                 document.getElementById('save-status').classList.remove('visible');
             }
         }
@@ -315,11 +308,15 @@
 
         function draw() {
             const grid = document.getElementById('game-grid');
+            const counter = document.getElementById('game-count');
             const term = document.getElementById('search').value.toLowerCase();
             let list = gameData.filter(g => g.name.includes(term));
             if (favFilterActive) list = list.filter(g => favorites.includes(g.id));
             if (currentSort === 'az') list.sort((a, b) => a.name.localeCompare(b.name));
             else list.sort((a, b) => b.name.localeCompare(a.name));
+            
+            if (counter) counter.innerText = `${list.length} games available`;
+            if (!grid) return;
             grid.innerHTML = '';
             list.forEach(g => {
                 const isFav = favorites.includes(g.id);
