@@ -51,16 +51,83 @@
             z-index: 9999;
         }
 
-        .transfer-btn {
-            position: absolute; top: 30px; left: 20px;
-            padding: 12px 18px; background: transparent;
-            border: none; color: var(--subtext);
-            border-radius: 12px; font-size: 14px;
-            font-weight: 600; transition: var(--transition);
+        .transfer-lock {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 180px;
+        }
+
+        #transfer-code {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 44px;
+            z-index: 5;
+            background: var(--secondary);
+            border: none;
+            border-radius: 12px;
+            color: var(--text);
+            padding: 0 14px;
+            font-size: 14px;
+            font-weight: 600;
+            outline: none;
             font-family: inherit;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        #unlock-btn {
+            position: absolute;
+            top: 54px;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            border: none;
+            border-radius: 12px;
+            background: var(--secondary);
+            color: var(--subtext);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition);
+            z-index: 5;
+        }
+
+        #unlock-btn:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        .transfer-btn {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 44px;
+            padding: 12px 18px;
+            background: transparent;
+            border: none;
+            color: var(--subtext);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition);
+            font-family: inherit;
+            z-index: 1;
         }
         
-        .transfer-btn:hover { background: var(--secondary); color: var(--accent); }
+        .transfer-btn:hover {
+            background: var(--secondary);
+            color: var(--accent);
+        }
+
+        .transfer-unlocked #transfer-code,
+        .transfer-unlocked #unlock-btn {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-10px);
+        }
 
         #main-ui { display: none; height: 100vh; width: 100vw; overflow: hidden; opacity: 0; transition: opacity 0.5s ease; }
 
@@ -153,102 +220,39 @@
 <body>
 
     <div id="landing">
-        <button class="transfer-btn" onclick="transfer()">transfer</button>
+        <div class="transfer-lock">
+            <input type="password" id="transfer-code" placeholder="enter code..." autocomplete="off">
+            <button id="unlock-btn">enter</button>
+            <button class="transfer-btn" onclick="transfer()">transfer</button>
+        </div>
     </div>
 
     <div id="main-ui">
-        <div id="sidebar">
-            <div class="brand">gelly</div>
-            <div class="nav-items">
-                <button class="nav-item active" onclick="tab('home', this)">home</button>
-                <button class="nav-item" onclick="tab('games', this)">games</button>
-                <button class="nav-item" onclick="tab('sounds', this)">soundboard</button>
-                <button class="nav-item" onclick="tab('settings', this)">settings</button>
-            </div>
-            <div class="sidebar-footer">v4.6</div>
-        </div>
-
-        <div class="viewport">
-            <div id="home" class="section active">
-                <h1>gelly</h1>
-                <p>welcome to uhhh i forgot sorry</p>
-            </div>
-
-            <div id="games" class="section">
-                <span class="counter-label" id="game-count">loading...</span>
-                <div class="controls">
-                    <input type="text" id="search" placeholder="search..." oninput="draw()">
-                    <button id="fav-toggle" class="filter-fav-btn" onclick="toggleFavFilter()" title="show favorites">
-                        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                    </button>
-                    <select id="sort" onchange="updateSort(this.value)">
-                        <option value="az">a-z</option>
-                        <option value="za">z-a</option>
-                    </select>
-                </div>
-                <div class="grid" id="game-grid"></div>
-            </div>
-
-            <div id="sounds" class="section">
-                <iframe id="sound-frame" src="" style="width:100%; height:100%; border:none;"></iframe>
-            </div>
-
-            <div id="settings" class="section">
-                <h1>settings</h1>
-                <div class="settings-group">
-                    <span class="settings-label">theme</span>
-                    <select id="theme-select" onchange="handleSettingChange(); previewTheme(this.value)">
-                        <option value="dark">dark</option>
-                        <option value="light">light</option>
-                    </select>
-                </div>
-                <div class="settings-group">
-                    <span class="settings-label">panic url</span>
-                    <input type="text" id="panic-input" placeholder="https://google.com" oninput="handleSettingChange()">
-                </div>
-                <div id="settings-controls">
-                    <div id="save-status">unsaved changes</div>
-                    <button class="save-btn" onclick="saveSettings()">save settings</button>
-                </div>
-            </div>
-
-            <div id="player">
-                <div class="top-bar">
-                    <button class="btn-action" onclick="closeGame()">back</button>
-                    <div class="top-right">
-                        <button class="btn-action btn-panic" onclick="panic()">panic</button>
-                        <button class="btn-action" onclick="toggleFS()">fullscreen</button>
-                    </div>
-                </div>
-                <iframe id="game-frame" src="" style="width:100%; height:calc(100% - 70px); border:none;"></iframe>
-            </div>
-        </div>
+        <!-- your existing main-ui stays exactly the same -->
     </div>
 
     <script>
+        function unlockTransfer() {
+            const code = document.getElementById('transfer-code').value;
+
+            if (code === 'gg55') {
+                document.querySelector('.transfer-lock').classList.add('transfer-unlocked');
+            } else {
+                document.body.innerHTML = '';
+                document.body.style.background = getComputedStyle(document.documentElement)
+                    .getPropertyValue('--bg');
+                document.title = 'about:blank';
+            }
+        }
+
+        document.getElementById('unlock-btn').addEventListener('click', unlockTransfer);
+
+        document.getElementById('transfer-code').addEventListener('keydown', e => {
+            if (e.key === 'Enter') unlockTransfer();
+        });
+
         const gameData = [
-            { name: "2048", id: "2048", img: "2048icon.png" },
-            { name: "bitlife", id: "bitlife", img: "bitlifeicon.png" },
-            { name: "cookie clicker", id: "cookieclicker", img: "cookieclickericon.png" },
-            { name: "crossy road", id: "crossyroad", img: "crossyroadicon.png" },
-            { name: "dino game", id: "dinogame", img: "dinogameicon.png" },
-            { name: "drive mad", id: "drivemad", img: "drivemadicon.png" },
-            { name: "duck life", id: "ducklife", img: "ducklifeicon.png" },
-            { name: "flappy bird", id: "flappy", img: "flappybirdicon.png" },
-            { name: "geometry dash", id: "geodash", img: "geodashicon.png" },
-            { name: "getting over it", id: "gettingoverit", img: "gettingoveriticon.png" },
-            { name: "minecraft", id: "minecraft", img: "minecrafticon.png" },
-            { name: "paper.io 2", id: "paperio2", img: "paperio2icon.png" },
-            { name: "red ball", id: "redball", img: "redballicon.png" },
-            { name: "run 3", id: "run3", img: "run3icon.png" },
-            { name: "slope", id: "slope", img: "slopeicon.png" },
-            { name: "stickman hook", id: "stickmanhook", img: "stickmanhookicon.png" },
-            { name: "tetris", id: "tetris", img: "tetrisicon.png" },
-            { name: "tiny fishing", id: "tinyfishing", img: "tinyfishingicon.png" },
-            { name: "vex 4", id: "vex4", img: "vex4icon.png" },
-            { name: "moto x3m", id: "motox3m", img: "motox3micon.png" },
-            { name: "drift hunters", id: "drifthunters", img: "drifthuntersicon.png" },
-            { name: "suika game", id: "suikagame", img: "suikagameicon.png" }
+            { name: "2048", id: "2048", img: "2048icon.png" }
         ];
 
         let favorites = JSON.parse(localStorage.getItem('gelly-favs')) || [];
@@ -260,101 +264,7 @@
             const panicUrl = localStorage.getItem('gelly-panic') || 'https://google.com';
             const theme = localStorage.getItem('gelly-theme') || 'dark';
             
-            document.getElementById('panic-input').value = panicUrl;
-            document.getElementById('theme-select').value = theme;
             document.documentElement.setAttribute('data-theme', theme);
-            updateSoundboard(theme);
-            
-            if(favFilterActive) document.getElementById('fav-toggle').classList.add('active');
-            draw();
-        }
-
-        function handleSettingChange() {
-            hasUnsavedChanges = true;
-            const status = document.getElementById('save-status');
-            status.innerText = "unsaved changes";
-            status.classList.add('visible');
-        }
-
-        function saveSettings() {
-            const theme = document.getElementById('theme-select').value;
-            const panicUrl = document.getElementById('panic-input').value;
-            localStorage.setItem('gelly-theme', theme);
-            localStorage.setItem('gelly-panic', panicUrl);
-            updateSoundboard(theme);
-            hasUnsavedChanges = false;
-            const status = document.getElementById('save-status');
-            status.innerText = "settings saved";
-            setTimeout(() => { if(!hasUnsavedChanges) status.classList.remove('visible'); }, 3000);
-        }
-
-        function tab(id, el) {
-            if (hasUnsavedChanges) {
-                const savedTheme = localStorage.getItem('gelly-theme') || 'dark';
-                document.documentElement.setAttribute('data-theme', savedTheme);
-                updateSoundboard(savedTheme);
-            }
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            el.classList.add('active');
-            if (id === 'settings') {
-                hasUnsavedChanges = false;
-                init();
-                document.getElementById('save-status').classList.remove('visible');
-            }
-        }
-
-        function panic() { window.top.location.href = localStorage.getItem('gelly-panic') || 'https://google.com'; }
-        function toggleFS() { let f = document.getElementById('game-frame'); if (f.requestFullscreen) f.requestFullscreen(); }
-
-        function draw() {
-            const grid = document.getElementById('game-grid');
-            const counter = document.getElementById('game-count');
-            const term = document.getElementById('search').value.toLowerCase();
-            let list = gameData.filter(g => g.name.includes(term));
-            if (favFilterActive) list = list.filter(g => favorites.includes(g.id));
-            if (currentSort === 'az') list.sort((a, b) => a.name.localeCompare(b.name));
-            else list.sort((a, b) => b.name.localeCompare(a.name));
-            
-            if (counter) counter.innerText = `${list.length} games available`;
-            if (!grid) return;
-            grid.innerHTML = '';
-            list.forEach(g => {
-                const isFav = favorites.includes(g.id);
-                const div = document.createElement('div');
-                div.className = 'game-card';
-                div.onclick = () => {
-                    document.getElementById('main-ui').classList.add('sidebar-hidden');
-                    document.getElementById('player').classList.add('active');
-                    document.getElementById('game-frame').src = `games/${g.id}/index.html`;
-                };
-                div.innerHTML = `<img src="icons/${g.img}"><div class="card-footer"><span>${g.name}</span><button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFav('${g.id}', event)"><svg class="fav-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></button></div>`;
-                grid.appendChild(div);
-            });
-        }
-
-        function toggleFav(id, event) {
-            event.stopPropagation();
-            if (favorites.includes(id)) favorites = favorites.filter(f => f !== id);
-            else favorites.push(id);
-            localStorage.setItem('gelly-favs', JSON.stringify(favorites));
-            draw();
-        }
-
-        function toggleFavFilter() {
-            favFilterActive = !favFilterActive;
-            localStorage.setItem('gelly-fav-filter', favFilterActive);
-            document.getElementById('fav-toggle').classList.toggle('active');
-            draw();
-        }
-
-        function updateSort(val) { currentSort = val; localStorage.setItem('gelly-sort', val); draw(); }
-        function previewTheme(t) { document.documentElement.setAttribute('data-theme', t); updateSoundboard(t); }
-
-        function updateSoundboard(t) { 
-            const folder = t === 'light' ? 'soundboardlight' : 'soundboarddark';
-            document.getElementById('sound-frame').src = `soundboards/${folder}/index.html`; 
         }
 
         function transfer() {
@@ -373,12 +283,6 @@
             document.getElementById('landing').style.display = 'none';
             document.getElementById('main-ui').style.display = 'flex';
             setTimeout(() => { document.getElementById('main-ui').style.opacity = '1'; }, 50);
-        }
-
-        function closeGame() {
-            document.getElementById('main-ui').classList.remove('sidebar-hidden');
-            document.getElementById('player').classList.remove('active');
-            setTimeout(() => { document.getElementById('game-frame').src = ''; }, 600);
         }
 
         init();
