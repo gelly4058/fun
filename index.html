@@ -165,7 +165,7 @@
                 <button class="nav-item" onclick="tab('sounds', this)">soundboard</button>
                 <button class="nav-item" onclick="tab('settings', this)">settings</button>
             </div>
-            <div class="sidebar-footer">v4.5</div>
+            <div class="sidebar-footer">v4.6</div>
         </div>
 
         <div class="viewport">
@@ -351,7 +351,11 @@
 
         function updateSort(val) { currentSort = val; localStorage.setItem('gelly-sort', val); draw(); }
         function previewTheme(t) { document.documentElement.setAttribute('data-theme', t); updateSoundboard(t); }
-        function updateSoundboard(t) { document.getElementById('sound-frame').src = (t === 'light' ? 'soundboardlight' : 'soundboarddark') + '/index.html'; }
+
+        function updateSoundboard(t) { 
+            const folder = t === 'light' ? 'soundboardlight' : 'soundboarddark';
+            document.getElementById('sound-frame').src = `soundboards/${folder}/index.html`; 
+        }
 
         function transfer() {
             const win = window.open();
