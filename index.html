@@ -145,7 +145,6 @@
         .top-bar { height: 70px; display: flex; align-items: center; padding: 0 20px; background: var(--sidebar); border-bottom: 1px solid var(--secondary); }
         .btn-action { padding: 10px 20px; border-radius: 10px; background: none; border: 1px solid var(--secondary); color: var(--subtext); font-weight: 600; transition: var(--transition); font-family: inherit; }
 
-        /* SETTINGS UPDATED LAYOUT */
         .settings-group { max-width: 500px; margin-bottom: 30px; display: flex; flex-direction: column; }
         .settings-label { color: var(--subtext); font-size: 12px; font-weight: 600; margin-bottom: 12px; padding-left: 5px; }
         
@@ -185,7 +184,7 @@
                 <button class="nav-item" onclick="tab('sounds', this)">soundboard</button>
                 <button class="nav-item" onclick="tab('settings', this)">settings</button>
             </div>
-            <div class="sidebar-footer">v4.1</div>
+            <div class="sidebar-footer">v4.2</div>
         </div>
 
         <div class="viewport">
@@ -217,18 +216,18 @@
                 <h1>settings</h1>
                 <div class="settings-group">
                     <span class="settings-label">theme</span>
-                    <select id="theme-select" onchange="previewTheme(this.value)">
+                    <select id="theme-select" onchange="handleSettingChange(); previewTheme(this.value)">
                         <option value="dark">dark</option>
                         <option value="light">light</option>
                     </select>
                 </div>
                 <div class="settings-group">
                     <span class="settings-label">panic url</span>
-                    <input type="text" id="panic-input" placeholder="https://google.com">
+                    <input type="text" id="panic-input" placeholder="https://google.com" oninput="handleSettingChange()">
                 </div>
                 
                 <div id="settings-controls">
-                    <div id="save-status">settings saved</div>
+                    <div id="save-status">unsaved changes</div>
                     <button class="save-btn" onclick="saveSettings()">save settings</button>
                 </div>
             </div>
@@ -270,6 +269,7 @@
         let favorites = JSON.parse(localStorage.getItem('gelly-favs')) || [];
         let currentSort = localStorage.getItem('gelly-sort') || 'az';
         let favFilterActive = localStorage.getItem('gelly-fav-filter') === 'true';
+        let hasUnsavedChanges = false;
 
         function init() {
             document.getElementById('panic-input').value = localStorage.getItem('gelly-panic') || 'https://google.com';
@@ -279,6 +279,48 @@
             updateSoundboard(theme);
             if(favFilterActive) document.getElementById('fav-toggle').classList.add('active');
             draw();
+        }
+
+        function handleSettingChange() {
+            hasUnsavedChanges = true;
+            const status = document.getElementById('save-status');
+            status.innerText = "unsaved changes";
+            status.classList.add('visible');
+        }
+
+        function saveSettings() {
+            localStorage.setItem('gelly-theme', document.getElementById('theme-select').value);
+            localStorage.setItem('gelly-panic', document.getElementById('panic-input').value);
+            updateSoundboard(document.getElementById('theme-select').value);
+            
+            hasUnsavedChanges = false;
+            const status = document.getElementById('save-status');
+            status.innerText = "settings saved";
+            status.classList.add('visible');
+            setTimeout(() => {
+                if (!hasUnsavedChanges) status.classList.remove('visible');
+            }, 3000);
+        }
+
+        function tab(id, el) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            el.classList.add('active');
+
+            // Logic for warnings when entering settings
+            if (id === 'settings') {
+                const status = document.getElementById('save-status');
+                // Re-sync input with saved data in case they left without saving
+                document.getElementById('panic-input').value = localStorage.getItem('gelly-panic') || 'https://google.com';
+                const theme = localStorage.getItem('gelly-theme') || 'dark';
+                document.getElementById('theme-select').value = theme;
+                document.documentElement.setAttribute('data-theme', theme);
+                
+                hasUnsavedChanges = false;
+                status.innerText = "unsaved changes";
+                status.classList.remove('visible');
+            }
         }
 
         function updateSort(val) {
@@ -309,22 +351,12 @@
             const grid = document.getElementById('game-grid');
             const term = document.getElementById('search').value.toLowerCase();
             document.getElementById('sort').value = currentSort;
-
             let list = gameData.filter(g => g.name.includes(term));
-
-            if (favFilterActive) {
-                list = list.filter(g => favorites.includes(g.id));
-            }
-
-            if (currentSort === 'az') {
-                list.sort((a, b) => a.name.localeCompare(b.name));
-            } else {
-                list.sort((a, b) => b.name.localeCompare(a.name));
-            }
-
+            if (favFilterActive) list = list.filter(g => favorites.includes(g.id));
+            if (currentSort === 'az') list.sort((a, b) => a.name.localeCompare(b.name));
+            else list.sort((a, b) => b.name.localeCompare(a.name));
             document.getElementById('game-count').innerText = `${list.length} games available`;
             grid.innerHTML = '';
-
             list.forEach(g => {
                 const isFav = favorites.includes(g.id);
                 const div = document.createElement('div');
@@ -347,27 +379,7 @@
             });
         }
 
-        function tab(id, el) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            el.classList.add('active');
-        }
-
         function previewTheme(t) { document.documentElement.setAttribute('data-theme', t); }
-
-        function saveSettings() {
-            localStorage.setItem('gelly-theme', document.getElementById('theme-select').value);
-            localStorage.setItem('gelly-panic', document.getElementById('panic-input').value);
-            updateSoundboard(document.getElementById('theme-select').value);
-            
-            // SHOW NOTIFICATION
-            const status = document.getElementById('save-status');
-            status.classList.add('visible');
-            setTimeout(() => {
-                status.classList.remove('visible');
-            }, 3000);
-        }
 
         function updateSoundboard(theme) {
             const path = theme === 'light' ? 'soundboardlight' : 'soundboarddark';
