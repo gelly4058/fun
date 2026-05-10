@@ -64,7 +64,7 @@
         .section { display: none; padding: 40px 60px; animation: fadeIn 0.4s ease forwards; height: calc(100vh - 70px); position: relative; }
         .section.active { display: block; }
 
-        /* Settings Layout */
+        /* Settings footer elements */
         #save-status { 
             position: absolute; bottom: 45px; left: 60px;
             font-size: 13px; font-weight: 600; color: var(--subtext); 
@@ -73,11 +73,7 @@
         #save-status.visible { opacity: 1; }
         .save-btn-container { position: absolute; bottom: 40px; right: 60px; }
 
-        /* Home Style */
-        .home-title { font-size: 50px; font-weight: 900; margin-bottom: 0; }
-        .home-sub { color: var(--subtext); margin-top: 5px; font-weight: 600; }
-
-        /* Secret Code */
+        /* Secret Code Overlay */
         #landing { height: 100vh; width: 100vw; display: flex; background: #0b0b0b; position: fixed; z-index: 9999; }
         .transfer-btn { position: absolute; top: 20px; left: 20px; padding: 12px 18px; background: none; border: none; color: var(--subtext); font-weight: 600; cursor: pointer; display: none; }
         #code-dots { position: fixed; bottom: 10px; left: 10px; display: flex; gap: 4px; }
@@ -90,7 +86,7 @@
         .game-card img { width: 100%; border-radius: 10px; aspect-ratio: 1; object-fit: cover; margin-bottom: 10px; }
         .game-card span { font-size: 13px; font-weight: 600; color: var(--subtext); }
 
-        /* Game Player */
+        /* Player */
         #player { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             background: var(--bg); z-index: 200; 
@@ -130,8 +126,8 @@
 
     <div class="viewport">
         <div id="home" class="section active">
-            <h1 class="home-title">welcome to uhhhh i forgot sorry</h1>
-            <p class="home-sub">gelly v6.4</p>
+            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">gelly v6.5</h1>
+            <p style="color: var(--subtext); margin-top: 5px; font-weight: 600;">welcome to uhhhh i forgot sorry</p>
         </div>
 
         <div id="games" class="section">
@@ -245,16 +241,11 @@
         function saveSettings() {
             localStorage.setItem('gelly-theme', document.getElementById('theme-select').value);
             localStorage.setItem('gelly-panic', document.getElementById('panic-input').value);
-            
             hasUnsavedChanges = false;
             const status = document.getElementById('save-status');
             status.innerText = "saved changes";
-            
             applyTheme(localStorage.getItem('gelly-theme'));
-            
-            setTimeout(() => {
-                if (!hasUnsavedChanges) status.classList.remove('visible');
-            }, 2000);
+            setTimeout(() => { if (!hasUnsavedChanges) status.classList.remove('visible'); }, 2000);
         }
 
         function revertSettings() {
