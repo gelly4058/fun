@@ -15,6 +15,7 @@
             --text: #eeeeee;
             --subtext: #777777;
             --panic: #ff4444;
+            --save: #44ff44;
             --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -168,6 +169,7 @@
         .settings-group {
             max-width: 400px;
             margin-bottom: 30px;
+            position: relative;
         }
         
         .settings-label {
@@ -177,6 +179,28 @@
             font-weight: 600;
             margin-bottom: 10px;
             padding-left: 5px;
+        }
+
+        .warning-text {
+            color: var(--panic);
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .save-btn {
+            background: var(--secondary);
+            color: var(--save);
+            margin-top: 15px;
+            border: 1px solid var(--secondary);
+            display: none;
+        }
+
+        .save-btn:hover {
+            border-color: var(--save);
+            background: transparent;
         }
 
         input, select {
@@ -263,13 +287,13 @@
                 <div class="nav-item" onclick="tab('sounds', this)">soundboard</div>
                 <div class="nav-item" onclick="tab('settings', this)">settings</div>
             </div>
-            <div class="sidebar-footer">v2.7</div>
+            <div class="sidebar-footer">v2.8</div>
         </div>
 
         <div class="viewport" id="viewport-main">
             <div id="home" class="section active">
                 <h1>gelly</h1>
-                <p>welcome to uhhh i forgot sorry</p>
+                <p>your clean, minimal hub for everything.</p>
             </div>
 
             <div id="games" class="section">
@@ -292,7 +316,9 @@
                 <h1>settings</h1>
                 <div class="settings-group">
                     <span class="settings-label">panic url</span>
-                    <input type="text" id="panic-input" placeholder="https://google.com" oninput="updatePanicUrl(this.value)">
+                    <input type="text" id="panic-input" placeholder="https://google.com" oninput="checkSettings()">
+                    <div id="save-warning" class="warning-text">press save to apply these settings</div>
+                    <button id="save-btn" class="btn save-btn" onclick="saveSettings()">save settings</button>
                 </div>
             </div>
 
@@ -334,17 +360,34 @@
             { name: "vex 4", id: "vex4", img: "vex4icon.png" }
         ];
 
-        // Panic Logic
-        let panicUrl = localStorage.getItem('gelly-panic') || 'https://google.com';
-        document.getElementById('panic-input').value = panicUrl;
+        // Panic & Settings Logic
+        let currentSavedUrl = localStorage.getItem('gelly-panic') || 'https://google.com';
+        const panicInput = document.getElementById('panic-input');
+        const saveWarning = document.getElementById('save-warning');
+        const saveBtn = document.getElementById('save-btn');
 
-        function updatePanicUrl(val) {
-            panicUrl = val;
-            localStorage.setItem('gelly-panic', val);
+        // Initial set
+        panicInput.value = currentSavedUrl;
+
+        function checkSettings() {
+            if (panicInput.value !== currentSavedUrl) {
+                saveWarning.style.display = 'block';
+                saveBtn.style.display = 'block';
+            } else {
+                saveWarning.style.display = 'none';
+                saveBtn.style.display = 'none';
+            }
+        }
+
+        function saveSettings() {
+            currentSavedUrl = panicInput.value;
+            localStorage.setItem('gelly-panic', currentSavedUrl);
+            checkSettings(); // Hides button/warning
+            alert('settings saved');
         }
 
         function panic() {
-            window.top.location.href = panicUrl;
+            window.top.location.href = currentSavedUrl;
         }
 
         function transfer() {
