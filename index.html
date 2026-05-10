@@ -31,14 +31,13 @@
         * { box-sizing: border-box; text-transform: lowercase; user-select: none; outline: none; }
         body, html { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; }
         
-        /* Navbar with sliding transition */
+        /* Navbar */
         #navbar {
             height: 70px; background: var(--nav); border-bottom: 1px solid var(--secondary);
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 30px; position: fixed; top: 0; width: 100%; z-index: 100;
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
         }
-
         #navbar.hidden { transform: translateY(-70px); opacity: 0; pointer-events: none; }
 
         .nav-left, .nav-right { display: flex; gap: 10px; align-items: center; }
@@ -60,22 +59,38 @@
         
         .panic-trigger:hover { color: var(--panic) !important; }
 
+        /* Content Area */
         .viewport { padding-top: 70px; height: 100vh; overflow-y: auto; }
-        .section { display: none; padding: 40px 60px; animation: fadeIn 0.4s ease forwards; }
+        .section { display: none; padding: 40px 60px; animation: fadeIn 0.4s ease forwards; height: calc(100vh - 70px); position: relative; }
         .section.active { display: block; }
 
+        /* Settings Layout */
+        #save-status { 
+            position: absolute; bottom: 45px; left: 60px;
+            font-size: 13px; font-weight: 600; color: var(--subtext); 
+            opacity: 0; transition: opacity 0.3s ease; 
+        }
+        #save-status.visible { opacity: 1; }
+        .save-btn-container { position: absolute; bottom: 40px; right: 60px; }
+
+        /* Home Style */
+        .home-title { font-size: 50px; font-weight: 900; margin-bottom: 0; }
+        .home-sub { color: var(--subtext); margin-top: 5px; font-weight: 600; }
+
+        /* Secret Code */
         #landing { height: 100vh; width: 100vw; display: flex; background: #0b0b0b; position: fixed; z-index: 9999; }
         .transfer-btn { position: absolute; top: 20px; left: 20px; padding: 12px 18px; background: none; border: none; color: var(--subtext); font-weight: 600; cursor: pointer; display: none; }
         #code-dots { position: fixed; bottom: 10px; left: 10px; display: flex; gap: 4px; }
         .dot { width: 3px; height: 3px; background: rgba(255,255,255,0.2); border-radius: 50%; }
 
+        /* Game Grid */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; margin-top: 20px; }
         .game-card { background: var(--card); border-radius: 15px; padding: 10px; text-align: center; transition: var(--transition); cursor: pointer; }
         .game-card:hover { transform: translateY(-5px); background: var(--secondary); }
         .game-card img { width: 100%; border-radius: 10px; aspect-ratio: 1; object-fit: cover; margin-bottom: 10px; }
         .game-card span { font-size: 13px; font-weight: 600; color: var(--subtext); }
 
-        /* Player with Fade/Scale transition */
+        /* Game Player */
         #player { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             background: var(--bg); z-index: 200; 
@@ -84,7 +99,6 @@
             transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         #player.active { opacity: 1; pointer-events: all; transform: scale(1); }
-
         .player-bar { height: 70px; background: var(--nav); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; border-bottom: 1px solid var(--secondary); }
         iframe { width: 100%; height: calc(100vh - 70px); border: none; }
 
@@ -116,8 +130,8 @@
 
     <div class="viewport">
         <div id="home" class="section active">
-            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">welcome to uhhhh i forgot sorry</h1>
-            <p style="color: var(--subtext); margin-top: 5px; font-weight: 600;">gelly v6.3</p>
+            <h1 class="home-title">welcome to uhhhh i forgot sorry</h1>
+            <p class="home-sub">gelly v6.4</p>
         </div>
 
         <div id="games" class="section">
@@ -125,20 +139,23 @@
         </div>
 
         <div id="sounds" class="section">
-            <iframe id="sound-frame" style="height: 80vh; border-radius: 20px;"></iframe>
+            <iframe id="sound-frame" style="height: 100%; border-radius: 20px;"></iframe>
         </div>
 
         <div id="settings" class="section">
-            <h2 style="font-weight: 900;">settings</h2>
-            <p>theme</p>
-            <select id="theme-select" onchange="previewTheme(this.value)" style="padding: 10px; background: var(--secondary); color: white; border: none; border-radius: 8px; font-family: inherit;">
+            <p style="color: var(--subtext); font-weight: 600;">theme</p>
+            <select id="theme-select" onchange="markUnsaved()" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 200px; cursor: pointer;">
                 <option value="dark">dark</option>
                 <option value="light">light</option>
             </select>
-            <p>panic url</p>
-            <input type="text" id="panic-input" placeholder="https://google.com" style="padding: 10px; background: var(--secondary); color: white; border: none; border-radius: 8px; font-family: inherit; width: 300px;">
-            <br><br>
-            <button class="nav-btn active" onclick="saveSettings()">save changes</button>
+
+            <p style="color: var(--subtext); font-weight: 600; margin-top: 30px;">panic url</p>
+            <input type="text" id="panic-input" oninput="markUnsaved()" placeholder="https://google.com" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 350px;">
+            
+            <span id="save-status">press save changes to save these</span>
+            <div class="save-btn-container">
+                <button class="nav-btn active" onclick="saveSettings()">save changes</button>
+            </div>
         </div>
     </div>
 
@@ -161,6 +178,7 @@
 
     <script>
         let inputSequence = "";
+        let hasUnsavedChanges = false;
         const dotsContainer = document.getElementById('code-dots');
 
         document.addEventListener('keydown', (e) => {
@@ -208,10 +226,49 @@
         ];
 
         function tab(id, el) {
+            if (hasUnsavedChanges && id !== 'settings') {
+                revertSettings();
+            }
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn, .icon-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             if(el) el.classList.add('active');
+        }
+
+        function markUnsaved() {
+            hasUnsavedChanges = true;
+            const status = document.getElementById('save-status');
+            status.innerText = "press save changes to save these";
+            status.classList.add('visible');
+        }
+
+        function saveSettings() {
+            localStorage.setItem('gelly-theme', document.getElementById('theme-select').value);
+            localStorage.setItem('gelly-panic', document.getElementById('panic-input').value);
+            
+            hasUnsavedChanges = false;
+            const status = document.getElementById('save-status');
+            status.innerText = "saved changes";
+            
+            applyTheme(localStorage.getItem('gelly-theme'));
+            
+            setTimeout(() => {
+                if (!hasUnsavedChanges) status.classList.remove('visible');
+            }, 2000);
+        }
+
+        function revertSettings() {
+            document.getElementById('theme-select').value = localStorage.getItem('gelly-theme') || 'dark';
+            document.getElementById('panic-input').value = localStorage.getItem('gelly-panic') || 'https://google.com';
+            hasUnsavedChanges = false;
+            document.getElementById('save-status').classList.remove('visible');
+            applyTheme(localStorage.getItem('gelly-theme') || 'dark');
+        }
+
+        function applyTheme(t) {
+            document.documentElement.setAttribute('data-theme', t);
+            const folder = t === 'light' ? 'soundboardlight' : 'soundboarddark';
+            document.getElementById('sound-frame').src = `soundboards/${folder}/index.html`;
         }
 
         function draw() {
@@ -241,21 +298,9 @@
         function panic() { window.top.location.href = localStorage.getItem('gelly-panic') || 'https://google.com'; }
         function toggleFS() { let f = document.getElementById('game-frame'); if (f.requestFullscreen) f.requestFullscreen(); }
 
-        function saveSettings() {
-            localStorage.setItem('gelly-theme', document.getElementById('theme-select').value);
-            localStorage.setItem('gelly-panic', document.getElementById('panic-input').value);
-            alert("settings saved");
-        }
-
-        function previewTheme(t) { 
-            document.documentElement.setAttribute('data-theme', t);
-            const folder = t === 'light' ? 'soundboardlight' : 'soundboarddark';
-            document.getElementById('sound-frame').src = `soundboards/${folder}/index.html`;
-        }
-
         function transfer() {
             const win = window.open();
-            if (!win) return alert("allow popups");
+            if (!win) return;
             win.document.body.style.margin = '0';
             const ifr = win.document.createElement('iframe');
             ifr.style = "border:none; width:100%; height:100vh;";
@@ -269,8 +314,7 @@
         }
 
         draw();
-        previewTheme(localStorage.getItem('gelly-theme') || 'dark');
-        document.getElementById('panic-input').value = localStorage.getItem('gelly-panic') || 'https://google.com';
+        revertSettings();
     </script>
 </body>
 </html>
