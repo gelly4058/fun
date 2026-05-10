@@ -51,6 +51,24 @@
             z-index: 9999;
         }
 
+        /* Tiny Secret Progress Dots */
+        #code-dots {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            display: flex;
+            gap: 4px;
+            z-index: 10000;
+            pointer-events: none;
+        }
+
+        .dot {
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
         .transfer-btn {
             position: absolute;
             top: 20px;
@@ -164,6 +182,7 @@
 
     <div id="landing">
         <button class="transfer-btn" id="secret-btn" onclick="transfer()">transfer</button>
+        <div id="code-dots"></div>
     </div>
 
     <div id="main-ui">
@@ -175,7 +194,7 @@
                 <button class="nav-item" onclick="tab('sounds', this)">soundboard</button>
                 <button class="nav-item" onclick="tab('settings', this)">settings</button>
             </div>
-            <div class="sidebar-footer">v5.0</div>
+            <div class="sidebar-footer">v5.3</div>
         </div>
 
         <div class="viewport">
@@ -236,26 +255,40 @@
     </div>
 
     <script>
-        // Updated Secret Code Logic
         let inputSequence = "";
+        const dotsContainer = document.getElementById('code-dots');
+
         document.addEventListener('keydown', function(e) {
-            // Existing shortcut disables
             if (e.ctrlKey && (e.shiftKey && e.keyCode === 73)) e.preventDefault(); 
             if (e.ctrlKey && (e.shiftKey && e.keyCode === 74)) e.preventDefault(); 
             if (e.ctrlKey && e.keyCode === 85) e.preventDefault(); 
             if (e.keyCode === 123) e.preventDefault(); 
 
-            // Strict 4-character reset logic
             inputSequence += e.key.toLowerCase();
             
+            // Update Dots
+            updateDots(inputSequence.length);
+
             if (inputSequence.length === 4) {
                 if (inputSequence === "gg55") {
                     document.getElementById('secret-btn').style.display = 'block';
                 }
-                // Always clear after 4 characters regardless of success
-                inputSequence = "";
+                // Reset dots and sequence
+                setTimeout(() => {
+                    inputSequence = "";
+                    updateDots(0);
+                }, 100);
             }
         });
+
+        function updateDots(count) {
+            dotsContainer.innerHTML = '';
+            for(let i=0; i<count; i++) {
+                const d = document.createElement('div');
+                d.className = 'dot';
+                dotsContainer.appendChild(d);
+            }
+        }
 
         const gameData = [
             { name: "2048", id: "2048", img: "2048icon.png" },
@@ -290,12 +323,10 @@
         function init() {
             const panicUrl = localStorage.getItem('gelly-panic') || 'https://google.com';
             const theme = localStorage.getItem('gelly-theme') || 'dark';
-            
             document.getElementById('panic-input').value = panicUrl;
             document.getElementById('theme-select').value = theme;
             document.documentElement.setAttribute('data-theme', theme);
             updateSoundboard(theme);
-            
             if(favFilterActive) document.getElementById('fav-toggle').classList.add('active');
             draw();
         }
@@ -320,20 +351,10 @@
         }
 
         function tab(id, el) {
-            if (hasUnsavedChanges) {
-                const savedTheme = localStorage.getItem('gelly-theme') || 'dark';
-                document.documentElement.setAttribute('data-theme', savedTheme);
-                updateSoundboard(savedTheme);
-            }
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             el.classList.add('active');
-            if (id === 'settings') {
-                hasUnsavedChanges = false;
-                init();
-                document.getElementById('save-status').classList.remove('visible');
-            }
         }
 
         function panic() { window.top.location.href = localStorage.getItem('gelly-panic') || 'https://google.com'; }
