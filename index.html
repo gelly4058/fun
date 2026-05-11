@@ -40,7 +40,7 @@
         #navbar.hidden { transform: translateY(-70px); opacity: 0; pointer-events: none; }
 
         .nav-left, .nav-right { display: flex; gap: 10px; align-items: center; }
-        .nav-btn { padding: 10px 18px; border-radius: 10px; color: var(--subtext); background: none; border: none; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: inherit; }
+        .nav-btn { padding: 10px 18px; border-radius: 10px; color: var(--subtext); background: none; border: none; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: inherit; min-width: 120px; text-align: center; }
         .nav-btn:hover, .nav-btn.active { color: var(--accent); background: var(--secondary); }
         
         .icon-btn { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; color: var(--subtext); cursor: pointer; transition: var(--transition); }
@@ -78,23 +78,24 @@
         .loader-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; color: var(--subtext); font-weight: 600; pointer-events: none; width: 100%; text-align: center; }
         #game-frame { position: relative; width: 100%; height: calc(100vh - 70px); border: none; z-index: 2; background: transparent; }
 
-        #landing { height: 100vh; width: 100vw; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; padding: 20px; background: #0b0b0b; position: fixed; z-index: 9999; pointer-events: all; }
+        #landing { height: 100vh; width: 100vw; display: flex; align-items: flex-start; justify-content: flex-start; padding: 20px; background: #0b0b0b; position: fixed; z-index: 9999; pointer-events: all; }
         
-        /* Secret Textbox & Container */
-        #secret-container { display: flex; flex-direction: column; gap: 10px; }
+        #secret-container { display: flex; flex-direction: column; gap: 8px; }
+
         #secret-input { 
             background: transparent; border: none; color: var(--subtext); 
-            font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 600; 
-            padding: 10px; width: 200px; text-transform: lowercase; user-select: text;
+            font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; 
+            padding: 10px 18px; width: 120px; text-transform: lowercase; user-select: text;
+            text-align: center;
         }
-        #secret-input::placeholder { color: #333; }
+        #secret-input::placeholder { color: var(--subtext); opacity: 0.5; }
 
         #secret-btn { 
-            align-self: flex-start; padding: 10px 18px; 
+            padding: 10px 18px; min-width: 120px;
             background: none; border: none; border-radius: 10px; color: var(--subtext); 
             font-weight: 600; opacity: 0; transform: translateY(-10px);
             transition: opacity 0.6s ease, transform 0.6s ease, background 0.3s ease, color 0.3s ease; 
-            font-family: inherit; visibility: hidden; pointer-events: none; 
+            font-family: inherit; visibility: hidden; pointer-events: none; text-align: center;
         }
         #secret-btn.active { 
             visibility: visible !important; pointer-events: all !important; 
@@ -109,7 +110,7 @@
 
     <div id="landing">
         <div id="secret-container">
-            <input type="password" id="secret-input" placeholder="enter code..." autocomplete="off">
+            <input type="password" id="secret-input" placeholder="..." autocomplete="off">
             <button class="nav-btn" id="enter-btn" onclick="checkCode()">enter</button>
             <button id="secret-btn" onclick="transfer()">transfer</button>
         </div>
@@ -129,7 +130,7 @@
 
     <div class="viewport">
         <div id="home" class="section active">
-            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">gelly v2.0.8</h1>
+            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">gelly v2.0.9</h1>
             <p class="home-desc">welcome back.</p>
         </div>
 
@@ -201,14 +202,13 @@
 
             if (input.value === "gg55") {
                 secretBtn.classList.add('active');
-                input.style.display = 'none'; // Hide textbox on success
-                enterBtn.style.display = 'none'; // Hide enter button on success
+                input.style.display = 'none';
+                enterBtn.style.display = 'none';
             } else {
-                input.value = ""; // Clear textbox if wrong
+                input.value = "";
             }
         }
 
-        // Allow pressing "Enter" key inside the textbox to trigger the button
         document.getElementById('secret-input').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 checkCode();
