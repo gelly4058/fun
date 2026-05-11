@@ -79,12 +79,24 @@
         #game-frame { position: relative; width: 100%; height: calc(100vh - 70px); border: none; z-index: 2; background: transparent; }
 
         #landing { height: 100vh; width: 100vw; display: flex; background: #0b0b0b; position: fixed; z-index: 9999; pointer-events: none; }
-        #secret-btn { position: absolute; top: 20px; left: 20px; padding: 10px 18px; background: none; border: none; border-radius: 10px; color: var(--subtext); font-weight: 600; transition: var(--transition); font-family: inherit; visibility: hidden; pointer-events: none; }
-        #secret-btn.active { visibility: visible !important; pointer-events: all !important; cursor: pointer !important; }
+        
+        /* Smooth Appearance for Secret Button */
+        #secret-btn { 
+            position: absolute; top: 20px; left: 20px; padding: 10px 18px; 
+            background: none; border: none; border-radius: 10px; color: var(--subtext); 
+            font-weight: 600; opacity: 0; transform: translateY(-5px);
+            transition: opacity 0.6s ease, transform 0.6s ease, background 0.3s ease, color 0.3s ease; 
+            font-family: inherit; visibility: hidden; pointer-events: none; 
+        }
+        #secret-btn.active { 
+            visibility: visible !important; pointer-events: all !important; 
+            cursor: pointer !important; opacity: 1; transform: translateY(0);
+        }
         #secret-btn.active:hover { color: var(--accent); background: var(--secondary); }
         
-        #code-dots { position: fixed; top: 20px; left: 20px; display: flex; gap: 4px; z-index: 10000; }
-        .dot { width: 4px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 50%; }
+        /* Dots exactly aligned with where the button starts */
+        #code-dots { position: fixed; top: 38px; left: 35px; display: flex; gap: 6px; z-index: 10000; pointer-events: none; }
+        .dot { width: 5px; height: 5px; background: rgba(255,255,255,0.4); border-radius: 50%; transition: opacity 0.3s ease; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -110,7 +122,7 @@
 
     <div class="viewport">
         <div id="home" class="section active">
-            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">gelly v2.0.6</h1>
+            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">gelly v2.0.7</h1>
             <p class="home-desc">welcome back.</p>
         </div>
 
@@ -180,6 +192,7 @@
             const key = e.key.toLowerCase();
             inputSequence += key;
 
+            // Logic: Reset if 4th key is wrong, or if sequence stops matching gg55 early
             if (inputSequence.length === 4) {
                 if (inputSequence === "gg55") {
                     document.getElementById('secret-btn').classList.add('active');
@@ -204,6 +217,7 @@
             const btn = document.getElementById('secret-btn');
             dots.innerHTML = '';
             
+            // Only draw dots if button hasn't appeared yet
             if (!btn.classList.contains('active')) {
                 for(let i=0; i<count; i++) {
                     let d = document.createElement('div'); 
