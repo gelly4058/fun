@@ -15,14 +15,7 @@
             --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        * { 
-            box-sizing: border-box; 
-            text-transform: lowercase; 
-            user-select: none; 
-            outline: none; 
-            -webkit-user-drag: none;
-        }
-
+        * { box-sizing: border-box; text-transform: lowercase; user-select: none; outline: none; }
         body, html { margin: 0; padding: 0; background: var(--bg); color: #eeeeee; font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; }
         
         #landing { 
@@ -37,6 +30,7 @@
         }
         #secret-container.hidden { opacity: 0; transform: scale(0.9); pointer-events: none; }
 
+        /* Hidden input that captures the typing */
         #secret-input { 
             background: transparent; border: none; color: transparent; 
             font-family: inherit; font-size: 14px; width: 150px; 
@@ -44,6 +38,7 @@
             position: absolute; left: 35px; z-index: 2;
         }
 
+        /* The visual dots that only appear as you type */
         #dot-display { 
             padding-left: 10px; display: flex; gap: 4px; pointer-events: none; 
             color: var(--subtext); font-weight: 900; font-size: 20px; 
@@ -59,6 +54,7 @@
         #check-btn:hover { opacity: 1; color: var(--accent); }
         #check-btn svg, #secret-btn svg { width: 18px; height: 18px; fill: currentColor; }
 
+        /* Secret Icon - Sits exactly where the check was */
         #secret-btn { 
             position: absolute; top: 5px; left: 0;
             background: none; border: none; border-radius: 8px;
@@ -73,9 +69,10 @@
 
         #navbar { height: 70px; background: var(--nav); border-bottom: 1px solid var(--secondary); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: fixed; top: 0; width: 100%; z-index: 100; }
         .nav-btn { padding: 10px 18px; border-radius: 10px; color: var(--subtext); background: none; border: none; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: inherit; }
+        .nav-btn.active { color: var(--accent); background: var(--secondary); }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body onload="focusInput()">
 
     <div id="landing">
         <div class="secret-wrapper">
@@ -88,6 +85,7 @@
                     <div id="dot-display"></div>
                 </div>
             </div>
+
             <button id="secret-btn" class="icon-unit" onclick="transfer()">
                 <svg viewBox="0 0 24 24"><path d="M7,2V4H8V18A4,4 0 0,0 12,22A4,4 0 0,0 16,18V4H17V2H7M14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18V4H14V18Z"/></svg>
             </button>
@@ -95,32 +93,19 @@
     </div>
 
     <div id="navbar">
-        <div class="nav-left"><button class="nav-btn">home</button></div>
+        <div class="nav-left"><button class="nav-btn active">home</button></div>
     </div>
 
     <div style="padding-top: 100px; padding-left: 60px;">
-        <h1 style="font-size: 50px; font-weight: 900;">gelly v2.1.5</h1>
+        <h1 style="font-size: 50px; font-weight: 900;">gelly v2.1.4</h1>
     </div>
 
     <script>
-        // LOCKDOWN: Disable keyboard shortcuts for DevTools
-        document.addEventListener('keydown', function(e) {
-            if (
-                e.key === "F12" || 
-                (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) || 
-                (e.ctrlKey && e.key === "U")
-            ) {
-                e.preventDefault();
-                return false;
-            }
-        });
-
         function focusInput() {
             document.getElementById('secret-input').focus();
         }
 
-        window.onload = focusInput;
-
+        // Force focus on background click to ensure they can always type
         document.getElementById('landing').addEventListener('click', () => {
             if (!document.getElementById('secret-btn').classList.contains('active')) {
                 focusInput();
@@ -130,15 +115,24 @@
         function updateVisualDots() {
             const input = document.getElementById('secret-input');
             const display = document.getElementById('dot-display');
-            display.innerText = ".".repeat(input.value.length);
+            
+            // Generate dots only for the current length of input
+            if (input.value.length === 0) {
+                display.innerText = "";
+            } else {
+                display.innerText = ".".repeat(input.value.length);
+            }
         }
 
         function checkCode() {
             const input = document.getElementById('secret-input');
+            const container = document.getElementById('secret-container');
+            const secretBtn = document.getElementById('secret-btn');
+
             if (input.value === "gg55") {
-                document.getElementById('secret-container').classList.add('hidden');
+                container.classList.add('hidden');
                 setTimeout(() => {
-                    document.getElementById('secret-btn').classList.add('active');
+                    secretBtn.classList.add('active');
                 }, 400);
             } else {
                 input.value = "";
