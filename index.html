@@ -40,7 +40,7 @@
         #navbar.hidden { transform: translateY(-70px); opacity: 0; pointer-events: none; }
 
         .nav-left, .nav-right { display: flex; gap: 10px; align-items: center; }
-        .nav-btn { padding: 10px 18px; border-radius: 10px; color: var(--subtext); background: none; border: none; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: inherit; min-width: 120px; text-align: center; }
+        .nav-btn { padding: 10px 18px; border-radius: 10px; color: var(--subtext); background: none; border: none; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: inherit; }
         .nav-btn:hover, .nav-btn.active { color: var(--accent); background: var(--secondary); }
         
         .icon-btn { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; color: var(--subtext); cursor: pointer; transition: var(--transition); }
@@ -78,24 +78,34 @@
         .loader-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; color: var(--subtext); font-weight: 600; pointer-events: none; width: 100%; text-align: center; }
         #game-frame { position: relative; width: 100%; height: calc(100vh - 70px); border: none; z-index: 2; background: transparent; }
 
+        /* Landing & Secret Input Styles */
         #landing { height: 100vh; width: 100vw; display: flex; align-items: flex-start; justify-content: flex-start; padding: 20px; background: #0b0b0b; position: fixed; z-index: 9999; pointer-events: all; }
         
-        #secret-container { display: flex; flex-direction: column; gap: 8px; }
+        #secret-container { display: flex; align-items: center; gap: 5px; opacity: 1; transition: opacity 0.5s ease; }
+        #secret-container.hidden { opacity: 0; pointer-events: none; }
 
         #secret-input { 
             background: transparent; border: none; color: var(--subtext); 
             font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; 
-            padding: 10px 18px; width: 120px; text-transform: lowercase; user-select: text;
-            text-align: center;
+            padding: 10px 0px 10px 10px; width: 80px; text-transform: lowercase; 
+            user-select: text;
         }
-        #secret-input::placeholder { color: var(--subtext); opacity: 0.5; }
+        #secret-input::placeholder { color: var(--subtext); opacity: 0.3; }
+
+        #check-btn {
+            background: none; border: none; color: var(--subtext); opacity: 0.3;
+            cursor: pointer; padding: 5px; display: flex; align-items: center; 
+            justify-content: center; transition: var(--transition);
+        }
+        #check-btn:hover { opacity: 1; color: var(--accent); }
+        #check-btn svg { width: 16px; height: 16px; fill: currentColor; }
 
         #secret-btn { 
-            padding: 10px 18px; min-width: 120px;
+            position: absolute; top: 20px; left: 20px; padding: 10px 18px; 
             background: none; border: none; border-radius: 10px; color: var(--subtext); 
             font-weight: 600; opacity: 0; transform: translateY(-10px);
             transition: opacity 0.6s ease, transform 0.6s ease, background 0.3s ease, color 0.3s ease; 
-            font-family: inherit; visibility: hidden; pointer-events: none; text-align: center;
+            font-family: inherit; visibility: hidden; pointer-events: none; 
         }
         #secret-btn.active { 
             visibility: visible !important; pointer-events: all !important; 
@@ -111,9 +121,11 @@
     <div id="landing">
         <div id="secret-container">
             <input type="password" id="secret-input" placeholder="..." autocomplete="off">
-            <button class="nav-btn" id="enter-btn" onclick="checkCode()">enter</button>
-            <button id="secret-btn" onclick="transfer()">transfer</button>
+            <button id="check-btn" onclick="checkCode()">
+                <svg viewBox="0 0 24 24"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>
+            </button>
         </div>
+        <button id="secret-btn" onclick="transfer()">transfer</button>
     </div>
 
     <div id="navbar">
@@ -124,13 +136,13 @@
         </div>
         <div class="nav-right">
             <button class="icon-btn" onclick="panic()"><svg viewBox="0 0 24 24"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg></button>
-            <button class="icon-btn" onclick="tab('settings', this)"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.13,5.91,7.62,6.29L5.23,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.72,8.87 c-0.11,0.2,0.06,0.47,0.12,0.61l2.03,1.58C4.82,11.36,4.8,11.68,4.8,12c0,0.33,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c(0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></button>
+            <button class="icon-btn" onclick="tab('settings', this)"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.13,5.91,7.62,6.29L5.23,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.72,8.87 c-0.11,0.2,0.06,0.47,0.12,0.61l2.03,1.58C4.82,11.36,4.8,11.68,4.8,12c0,0.33,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></button>
         </div>
     </div>
 
     <div class="viewport">
         <div id="home" class="section active">
-            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">gelly v2.0.9</h1>
+            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">gelly v2.1.0</h1>
             <p class="home-desc">welcome back.</p>
         </div>
 
@@ -197,22 +209,21 @@
 
         function checkCode() {
             const input = document.getElementById('secret-input');
+            const container = document.getElementById('secret-container');
             const secretBtn = document.getElementById('secret-btn');
-            const enterBtn = document.getElementById('enter-btn');
 
             if (input.value === "gg55") {
-                secretBtn.classList.add('active');
-                input.style.display = 'none';
-                enterBtn.style.display = 'none';
+                container.classList.add('hidden'); // Fades out the input and check
+                setTimeout(() => {
+                    secretBtn.classList.add('active'); // Fades in the transfer button
+                }, 300);
             } else {
                 input.value = "";
             }
         }
 
         document.getElementById('secret-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                checkCode();
-            }
+            if (e.key === 'Enter') checkCode();
         });
 
         function draw(query = "") {
