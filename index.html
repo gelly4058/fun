@@ -39,7 +39,6 @@
         }
         #navbar.hidden { transform: translateY(-70px); opacity: 0; pointer-events: none; }
 
-        .nav-left, .nav-right { display: flex; gap: 10px; align-items: center; }
         .nav-btn { padding: 10px 18px; border-radius: 10px; color: var(--subtext); background: none; border: none; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: inherit; }
         .nav-btn:hover, .nav-btn.active { color: var(--accent); background: var(--secondary); }
         
@@ -51,67 +50,51 @@
         .section { display: none; padding: 40px 60px; animation: fadeIn 0.4s ease forwards; min-height: calc(100vh - 70px); position: relative; }
         .section.active { display: block; }
 
-        #sounds.section { padding: 0; height: calc(100vh - 70px); overflow: hidden; }
-        #sound-frame { width: 100%; height: 100%; border: none; display: block; }
-
-        .home-desc { color: var(--subtext); margin-top: 25px; font-weight: 600; font-size: 16px; line-height: 1.5; }
-
-        .search-container { margin-bottom: 30px; width: 100%; max-width: 400px; }
-        #game-search { width: 100%; padding: 12px 20px; background: var(--card); border: 1px solid var(--secondary); border-radius: 12px; color: var(--text); font-family: inherit; transition: var(--transition); }
+        #landing { height: 100vh; width: 100vw; display: flex; align-items: flex-start; justify-content: flex-start; padding: 20px; background: #0b0b0b; position: fixed; z-index: 9999; }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; }
-        .game-card { background: var(--card); border-radius: 15px; padding: 10px; text-align: center; transition: var(--transition); cursor: pointer; }
-        .game-card:hover { transform: translateY(-5px); background: var(--secondary); }
-        .game-card img { width: 100%; border-radius: 10px; aspect-ratio: 1; object-fit: cover; margin-bottom: 10px; }
-        .game-card span { font-size: 13px; font-weight: 600; color: var(--subtext); transition: var(--transition); display: block; }
-        .game-card:hover span { color: var(--accent); }
-
-        #save-status { position: absolute; bottom: 45px; left: 60px; font-size: 13px; font-weight: 600; color: var(--subtext); opacity: 0; transition: opacity 0.3s ease; }
-        #save-status.visible { opacity: 1; }
-        .save-btn-container { position: absolute; bottom: 40px; right: 60px; }
-
-        #player { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg); z-index: 200; opacity: 0; pointer-events: none; transform: scale(1.05); transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        #player.active { opacity: 1; pointer-events: all; transform: scale(1); }
-        .player-bar { height: 70px; background: var(--nav); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; border-bottom: 1px solid var(--secondary); position: relative; }
-        #player-title { position: absolute; left: 50%; transform: translateX(-50%); font-weight: 600; font-size: 16px; color: var(--subtext); }
-        
-        .loader-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; color: var(--subtext); font-weight: 600; pointer-events: none; width: 100%; text-align: center; }
-        #game-frame { position: relative; width: 100%; height: calc(100vh - 70px); border: none; z-index: 2; background: transparent; }
-
-        /* Landing & Secret Input Styles */
-        #landing { height: 100vh; width: 100vw; display: flex; align-items: flex-start; justify-content: flex-start; padding: 20px; background: #0b0b0b; position: fixed; z-index: 9999; pointer-events: all; }
-        
-        #secret-container { display: flex; align-items: center; gap: 5px; opacity: 1; transition: opacity 0.5s ease; }
+        /* Secret Input Area */
+        #secret-container { 
+            display: flex; align-items: center; justify-content: center; 
+            min-width: 120px; height: 42px; transition: opacity 0.4s ease; 
+        }
         #secret-container.hidden { opacity: 0; pointer-events: none; }
 
         #secret-input { 
-            background: transparent; border: none; color: var(--subtext); 
-            font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; 
-            padding: 10px 0px 10px 10px; width: 80px; text-transform: lowercase; 
-            user-select: text;
+            background: transparent; border: none; color: transparent; 
+            font-family: inherit; font-size: 14px; width: 60px; 
+            caret-color: var(--accent); position: absolute; z-index: 2;
         }
-        #secret-input::placeholder { color: var(--subtext); opacity: 0.3; }
+
+        /* Visual Dots for the input */
+        #dot-display { 
+            display: flex; gap: 4px; pointer-events: none; 
+            color: var(--subtext); opacity: 0.3; font-weight: 900;
+            font-size: 18px; line-height: 0; margin-top: -5px;
+        }
 
         #check-btn {
             background: none; border: none; color: var(--subtext); opacity: 0.3;
-            cursor: pointer; padding: 5px; display: flex; align-items: center; 
-            justify-content: center; transition: var(--transition);
+            cursor: pointer; padding: 10px; display: flex; align-items: center; 
+            transition: var(--transition); z-index: 3;
         }
         #check-btn:hover { opacity: 1; color: var(--accent); }
-        #check-btn svg { width: 16px; height: 16px; fill: currentColor; }
+        #check-btn svg { width: 18px; height: 18px; fill: currentColor; }
 
+        /* Icon Button Version of Transfer */
         #secret-btn { 
-            position: absolute; top: 20px; left: 20px; padding: 10px 18px; 
+            position: absolute; top: 20px; left: 20px; width: 42px; height: 42px;
             background: none; border: none; border-radius: 10px; color: var(--subtext); 
-            font-weight: 600; opacity: 0; transform: translateY(-10px);
-            transition: opacity 0.6s ease, transform 0.6s ease, background 0.3s ease, color 0.3s ease; 
-            font-family: inherit; visibility: hidden; pointer-events: none; 
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transform: scale(0.8);
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease; 
+            visibility: hidden; pointer-events: none; 
         }
+        #secret-btn svg { width: 22px; height: 22px; fill: currentColor; }
         #secret-btn.active { 
-            visibility: visible !important; pointer-events: all !important; 
-            cursor: pointer !important; opacity: 1; transform: translateY(0);
+            visibility: visible; pointer-events: all; 
+            opacity: 1; transform: scale(1);
         }
-        #secret-btn.active:hover { color: var(--accent); background: var(--secondary); }
+        #secret-btn:hover { color: var(--accent); background: var(--secondary); }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -120,12 +103,18 @@
 
     <div id="landing">
         <div id="secret-container">
-            <input type="password" id="secret-input" placeholder="..." autocomplete="off">
             <button id="check-btn" onclick="checkCode()">
                 <svg viewBox="0 0 24 24"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>
             </button>
+            <div style="position: relative; display: flex; align-items: center;">
+                <input type="password" id="secret-input" maxlength="4" placeholder="" autocomplete="off" oninput="updateVisualDots()">
+                <div id="dot-display">...</div>
+            </div>
         </div>
-        <button id="secret-btn" onclick="transfer()">transfer</button>
+        
+        <button id="secret-btn" onclick="transfer()">
+            <svg viewBox="0 0 24 24"><path d="M7,2V4H8V18A4,4 0 0,0 12,22A4,4 0 0,0 16,18V4H17V2H7M14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18V4H14V18Z"/></svg>
+        </button>
     </div>
 
     <div id="navbar">
@@ -136,76 +125,38 @@
         </div>
         <div class="nav-right">
             <button class="icon-btn" onclick="panic()"><svg viewBox="0 0 24 24"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg></button>
-            <button class="icon-btn" onclick="tab('settings', this)"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.13,5.91,7.62,6.29L5.23,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.72,8.87 c-0.11,0.2,0.06,0.47,0.12,0.61l2.03,1.58C4.82,11.36,4.8,11.68,4.8,12c0,0.33,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></button>
+            <button class="icon-btn" onclick="tab('settings', this)"><svg viewBox="0 0 24 24"><path d="M19.14,12.94...Z"/></svg></button>
         </div>
     </div>
 
     <div class="viewport">
         <div id="home" class="section active">
-            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">gelly v2.1.0</h1>
+            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">gelly v2.1.1</h1>
             <p class="home-desc">welcome back.</p>
         </div>
-
-        <div id="games" class="section">
-            <div class="search-container"><input type="text" id="game-search" placeholder="search games..." oninput="draw(this.value)"></div>
-            <div class="grid" id="game-grid"></div>
         </div>
-
-        <div id="sounds" class="section">
-            <iframe id="sound-frame"></iframe>
-        </div>
-
-        <div id="settings" class="section">
-            <p style="color: var(--subtext); font-weight: 600;">theme</p>
-            <select id="theme-select" onchange="markUnsaved()" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 200px; cursor: pointer;"><option value="dark">dark</option><option value="light">light</option></select>
-            <p style="color: var(--subtext); font-weight: 600; margin-top: 30px;">panic url</p>
-            <input type="text" id="panic-input" oninput="markUnsaved()" placeholder="https://google.com" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 350px;">
-            <span id="save-status">press save changes to save these</span>
-            <div class="save-btn-container"><button class="nav-btn active" onclick="saveSettings()">save changes</button></div>
-        </div>
-    </div>
 
     <div id="player">
         <div class="player-bar">
             <button class="icon-btn" onclick="closeGame()"><svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/></svg></button>
             <div id="player-title"></div>
-            <div class="nav-right">
-                <button class="icon-btn" onclick="panic()"><svg viewBox="0 0 24 24"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg></button>
-                <button class="icon-btn" onclick="toggleFS()"><svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
-            </div>
         </div>
-        <div class="loader-text"><p>loading contents...</p></div>
         <iframe id="game-frame"></iframe>
     </div>
 
     <script>
-        let hasUnsavedChanges = false;
-        const gameData = [
-            { name: "2048", id: "2048", img: "2048icon.png" },
-            { name: "bitlife", id: "bitlife", img: "bitlifeicon.png" },
-            { name: "cookie clicker", id: "cookieclicker", img: "cookieclickericon.png" },
-            { name: "crossy road", id: "crossyroad", img: "crossyroadicon.png" },
-            { name: "dino game", id: "dinogame", img: "dinogameicon.png" },
-            { name: "drive mad", id: "drivemad", img: "drivemadicon.png" },
-            { name: "duck life", id: "ducklife", img: "ducklifeicon.png" },
-            { name: "flappy bird", id: "flappy", img: "flappybirdicon.png" },
-            { name: "geometry dash", id: "geodash", img: "geodashicon.png" },
-            { name: "getting over it", id: "gettingoverit", img: "gettingoveriticon.png" },
-            { name: "minecraft", id: "minecraft", img: "minecrafticon.png" },
-            { name: "paper.io 2", id: "paperio2", img: "paperio2icon.png" },
-            { name: "red ball", id: "redball", img: "redballicon.png" },
-            { name: "run 3", id: "run3", img: "run3icon.png" },
-            { name: "slope", id: "slope", img: "slopeicon.png" },
-            { name: "stickman hook", id: "stickmanhook", img: "stickmanhookicon.png" },
-            { name: "tetris", id: "tetris", img: "tetrisicon.png" },
-            { name: "tiny fishing", id: "tinyfishing", img: "tinyfishingicon.png" },
-            { name: "vex 4", id: "vex4", img: "vex4icon.png" },
-            { name: "moto x3m", id: "motox3m", img: "motox3micon.png" },
-            { name: "drift hunters", id: "drifthunters", img: "drifthuntersicon.png" },
-            { name: "suika game", id: "suikagame", img: "suikagameicon.png" },
-            { name: "traffic run", id: "trafficrun", img: "trafficrunicon.png" },
-            { name: "worlds hardest game", id: "worldshardestgame", img: "worldshardestgameicon.png" }
-        ];
+        function updateVisualDots() {
+            const input = document.getElementById('secret-input');
+            const display = document.getElementById('dot-display');
+            // If empty, show placeholder dots. If typing, show one dot per char.
+            if (input.value.length === 0) {
+                display.innerText = "...";
+                display.style.opacity = "0.3";
+            } else {
+                display.innerText = ".".repeat(input.value.length);
+                display.style.opacity = "0.8";
+            }
+        }
 
         function checkCode() {
             const input = document.getElementById('secret-input');
@@ -213,88 +164,30 @@
             const secretBtn = document.getElementById('secret-btn');
 
             if (input.value === "gg55") {
-                container.classList.add('hidden'); // Fades out the input and check
+                container.classList.add('hidden');
                 setTimeout(() => {
-                    secretBtn.classList.add('active'); // Fades in the transfer button
-                }, 300);
+                    secretBtn.classList.add('active');
+                }, 400);
             } else {
                 input.value = "";
+                updateVisualDots();
             }
         }
 
-        document.getElementById('secret-input').addEventListener('keypress', function (e) {
+        document.getElementById('secret-input').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') checkCode();
         });
 
-        function draw(query = "") {
-            const grid = document.getElementById('game-grid');
-            grid.innerHTML = '';
-            const filtered = gameData.filter(g => g.name.toLowerCase().includes(query.toLowerCase()));
-            filtered.forEach(g => {
-                const div = document.createElement('div');
-                div.className = 'game-card';
-                div.onclick = () => openGame(g.id, g.name);
-                div.innerHTML = `<img src="icons/${g.img}"><span>${g.name}</span>`;
-                grid.appendChild(div);
-            });
-        }
-
-        function openGame(id, name) {
-            document.getElementById('navbar').classList.add('hidden');
-            document.getElementById('player').classList.add('active');
-            document.getElementById('player-title').innerText = name;
-            document.getElementById('game-frame').src = `games/${id}/index.html`;
-        }
-
-        function closeGame() {
-            document.getElementById('navbar').classList.remove('hidden');
-            document.getElementById('player').classList.remove('active');
-            setTimeout(() => { 
-                document.getElementById('game-frame').src = ''; 
-                document.getElementById('player-title').innerText = '';
-            }, 400);
-        }
-
+        // Basic functional logic (tabbing, frames, etc)
         function tab(id, el) {
-            if (hasUnsavedChanges && id !== 'settings') revertSettings();
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-btn, .icon-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if(el) el.classList.add('active');
+            el.classList.add('active');
         }
 
-        function markUnsaved() {
-            hasUnsavedChanges = true;
-            document.getElementById('save-status').innerText = "press save changes to save these";
-            document.getElementById('save-status').classList.add('visible');
-        }
-
-        function saveSettings() {
-            localStorage.setItem('gelly-theme', document.getElementById('theme-select').value);
-            localStorage.setItem('gelly-panic', document.getElementById('panic-input').value);
-            hasUnsavedChanges = false;
-            document.getElementById('save-status').innerText = "saved changes";
-            applyTheme(localStorage.getItem('gelly-theme'));
-            setTimeout(() => { if (!hasUnsavedChanges) document.getElementById('save-status').classList.remove('visible'); }, 2000);
-        }
-
-        function revertSettings() {
-            document.getElementById('theme-select').value = localStorage.getItem('gelly-theme') || 'dark';
-            document.getElementById('panic-input').value = localStorage.getItem('gelly-panic') || 'https://google.com';
-            hasUnsavedChanges = false;
-            document.getElementById('save-status').classList.remove('visible');
-            applyTheme(localStorage.getItem('gelly-theme') || 'dark');
-        }
-
-        function applyTheme(t) {
-            document.documentElement.setAttribute('data-theme', t);
-            const folder = t === 'light' ? 'soundboardlight' : 'soundboarddark';
-            document.getElementById('sound-frame').src = `soundboards/${folder}/index.html`;
-        }
-
-        function panic() { window.top.location.href = localStorage.getItem('gelly-panic') || 'https://google.com'; }
-        function toggleFS() { let f = document.getElementById('game-frame'); if (f.requestFullscreen) f.requestFullscreen(); }
-
+        function panic() { window.top.location.href = 'https://google.com'; }
+        
         function transfer() {
             const win = window.open();
             if (!win) return;
@@ -309,9 +202,6 @@
         if (window.self !== window.top || window.location.hash === "#cloaked") {
             document.getElementById('landing').style.display = 'none';
         }
-
-        draw();
-        revertSettings();
     </script>
 </body>
 </html>
