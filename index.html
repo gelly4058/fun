@@ -9,54 +9,55 @@
         :root {
             --bg: #0b0b0b;
             --nav: #080808;
-            --secondary: #1e1e1e;
+            --card: #141414;
             --accent: #ffffff;
+            --secondary: #1e1e1e;
+            --text: #eeeeee;
             --subtext: #777777;
             --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { box-sizing: border-box; text-transform: lowercase; user-select: none; outline: none; }
-        body, html { margin: 0; padding: 0; background: var(--bg); color: #eeeeee; font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; }
+        body, html { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; }
         
+        /* Landing & Secret Area */
         #landing { 
             height: 100vh; width: 100vw; display: flex; align-items: flex-start; justify-content: flex-start; 
             padding: 20px; background: #0b0b0b; position: fixed; z-index: 9999; 
         }
         
-        .secret-wrapper { position: relative; display: flex; align-items: center; height: 42px; }
+        .secret-wrapper { position: relative; display: flex; align-items: center; }
 
         #secret-container { 
             display: flex; align-items: center; transition: opacity 0.4s ease, transform 0.4s ease; 
         }
         #secret-container.hidden { opacity: 0; transform: scale(0.9); pointer-events: none; }
 
-        /* Hidden input that captures the typing */
         #secret-input { 
             background: transparent; border: none; color: transparent; 
-            font-family: inherit; font-size: 14px; width: 150px; 
-            caret-color: transparent; cursor: default; padding: 0;
+            font-family: inherit; font-size: 14px; width: 100px; 
+            caret-color: var(--subtext); cursor: text; padding: 0;
             position: absolute; left: 35px; z-index: 2;
         }
 
-        /* The visual dots that only appear as you type */
         #dot-display { 
-            padding-left: 10px; display: flex; gap: 4px; pointer-events: none; 
-            color: var(--subtext); font-weight: 900; font-size: 20px; 
-            line-height: 0; margin-top: -2px; min-width: 20px;
+            padding-left: 5px; display: flex; gap: 3px; pointer-events: none; 
+            color: var(--subtext); opacity: 0.4; font-weight: 900; font-size: 18px; 
+            line-height: 0; margin-top: -2px;
         }
 
         .icon-unit {
-            width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
-            color: var(--subtext); opacity: 0.3; transition: var(--transition);
+            width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+            color: var(--subtext); opacity: 0.4; transition: var(--transition);
         }
         
         #check-btn { background: none; border: none; cursor: pointer; padding: 0; }
         #check-btn:hover { opacity: 1; color: var(--accent); }
         #check-btn svg, #secret-btn svg { width: 18px; height: 18px; fill: currentColor; }
 
-        /* Secret Icon - Sits exactly where the check was */
+        /* Transfer Icon - Overlaying the check position */
         #secret-btn { 
-            position: absolute; top: 5px; left: 0;
+            position: absolute; top: 0; left: 0;
             background: none; border: none; border-radius: 8px;
             opacity: 0; transform: scale(0.8);
             transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease; 
@@ -67,9 +68,13 @@
         }
         #secret-btn.active:hover { opacity: 1; color: var(--accent); background: var(--secondary); }
 
+        /* Generic Navbar/Viewport styles */
         #navbar { height: 70px; background: var(--nav); border-bottom: 1px solid var(--secondary); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: fixed; top: 0; width: 100%; z-index: 100; }
         .nav-btn { padding: 10px 18px; border-radius: 10px; color: var(--subtext); background: none; border: none; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: inherit; }
         .nav-btn.active { color: var(--accent); background: var(--secondary); }
+        .viewport { padding-top: 70px; height: 100vh; }
+        .section { display: none; padding: 40px 60px; }
+        .section.active { display: block; }
     </style>
 </head>
 <body onload="focusInput()">
@@ -82,7 +87,7 @@
                 </button>
                 <div style="position: relative; display: flex; align-items: center;">
                     <input type="password" id="secret-input" autocomplete="off" oninput="updateVisualDots()">
-                    <div id="dot-display"></div>
+                    <div id="dot-display">...</div>
                 </div>
             </div>
 
@@ -93,11 +98,16 @@
     </div>
 
     <div id="navbar">
-        <div class="nav-left"><button class="nav-btn active">home</button></div>
+        <div class="nav-left">
+            <button class="nav-btn active">home</button>
+            <button class="nav-btn">games</button>
+        </div>
     </div>
 
-    <div style="padding-top: 100px; padding-left: 60px;">
-        <h1 style="font-size: 50px; font-weight: 900;">gelly v2.1.4</h1>
+    <div class="viewport">
+        <div class="section active">
+            <h1 style="font-size: 50px; font-weight: 900;">gelly v2.1.3</h1>
+        </div>
     </div>
 
     <script>
@@ -105,9 +115,9 @@
             document.getElementById('secret-input').focus();
         }
 
-        // Force focus on background click to ensure they can always type
-        document.getElementById('landing').addEventListener('click', () => {
-            if (!document.getElementById('secret-btn').classList.contains('active')) {
+        // Re-focus if they click the landing
+        document.getElementById('landing').addEventListener('click', (e) => {
+            if (e.target.id !== 'secret-btn' && !document.getElementById('secret-btn').classList.contains('active')) {
                 focusInput();
             }
         });
@@ -116,11 +126,13 @@
             const input = document.getElementById('secret-input');
             const display = document.getElementById('dot-display');
             
-            // Generate dots only for the current length of input
             if (input.value.length === 0) {
-                display.innerText = "";
+                display.innerText = "...";
+                display.style.opacity = "0.4";
             } else {
+                // Shows a dot for every character typed, replacing the "..."
                 display.innerText = ".".repeat(input.value.length);
+                display.style.opacity = "0.8";
             }
         }
 
