@@ -81,4 +81,243 @@
         /* Landing & Secret Input Styles */
         #landing { height: 100vh; width: 100vw; display: flex; align-items: flex-start; justify-content: flex-start; padding: 20px; background: #0b0b0b; position: fixed; z-index: 9999; pointer-events: all; }
         
-        #secret-container { display: flex; align-items: center; gap: 5px;
+        #secret-container { display: flex; align-items: center; position: absolute; top: 20px; left: 20px; opacity: 1; transition: opacity 0.5s ease; }
+        #secret-container.hidden { opacity: 0; pointer-events: none; }
+
+        #secret-input { 
+            background: transparent; border: none; color: var(--subtext); 
+            font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; 
+            padding: 10px 0; width: 80px; text-transform: lowercase; 
+            user-select: text; -webkit-text-security: disc;
+        }
+
+        #check-btn {
+            background: none; border: none; color: var(--subtext); opacity: 0.3;
+            cursor: pointer; padding: 10px; display: flex; align-items: center; 
+            justify-content: center; transition: var(--transition);
+        }
+        #check-btn:hover { opacity: 1; color: var(--accent); }
+        #check-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+        #secret-btn { 
+            position: absolute; top: 20px; left: 20px; width: 38px; height: 38px;
+            background: none; border: none; border-radius: 10px; color: var(--subtext); 
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transform: scale(0.8);
+            transition: opacity 0.6s ease, transform 0.6s ease, background 0.3s ease, color 0.3s ease; 
+            visibility: hidden; pointer-events: none; 
+        }
+        #secret-btn svg { width: 20px; height: 20px; fill: currentColor; }
+        #secret-btn.active { 
+            visibility: visible !important; pointer-events: all !important; 
+            cursor: pointer !important; opacity: 1; transform: scale(1);
+        }
+        #secret-btn.active:hover { color: var(--accent); background: var(--secondary); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div id="landing">
+        <div id="secret-container">
+            <button id="check-btn" onclick="checkCode()">
+                <svg viewBox="0 0 24 24"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>
+            </button>
+            <input type="text" id="secret-input" value="..." autocomplete="off" 
+                   onfocus="if(this.value==='...')this.value=''" 
+                   onblur="if(this.value==='')this.value='...'">
+        </div>
+        <button id="secret-btn" onclick="transfer()">
+            <svg viewBox="0 0 24 24"><path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/></svg>
+        </button>
+    </div>
+
+    <div id="navbar">
+        <div class="nav-left">
+            <button class="nav-btn active" onclick="tab('home', this)">home</button>
+            <button class="nav-btn" onclick="tab('games', this)">games</button>
+            <button class="nav-btn" onclick="tab('sounds', this)">soundboard</button>
+        </div>
+        <div class="nav-right">
+            <button class="icon-btn" onclick="panic()"><svg viewBox="0 0 24 24"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg></button>
+            <button class="icon-btn" onclick="tab('settings', this)"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.13,5.91,7.62,6.29L5.23,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.72,8.87 c-0.11,0.2,0.06,0.47,0.12,0.61l2.03,1.58C4.82,11.36,4.8,11.68,4.8,12c0,0.33,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></button>
+        </div>
+    </div>
+
+    <div class="viewport">
+        <div id="home" class="section active">
+            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">gelly v2.1.2</h1>
+            <p class="home-desc">welcome back.</p>
+        </div>
+
+        <div id="games" class="section">
+            <div class="search-container"><input type="text" id="game-search" placeholder="search games..." oninput="draw(this.value)"></div>
+            <div class="grid" id="game-grid"></div>
+        </div>
+
+        <div id="sounds" class="section">
+            <iframe id="sound-frame"></iframe>
+        </div>
+
+        <div id="settings" class="section">
+            <p style="color: var(--subtext); font-weight: 600;">theme</p>
+            <select id="theme-select" onchange="markUnsaved()" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 200px; cursor: pointer;"><option value="dark">dark</option><option value="light">light</option></select>
+            <p style="color: var(--subtext); font-weight: 600; margin-top: 30px;">panic url</p>
+            <input type="text" id="panic-input" oninput="markUnsaved()" placeholder="https://google.com" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 350px;">
+            <span id="save-status">press save changes to save these</span>
+            <div class="save-btn-container"><button class="nav-btn active" onclick="saveSettings()">save changes</button></div>
+        </div>
+    </div>
+
+    <div id="player">
+        <div class="player-bar">
+            <button class="icon-btn" onclick="closeGame()"><svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/></svg></button>
+            <div id="player-title"></div>
+            <div class="nav-right">
+                <button class="icon-btn" onclick="panic()"><svg viewBox="0 0 24 24"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg></button>
+                <button class="icon-btn" onclick="toggleFS()"><svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
+            </div>
+        </div>
+        <div class="loader-text"><p>loading contents...</p></div>
+        <iframe id="game-frame"></iframe>
+    </div>
+
+    <script>
+        let hasUnsavedChanges = false;
+        const gameData = [
+            { name: "2048", id: "2048", img: "2048icon.png" },
+            { name: "bitlife", id: "bitlife", img: "bitlifeicon.png" },
+            { name: "cookie clicker", id: "cookieclicker", img: "cookieclickericon.png" },
+            { name: "crossy road", id: "crossyroad", img: "crossyroadicon.png" },
+            { name: "dino game", id: "dinogame", img: "dinogameicon.png" },
+            { name: "drive mad", id: "drivemad", img: "drivemadicon.png" },
+            { name: "duck life", id: "ducklife", img: "ducklifeicon.png" },
+            { name: "flappy bird", id: "flappy", img: "flappybirdicon.png" },
+            { name: "geometry dash", id: "geodash", img: "geodashicon.png" },
+            { name: "getting over it", id: "gettingoverit", img: "gettingoveriticon.png" },
+            { name: "minecraft", id: "minecraft", img: "minecrafticon.png" },
+            { name: "paper.io 2", id: "paperio2", img: "paperio2icon.png" },
+            { name: "red ball", id: "redball", img: "redballicon.png" },
+            { name: "run 3", id: "run3", img: "run3icon.png" },
+            { name: "slope", id: "slope", img: "slopeicon.png" },
+            { name: "stickman hook", id: "stickmanhook", img: "stickmanhookicon.png" },
+            { name: "tetris", id: "tetris", img: "tetrisicon.png" },
+            { name: "tiny fishing", id: "tinyfishing", img: "tinyfishingicon.png" },
+            { name: "vex 4", id: "vex4", img: "vex4icon.png" },
+            { name: "moto x3m", id: "motox3m", img: "motox3micon.png" },
+            { name: "drift hunters", id: "drifthunters", img: "drifthuntersicon.png" },
+            { name: "suika game", id: "suikagame", img: "suikagameicon.png" },
+            { name: "traffic run", id: "trafficrun", img: "trafficrunicon.png" },
+            { name: "worlds hardest game", id: "worldshardestgame", img: "worldshardestgameicon.png" }
+        ];
+
+        function checkCode() {
+            const input = document.getElementById('secret-input');
+            const container = document.getElementById('secret-container');
+            const secretBtn = document.getElementById('secret-btn');
+
+            if (input.value === "gg55") {
+                container.classList.add('hidden'); 
+                setTimeout(() => {
+                    secretBtn.classList.add('active'); 
+                }, 300);
+            } else {
+                input.value = "...";
+                input.blur();
+            }
+        }
+
+        document.getElementById('secret-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') checkCode();
+        });
+
+        function draw(query = "") {
+            const grid = document.getElementById('game-grid');
+            grid.innerHTML = '';
+            const filtered = gameData.filter(g => g.name.toLowerCase().includes(query.toLowerCase()));
+            filtered.forEach(g => {
+                const div = document.createElement('div');
+                div.className = 'game-card';
+                div.onclick = () => openGame(g.id, g.name);
+                div.innerHTML = `<img src="icons/${g.img}"><span>${g.name}</span>`;
+                grid.appendChild(div);
+            });
+        }
+
+        function openGame(id, name) {
+            document.getElementById('navbar').classList.add('hidden');
+            document.getElementById('player').classList.add('active');
+            document.getElementById('player-title').innerText = name;
+            document.getElementById('game-frame').src = `games/${id}/index.html`;
+        }
+
+        function closeGame() {
+            document.getElementById('navbar').classList.remove('hidden');
+            document.getElementById('player').classList.remove('active');
+            setTimeout(() => { 
+                document.getElementById('game-frame').src = ''; 
+                document.getElementById('player-title').innerText = '';
+            }, 400);
+        }
+
+        function tab(id, el) {
+            if (hasUnsavedChanges && id !== 'settings') revertSettings();
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn, .icon-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(el) el.classList.add('active');
+        }
+
+        function markUnsaved() {
+            hasUnsavedChanges = true;
+            document.getElementById('save-status').innerText = "press save changes to save these";
+            document.getElementById('save-status').classList.add('visible');
+        }
+
+        function saveSettings() {
+            localStorage.setItem('gelly-theme', document.getElementById('theme-select').value);
+            localStorage.setItem('gelly-panic', document.getElementById('panic-input').value);
+            hasUnsavedChanges = false;
+            document.getElementById('save-status').innerText = "saved changes";
+            applyTheme(localStorage.getItem('gelly-theme'));
+            setTimeout(() => { if (!hasUnsavedChanges) document.getElementById('save-status').classList.remove('visible'); }, 2000);
+        }
+
+        function revertSettings() {
+            document.getElementById('theme-select').value = localStorage.getItem('gelly-theme') || 'dark';
+            document.getElementById('panic-input').value = localStorage.getItem('gelly-panic') || 'https://google.com';
+            hasUnsavedChanges = false;
+            document.getElementById('save-status').classList.remove('visible');
+            applyTheme(localStorage.getItem('gelly-theme') || 'dark');
+        }
+
+        function applyTheme(t) {
+            document.documentElement.setAttribute('data-theme', t);
+            const folder = t === 'light' ? 'soundboardlight' : 'soundboarddark';
+            document.getElementById('sound-frame').src = `soundboards/${folder}/index.html`;
+        }
+
+        function panic() { window.top.location.href = localStorage.getItem('gelly-panic') || 'https://google.com'; }
+        function toggleFS() { let f = document.getElementById('game-frame'); if (f.requestFullscreen) f.requestFullscreen(); }
+
+        function transfer() {
+            const win = window.open('about:blank');
+            if (!win) return;
+            win.document.body.style.margin = '0';
+            const ifr = win.document.createElement('iframe');
+            ifr.style = "border:none; width:100%; height:100vh;";
+            ifr.src = window.location.href + "#cloaked";
+            win.document.body.appendChild(ifr);
+            window.close();
+        }
+
+        if (window.self !== window.top || window.location.hash === "#cloaked") {
+            document.getElementById('landing').style.display = 'none';
+        }
+
+        draw();
+        revertSettings();
+    </script>
+</body>
+</html>
