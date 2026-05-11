@@ -86,7 +86,7 @@
 
         #secret-input { 
             background: transparent; border: none; color: var(--subtext); 
-            font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; 
+            font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 600; 
             padding: 10px 0; width: 80px; text-transform: lowercase; 
             user-select: text; -webkit-text-security: disc;
         }
@@ -107,12 +107,12 @@
             transition: opacity 0.6s ease, transform 0.6s ease, background 0.3s ease, color 0.3s ease; 
             visibility: hidden; pointer-events: none; 
         }
-        #secret-btn svg { width: 20px; height: 20px; fill: currentColor; }
+        #secret-btn svg { width: 18px; height: 18px; fill: currentColor; }
         #secret-btn.active { 
             visibility: visible !important; pointer-events: all !important; 
-            cursor: pointer !important; opacity: 1; transform: scale(1);
+            cursor: pointer !important; opacity: 0.3; transform: scale(1);
         }
-        #secret-btn.active:hover { color: var(--accent); background: var(--secondary); }
+        #secret-btn.active:hover { color: var(--accent); opacity: 1; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -147,7 +147,7 @@
 
     <div class="viewport">
         <div id="home" class="section active">
-            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">gelly v2.1.2</h1>
+            <h1 style="font-size: 50px; font-weight: 900; margin-bottom: 0;">gelly v2.1.9</h1>
             <p class="home-desc">welcome back.</p>
         </div>
 
