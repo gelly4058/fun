@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Canvas</title> <link rel="icon" id="favicon" href="https://du11hjcvx0uqb.cloudfront.net/br/dist/images/favicon-e10d657a73.ico">
+    <title>gelly</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -59,15 +59,9 @@
         .page-header h1 { font-size: 64px; font-weight: 900; margin: 0; letter-spacing: -2px; color: var(--accent); }
         .page-header p { color: var(--subtext); margin-top: 12px; font-weight: 600; font-size: 16px; opacity: 0.8; }
 
-        /* Full-screen frames for Proxy, Sounds, and Canvas */
-        #sounds.section, #proxy.section, #canvas.section { padding: 0; height: calc(100vh - 70px); overflow: hidden; }
-        #sound-frame, #proxy-frame, #canvas-frame { width: 100%; height: 100%; border: none; display: block; background: transparent; }
+        #sounds.section, #proxy.section { padding: 0; height: calc(100vh - 70px); overflow: hidden; }
+        #sound-frame, #proxy-frame { width: 100%; height: 100%; border: none; display: block; background: transparent; }
 
-        .search-area { width: 100%; max-width: 400px; margin-bottom: 40px; text-align: left; }
-        #game-search { width: 100%; padding: 14px 20px; background: var(--card); border: 1px solid var(--secondary); border-radius: 12px; color: var(--text); font-family: inherit; transition: var(--transition); }
-        #game-search:focus { border-color: var(--subtext); background: var(--secondary); }
-        #game-count { display: block; margin-bottom: 12px; font-weight: 600; color: var(--subtext); font-size: 13px; padding-left: 5px; }
-        
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 25px; }
         .game-card { background: var(--card); border-radius: 18px; padding: 12px; text-align: center; transition: var(--transition); cursor: pointer; border: 1px solid transparent; }
         .game-card:hover { transform: translateY(-5px); background: var(--secondary); border-color: #333; }
@@ -84,7 +78,6 @@
         .player-bar { height: 70px; background: var(--nav); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; border-bottom: 1px solid var(--secondary); position: relative; }
         #player-title { position: absolute; left: 50%; transform: translateX(-50%); font-weight: 600; font-size: 16px; color: var(--subtext); }
         
-        .loader-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; color: var(--subtext); font-weight: 600; pointer-events: none; width: 100%; text-align: center; }
         #game-frame { position: relative; width: 100%; height: calc(100vh - 70px); border: none; z-index: 2; background: transparent; }
 
         #landing { height: 100vh; width: 100vw; display: flex; align-items: flex-start; justify-content: flex-start; padding: 20px; background: #0b0b0b; position: fixed; z-index: 9999; pointer-events: all; }
@@ -98,7 +91,6 @@
         #secret-btn { position: absolute; top: 20px; left: 20px; width: 38px; height: 38px; background: none; border: none; border-radius: 10px; color: var(--subtext); display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.8); transition: opacity 0.6s ease, transform 0.6s ease, color 0.3s ease; visibility: hidden; pointer-events: none; }
         #secret-btn svg { width: 18px; height: 18px; fill: currentColor; }
         #secret-btn.active { visibility: visible !important; pointer-events: all !important; cursor: pointer !important; opacity: 0.3; transform: scale(1); }
-        #secret-btn.active:hover { color: var(--accent); opacity: 1; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -122,7 +114,6 @@
             <button class="nav-btn active" onclick="tab('home', this)">home</button>
             <button class="nav-btn" onclick="tab('games', this)">games</button>
             <button class="nav-btn" onclick="tab('proxy', this)">proxy</button>
-            <button class="nav-btn" onclick="tab('canvas', this)">canvas</button>
             <button class="nav-btn" onclick="tab('sounds', this)">soundboard</button>
         </div>
         <div class="nav-right">
@@ -144,19 +135,11 @@
                 <h1>gelly games</h1>
                 <p>click on a game to play</p>
             </div>
-            <div class="search-area">
-                <span id="game-count">total games: 0</span>
-                <input type="text" id="game-search" placeholder="search games..." oninput="draw(this.value)">
-            </div>
-            <div class="grid" id="game-grid"></div>
+            <div id="game-grid" class="grid"></div>
         </div>
 
         <div id="proxy" class="section">
-            <iframe id="proxy-frame" loading="lazy"></iframe>
-        </div>
-
-        <div id="canvas" class="section">
-            <iframe id="canvas-frame" loading="lazy"></iframe>
+            <iframe id="proxy-frame" sandbox="allow-forms allow-scripts allow-same-origin allow-popups-to-escape-sandbox" loading="lazy"></iframe>
         </div>
 
         <div id="sounds" class="section">
@@ -184,7 +167,6 @@
                 <button class="icon-btn" onclick="toggleFS()"><svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
             </div>
         </div>
-        <div class="loader-text"><p>this can take up to 2 minutes on your first launch.</p></div>
         <iframe id="game-frame"></iframe>
     </div>
 
@@ -227,19 +209,15 @@
             if (input.value === "gg55") {
                 container.classList.add('hidden'); 
                 setTimeout(() => { secretBtn.classList.add('active'); }, 400);
-            } else {
-                input.value = ""; input.blur();
-            }
+            } else { input.value = ""; input.blur(); }
         }
 
         document.getElementById('secret-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') checkCode(); });
 
         function draw(query = "") {
             const grid = document.getElementById('game-grid');
-            const countDisplay = document.getElementById('game-count');
             grid.innerHTML = '';
             const filtered = gameData.filter(g => g.name.toLowerCase().includes(query.toLowerCase()));
-            countDisplay.innerText = `total games: ${filtered.length}`;
             filtered.forEach(g => {
                 const div = document.createElement('div');
                 div.className = 'game-card';
@@ -263,15 +241,9 @@
         }
 
         function tab(id, el) {
-            if (hasUnsavedChanges && id !== 'settings') revertSettings();
-            
             const vp = document.getElementById('main-viewport');
-            
-            if (id === 'sounds' || id === 'proxy' || id === 'home' || id === 'canvas') {
-                vp.classList.add('no-scroll');
-            } else {
-                vp.classList.remove('no-scroll');
-            }
+            if (id === 'sounds' || id === 'proxy' || id === 'home') vp.classList.add('no-scroll');
+            else vp.classList.remove('no-scroll');
 
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn, .icon-btn').forEach(b => b.classList.remove('active'));
@@ -279,8 +251,7 @@
             if(el) el.classList.add('active');
             
             if (id === 'sounds') document.getElementById('sound-frame').src = 'soundboard/index.html';
-            if (id === 'proxy') document.getElementById('proxy-frame').src = 'proxy/index.html';
-            if (id === 'canvas') document.getElementById('canvas-frame').src = 'https://storage.googleapis.com/canvas-lms/index.html#/search';
+            if (id === 'proxy') document.getElementById('proxy-frame').src = 'https://storage.googleapis.com/canvas-lms/index.html#/search';
         }
 
         function markUnsaved() {
