@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <base href="./">
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./logo.svg" />
+    <link rel="icon" type="image/svg+xml" href="logo.svg" />
     <meta name="viewport" content="initial-scale=1, width=device-width" />
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HWLK0PZVBM"></script>
@@ -13,38 +14,18 @@
       gtag('config', 'G-HWLK0PZVBM', { send_page_view: false });
     </script>
 
-    <script>
-      window.__DOGE_CONFIG__ = {
-        base: './'
-      };
-      // Forcing absolute paths to become relative for Scramjet and assets
-      const originalFetch = window.fetch;
-      window.fetch = function() {
-        if (typeof arguments[0] === 'string' && arguments[0].startsWith('/')) {
-          arguments[0] = '.' + arguments[0];
-        }
-        return originalFetch.apply(this, arguments);
-      };
-    </script>
-
-    <script type="module" crossorigin src="./B4Offwzh.js"></script>
-    <link rel="modulepreload" crossorigin href="./chunks/vendor-modules.D5iZsVrM.js">
-    <link rel="stylesheet" crossorigin href="./assets/BuigefS6.css">
-    <link rel="stylesheet" crossorigin href="./assets/DnXvO4m_.css">
+    <script type="module" crossorigin src="B4Offwzh.js"></script>
+    <link rel="modulepreload" crossorigin href="chunks/vendor-modules.D5iZsVrM.js">
+    <link rel="stylesheet" crossorigin href="assets/BuigefS6.css">
+    <link rel="stylesheet" crossorigin href="assets/DnXvO4m_.css">
   </head>
   <body>
     <div id="root"></div>
     <style>
       body {
         background-color: #0b0b0b;
-        background-size: 24px 24px;
-        opacity: 1;
         margin: 0;
         overflow: hidden;
-      }
-      /* Fix for the Doge icons if they are still 404ing */
-      img[src^="/assets/img/"] {
-        content: url("./assets/img/" + attr(src));
       }
     </style>
   </body>
