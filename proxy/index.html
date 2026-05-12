@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <base href="./">
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="logo.svg" />
+    <link rel="icon" type="image/svg+xml" href="/proxy/logo.svg" />
     <meta name="viewport" content="initial-scale=1, width=device-width" />
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HWLK0PZVBM"></script>
@@ -14,18 +13,22 @@
       gtag('config', 'G-HWLK0PZVBM', { send_page_view: false });
     </script>
 
-    <script type="module" crossorigin src="B4Offwzh.js"></script>
-    <link rel="modulepreload" crossorigin href="chunks/vendor-modules.D5iZsVrM.js">
-    <link rel="stylesheet" crossorigin href="assets/BuigefS6.css">
-    <link rel="stylesheet" crossorigin href="assets/DnXvO4m_.css">
+    <script type="module" crossorigin src="/proxy/B4Offwzh.js"></script>
+    <link rel="modulepreload" crossorigin href="/proxy/chunks/vendor-modules.D5iZsVrM.js">
+    <link rel="stylesheet" crossorigin href="/proxy/assets/BuigefS6.css">
+    <link rel="stylesheet" crossorigin href="/proxy/assets/DnXvO4m_.css">
   </head>
   <body>
     <div id="root"></div>
     <style>
       body {
-        background-color: #0b0b0b;
+        background-color: #0b0b0b !important;
+        background-image: none !important; /* Forces dark background if image fails */
         margin: 0;
+        padding: 0;
         overflow: hidden;
+        width: 100vw;
+        height: 100vh;
       }
     </style>
   </body>
