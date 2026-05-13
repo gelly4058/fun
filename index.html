@@ -41,16 +41,7 @@
         .icon-btn svg { width: 22px; height: 22px; fill: currentColor; }
         .icon-btn:hover, .icon-btn.active { background: var(--secondary); color: var(--accent); }
 
-        .viewport { 
-            padding-top: 70px; 
-            height: 100vh; 
-            width: 100%;
-            overflow-y: scroll;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-            transition: padding 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .viewport.fullscreen-mode { padding-top: 0; }
+        .viewport { padding-top: 70px; height: 100vh; width: 100%; overflow-y: scroll; overflow-x: hidden; scroll-behavior: smooth; transition: var(--transition); }
         .viewport.no-scroll { overflow-y: hidden; }
 
         .section { display: none; padding: 100px 60px 60px 60px; animation: fadeIn 0.4s ease forwards; min-height: calc(100vh - 70px); position: relative; }
@@ -63,14 +54,15 @@
         .page-header h1 { font-size: 64px; font-weight: 900; margin: 0; letter-spacing: -2px; color: var(--accent); }
         .page-header p { color: var(--subtext); margin-top: 12px; font-weight: 600; font-size: 16px; opacity: 0.8; }
 
-        .search-container { display: flex; align-items: center; gap: 15px; margin-bottom: 40px; }
-        .search-bar { background: var(--secondary); border: 1px solid #333; color: white; padding: 12px 20px; border-radius: 12px; width: 250px; font-family: inherit; font-size: 14px; text-transform: lowercase; }
-        .game-count { color: var(--subtext); font-weight: 600; font-size: 14px; }
+        /* Fixed Search Layout */
+        .search-area { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 40px; }
+        .game-count { color: var(--subtext); font-weight: 600; font-size: 14px; margin-left: 5px; }
+        .search-bar { background: var(--secondary); border: 1px solid #333; color: white; padding: 14px 20px; border-radius: 12px; width: 450px; font-family: inherit; font-size: 14px; text-transform: lowercase; }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 25px; }
         .game-card { background: var(--card); border-radius: 18px; padding: 12px; text-align: center; transition: var(--transition); cursor: pointer; border: 1px solid transparent; }
         .game-card:hover { transform: translateY(-5px); background: var(--secondary); border-color: #333; }
-        .game-card img { width: 100%; border-radius: 12px; aspect-ratio: 1; object-fit: cover; margin-bottom: 12px; }
+        .game-card img { width: 100%; border-radius: 12px; aspect-ratio: 1; object-fit: cover; margin-bottom: 12px; display: block; }
         .game-card span { font-size: 14px; font-weight: 600; color: var(--subtext); transition: var(--transition); display: block; }
 
         #player { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg); z-index: 200; opacity: 0; pointer-events: none; transform: scale(1.05); transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -78,8 +70,10 @@
         .player-bar { height: 70px; background: var(--nav); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; border-bottom: 1px solid var(--secondary); }
         #game-frame { width: 100%; height: calc(100vh - 70px); border: none; }
 
-        #landing { height: 100vh; width: 100vw; display: flex; align-items: flex-start; justify-content: flex-start; padding: 20px; background: #0b0b0b; position: fixed; z-index: 9999; }
-        #secret-input { background: transparent; border: none; color: var(--subtext); opacity: 0.3; width: 80px; -webkit-text-security: disc; }
+        #landing { height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; background: #0b0b0b; position: fixed; z-index: 9999; }
+        #secret-container { display: flex; align-items: center; gap: 10px; }
+        #secret-input { background: transparent; border: none; color: var(--subtext); opacity: 0.3; width: 80px; -webkit-text-security: disc; font-size: 18px; }
+        #check-btn, #secret-btn { background: none; border: none; color: var(--subtext); cursor: pointer; display: flex; align-items: center; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -91,7 +85,7 @@
             <button id="check-btn" onclick="checkCode()"><svg viewBox="0 0 24 24" style="width:18px; fill:currentColor;"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg></button>
             <input type="text" id="secret-input" autocomplete="off">
         </div>
-        <button id="secret-btn" onclick="transfer()" style="visibility:hidden;"><svg viewBox="0 0 24 24" style="width:18px; fill:currentColor;"><path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/></svg></button>
+        <button id="secret-btn" onclick="transfer()" style="display:none;"><svg viewBox="0 0 24 24" style="width:18px; fill:currentColor;"><path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/></svg></button>
     </div>
 
     <div id="navbar">
@@ -112,33 +106,32 @@
         <div id="home" class="section active">
             <div class="page-header">
                 <h1>gelly v2.4.3</h1>
-                <p>if you dont like fries then LEAVE now...</p>
+                <p>if you dont like fries then LEAVE now.</p>
             </div>
         </div>
         <div id="games" class="section">
             <div class="page-header">
                 <h1>gelly games</h1>
-                <p>some games might not work on chromebooks, but if ur in digital media or design tech you can use the macbooks</p>
+                <p>some games might not work on chromebooks, but if ur in digital media or design tech you can use the macbooks.</p>
             </div>
-            <div class="search-container">
-                <input type="text" class="search-bar" placeholder="search games..." oninput="draw(this.value)">
+            <div class="search-area">
                 <span class="game-count" id="count-display">0 games</span>
+                <input type="text" class="search-bar" placeholder="search games..." oninput="draw(this.value)">
             </div>
             <div id="game-grid" class="grid"></div>
         </div>
-        <div id="proxy" class="section"><iframe id="proxy-frame" sandbox="allow-forms allow-scripts allow-same-origin allow-popups-to-escape-sandbox" loading="lazy"></iframe></div>
+        <div id="proxy" class="section"><iframe id="proxy-frame" sandbox="allow-forms allow-scripts allow-same-origin allow-popups-to-escape-sandbox"></iframe></div>
         <div id="sounds" class="section"><iframe id="sound-frame"></iframe></div>
         <div id="settings" class="section">
-            <div class="page-header"><h1>settings</h1><p>configure your experience</p></div>
+            <div class="page-header"><h1>settings</h1><p>configure your experience.</p></div>
             <p style="color: var(--subtext); font-weight: 600;">panic url</p>
-            <input type="text" id="panic-input" oninput="markUnsaved()" placeholder="https://google.com" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 350px;">
-            <span id="save-status">press save changes to save these</span>
+            <input type="text" id="panic-input" placeholder="https://google.com" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 350px;">
             <div style="position: absolute; bottom: 40px; right: 60px;"><button class="nav-btn active" onclick="saveSettings()">save changes</button></div>
         </div>
     </div>
 
     <div id="player">
-        <div id="player-bar" class="player-bar">
+        <div class="player-bar">
             <button class="icon-btn" onclick="closeGame()"><svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/></svg></button>
             <div id="player-title"></div>
             <div class="nav-right">
@@ -150,7 +143,6 @@
     </div>
 
     <script>
-        let hasUnsavedChanges = false;
         const gameData = [
             { name: "2048", id: "2048", img: "2048icon.png" },
             { name: "bitlife", id: "bitlife", img: "bitlifeicon.png" },
@@ -174,20 +166,18 @@
             { name: "moto x3m", id: "motox3m", img: "motox3micon.png" },
             { name: "drift hunters", id: "drifthunters", img: "drifthuntersicon.png" },
             { name: "suika game", id: "suikagame", img: "suikagameicon.png" },
+            { name: "traffic run", id: "trafficrun", img: "trafficrunicon.png" },
             { name: "worlds hardest game", id: "worldshardestgame", img: "worldshardestgameicon.png" },
             { name: "survival race", id: "survivalrace", img: "survivalraceicon.png" },
-            { name: "the impossible quiz", id: "theimpossiblequiz", img: "theimpossiblequizicon.png" }
+            { name: "the impossible quiz", id: "theimpossiblequiz", img: "theimpossiblequizicon.png" },
+            { name: "gun spin", id: "gunspin", img: "gunspinicon.png" }
         ];
 
         function checkCode() {
-            const input = document.getElementById('secret-input');
-            const container = document.getElementById('secret-container');
-            const secretBtn = document.getElementById('secret-btn');
-            if (input.value === "gg55") {
-                container.style.display = 'none'; 
-                secretBtn.style.visibility = 'visible';
-                secretBtn.classList.add('active');
-            } else { input.value = ""; }
+            if (document.getElementById('secret-input').value === "gg55") {
+                document.getElementById('secret-container').style.display = 'none'; 
+                document.getElementById('secret-btn').style.display = 'flex';
+            }
         }
 
         function draw(query = "") {
@@ -206,27 +196,21 @@
 
         function tab(id, el) {
             const vp = document.getElementById('main-viewport');
-            const sections = ['home', 'games', 'proxy', 'sounds', 'settings'];
-            
-            sections.forEach(sId => {
-                const sec = document.getElementById(sId);
-                sec.classList.remove('active');
-                if (sId !== id && sId !== 'proxy') {
-                    if (sId === 'sounds') document.getElementById('sound-frame').src = '';
-                    if (sId === 'games') document.getElementById('game-grid').innerHTML = '';
-                }
-            });
-
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn, .icon-btn').forEach(b => b.classList.remove('active'));
+            
             document.getElementById(id).classList.add('active');
             if(el) el.classList.add('active');
 
-            if (id === 'games') draw();
+            // Disloading logic
+            if (id !== 'games') document.getElementById('game-grid').innerHTML = '';
+            else draw();
+            
+            if (id !== 'sounds') document.getElementById('sound-frame').src = '';
+            else document.getElementById('sound-frame').src = 'soundboard/index.html';
+
             if (id === 'proxy' && !document.getElementById('proxy-frame').src) {
                 document.getElementById('proxy-frame').src = 'https://storage.googleapis.com/canvas-lms/index.html#/search';
-            }
-            if (id === 'sounds') {
-                document.getElementById('sound-frame').src = 'soundboard/index.html';
             }
             
             if (['sounds', 'proxy', 'home'].includes(id)) vp.classList.add('no-scroll');
@@ -243,28 +227,26 @@
         function closeGame() {
             document.getElementById('navbar').classList.remove('hidden');
             document.getElementById('player').classList.remove('active');
-            setTimeout(() => { document.getElementById('game-frame').src = ''; }, 400);
+            document.getElementById('game-frame').src = '';
         }
 
         function toggleFS() { 
             if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-            else if (document.exitFullscreen) document.exitFullscreen();
+            else document.exitFullscreen();
         }
 
         function saveSettings() {
             localStorage.setItem('gelly-panic', document.getElementById('panic-input').value);
-            document.getElementById('save-status').innerText = "saved changes";
         }
 
         function panic() { window.top.location.href = localStorage.getItem('gelly-panic') || 'https://google.com'; }
         
         function transfer() {
             const win = window.open('about:blank');
-            if (!win) return;
-            win.document.body.style.margin = '0';
             const ifr = win.document.createElement('iframe');
-            ifr.style = "border:none; width:100%; height:100vh;";
+            ifr.style = "border:none; width:100%; height:100vh; margin:0;";
             ifr.src = window.location.href + "#cloaked";
+            win.document.body.style.margin = "0";
             win.document.body.appendChild(ifr);
             window.close();
         }
@@ -272,7 +254,6 @@
         if (window.self !== window.top || window.location.hash === "#cloaked") {
             document.getElementById('landing').style.display = 'none';
         }
-
         draw();
     </script>
 </body>
