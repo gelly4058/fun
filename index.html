@@ -25,19 +25,13 @@
         * { box-sizing: border-box; text-transform: lowercase; user-select: none; outline: none; }
         body, html { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; height: 100vh; width: 100%; overflow: hidden; }
         
-        /* 1. ORIGINAL LANDING PAGE */
-        #landing { height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; background: #0b0b0b; position: fixed; z-index: 9999; }
-        #secret-container { display: flex; align-items: center; }
-        #secret-input { background: transparent; border: none; color: var(--subtext); opacity: 0.3; font-size: 14px; width: 80px; -webkit-text-security: disc; }
-        #secret-btn { display: none; position: absolute; top: 20px; left: 20px; }
-
-        /* NAVBAR */
         #navbar {
             height: 70px; background: var(--nav); border-bottom: 1px solid var(--secondary);
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 30px; position: fixed; top: 0; width: 100%; z-index: 100;
             transition: var(--transition);
         }
+        #navbar.hidden { transform: translateY(-70px); opacity: 0; pointer-events: none; }
 
         .nav-left, .nav-right { display: flex; gap: 10px; align-items: center; }
         .nav-btn { padding: 10px 18px; border-radius: 10px; color: var(--subtext); background: none; border: none; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: inherit; }
@@ -47,61 +41,73 @@
         .icon-btn svg { width: 22px; height: 22px; fill: currentColor; }
         .icon-btn:hover, .icon-btn.active { background: var(--secondary); color: var(--accent); }
 
-        /* STOP SOUNDS NAV BUTTON (GRAY, SMOOTH APPEAR) */
-        #nav-stop-btn {
-            background: #222222; color: #888888;
-            width: 0; margin: 0; padding: 0; opacity: 0; overflow: hidden;
-            pointer-events: none; transition: width 0.4s ease, opacity 0.4s ease, margin 0.4s ease, background 0.2s, color 0.2s;
+        .viewport { 
+            padding-top: 70px; 
+            height: 100vh; 
+            width: 100%;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            transition: padding 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        #nav-stop-btn.visible { width: 42px; margin-left: 5px; opacity: 1; pointer-events: all; }
-        #nav-stop-btn:hover { background: #333333; color: #ffffff; }
-
-        /* VIEWPORT */
-        .viewport { padding-top: 70px; height: 100vh; width: 100%; overflow-y: scroll; overflow-x: hidden; scroll-behavior: smooth; }
+        .viewport.fullscreen-mode { padding-top: 0; }
+        
         .viewport.no-scroll { overflow-y: hidden; }
+        .viewport.no-scroll::-webkit-scrollbar { width: 0px; }
 
         .section { display: none; padding: 100px 60px 60px 60px; animation: fadeIn 0.4s ease forwards; min-height: calc(100vh - 70px); position: relative; }
         .section.active { display: block; }
+
+        #proxy.section { padding: 0; height: calc(100vh - 70px); overflow: hidden; }
+        .viewport.fullscreen-mode #proxy.section { height: 100vh; }
+
+        #proxy-frame { width: 100%; height: 100%; border: none; display: block; background: transparent; }
 
         .page-header { text-align: center; margin-bottom: 60px; width: 100%; }
         .page-header h1 { font-size: 64px; font-weight: 900; margin: 0; letter-spacing: -2px; color: var(--accent); }
         .page-header p { color: var(--subtext); margin-top: 12px; font-weight: 600; font-size: 16px; opacity: 0.8; }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 25px; }
-
-        /* GAME CARDS */
+        
+        /* Game Card Styles */
         .game-card { background: var(--card); border-radius: 18px; padding: 12px; text-align: center; transition: var(--transition); cursor: pointer; border: 1px solid transparent; }
         .game-card:hover { transform: translateY(-5px); background: var(--secondary); border-color: #333; }
         .game-card img { width: 100%; border-radius: 12px; aspect-ratio: 1; object-fit: cover; margin-bottom: 12px; }
         .game-card span { font-size: 14px; font-weight: 600; color: var(--subtext); transition: var(--transition); display: block; }
         .game-card:hover span { color: var(--accent); }
 
-        /* SOUND CARDS (SMALLER) */
-        .sound-card { 
-            background: var(--card); border-radius: 16px; padding: 15px; 
-            display: flex; flex-direction: column; align-items: center; justify-content: space-between; 
-            min-height: 140px; transition: var(--transition); border: 1px solid transparent; 
-        }
+        /* Sound Card Styles */
+        .sound-card { background: var(--card); border-radius: 18px; padding: 20px; text-align: center; transition: var(--transition); display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 15px; border: 1px solid transparent; }
         .sound-card:hover { transform: translateY(-5px); background: var(--secondary); border-color: #333; }
-        
-        .sound-play-btn {
-            width: 50px; height: 50px; border-radius: 15px; background: #1a1a1a;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--accent); cursor: pointer; transition: var(--transition); border: 1px solid #222;
-        }
-        .sound-play-btn:hover { background: var(--accent); color: var(--bg); transform: scale(1.1); }
-        .sound-play-btn svg { width: 22px; height: 22px; fill: currentColor; }
-        .sound-name { font-size: 13px; font-weight: 600; color: var(--subtext); margin-top: 15px; text-align: center; }
+        .sound-card span { font-size: 14px; font-weight: 600; color: var(--subtext); transition: var(--transition); }
+        .sound-card:hover span { color: var(--accent); }
+        .sound-btn { padding: 12px 20px; border-radius: 10px; background: var(--secondary); color: var(--text); border: 1px solid #333; cursor: pointer; font-family: inherit; font-weight: 600; transition: var(--transition); width: 100%; }
+        .sound-btn:hover { background: var(--text); color: var(--bg); border-color: var(--text); }
 
-        /* PROXY */
-        #proxy.section { padding: 0; height: calc(100vh - 70px); overflow: hidden; }
-        #proxy-frame { width: 100%; height: 100%; border: none; background: transparent; display: block; }
+        #save-status { position: absolute; bottom: 45px; left: 60px; font-size: 13px; font-weight: 600; color: var(--subtext); opacity: 0; transition: opacity 0.3s ease; }
+        #save-status.visible { opacity: 1; }
+        .save-btn-container { position: absolute; bottom: 40px; right: 60px; }
 
-        /* PLAYER OVERLAY */
         #player { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg); z-index: 200; opacity: 0; pointer-events: none; transform: scale(1.05); transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         #player.active { opacity: 1; pointer-events: all; transform: scale(1); }
-        .player-bar { height: 70px; background: var(--nav); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; border-bottom: 1px solid var(--secondary); position: relative; }
-        #game-frame { width: 100%; height: calc(100vh - 70px); border: none; background: transparent; }
+        .player-bar { height: 70px; background: var(--nav); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; border-bottom: 1px solid var(--secondary); position: relative; transition: var(--transition); }
+        .player-bar.hidden { transform: translateY(-70px); opacity: 0; pointer-events: none; }
+        
+        #player-title { position: absolute; left: 50%; transform: translateX(-50%); font-weight: 600; font-size: 16px; color: var(--subtext); }
+        #game-frame { position: relative; width: 100%; height: calc(100vh - 70px); border: none; z-index: 2; background: transparent; transition: height 0.5s ease; }
+        .player-fullscreen #game-frame { height: 100vh; }
+
+        #landing { height: 100vh; width: 100vw; display: flex; align-items: flex-start; justify-content: flex-start; padding: 20px; background: #0b0b0b; position: fixed; z-index: 9999; pointer-events: all; }
+        #secret-container { display: flex; align-items: center; position: absolute; top: 20px; left: 20px; opacity: 1; transition: opacity 0.4s ease; }
+        #secret-container.hidden { opacity: 0; pointer-events: none; }
+        #secret-input { background: transparent; border: none; color: var(--subtext); opacity: 0.3; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; padding: 10px 0; width: 80px; text-transform: lowercase; user-select: text; -webkit-text-security: disc; letter-spacing: -1px; }
+        #check-btn { background: none; border: none; color: var(--subtext); opacity: 0.3; cursor: pointer; padding: 10px; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+        #check-btn:hover { opacity: 1; color: var(--accent); }
+        #check-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+        #secret-btn { position: absolute; top: 20px; left: 20px; width: 38px; height: 38px; background: none; border: none; border-radius: 10px; color: var(--subtext); display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.8); transition: opacity 0.6s ease, transform 0.6s ease, color 0.3s ease; visibility: hidden; pointer-events: none; }
+        #secret-btn svg { width: 18px; height: 18px; fill: currentColor; }
+        #secret-btn.active { visibility: visible !important; pointer-events: all !important; cursor: pointer !important; opacity: 0.3; transform: scale(1); }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -110,10 +116,14 @@
 
     <div id="landing">
         <div id="secret-container">
-            <button class="icon-btn" onclick="checkCode()"><svg viewBox="0 0 24 24"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg></button>
+            <button id="check-btn" onclick="checkCode()">
+                <svg viewBox="0 0 24 24"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>
+            </button>
             <input type="text" id="secret-input" autocomplete="off">
         </div>
-        <button id="secret-btn" class="icon-btn" onclick="transfer()"><svg viewBox="0 0 24 24"><path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/></svg></button>
+        <button id="secret-btn" onclick="transfer()">
+            <svg viewBox="0 0 24 24"><path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/></svg>
+        </button>
     </div>
 
     <div id="navbar">
@@ -124,55 +134,61 @@
             <button class="nav-btn" onclick="tab('sounds', this)">soundboard</button>
         </div>
         <div class="nav-right">
-            <button class="icon-btn" onclick="tab('settings', this)"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.13,5.91,7.62,6.29L5.23,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.72,8.87 c-0.11,0.2,0.06,0.47,0.12,0.61l2.03,1.58C4.82,11.36,4.8,11.68,4.8,12c0,0.33,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></button>
-            <button class="icon-btn" onclick="toggleFS()"><svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
             <button class="icon-btn" onclick="panic()"><svg viewBox="0 0 24 24"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg></button>
-            
-            <button class="icon-btn" id="nav-stop-btn" onclick="stopAllSounds()" title="Stop sounds">
-                <svg viewBox="0 0 24 24"><path d="M18,18H6V6H18V18Z" /></svg>
-            </button>
+            <button class="icon-btn" onclick="toggleFS()" title="fullscreen"><svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
+            <button class="icon-btn" onclick="tab('settings', this)"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.13,5.91,7.62,6.29L5.23,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.72,8.87 c-0.11,0.2,0.06,0.47,0.12,0.61l2.03,1.58C4.82,11.36,4.8,11.68,4.8,12c0,0.33,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></button>
         </div>
     </div>
 
     <div class="viewport" id="main-viewport">
-        <div id="home" class="section active"><div class="page-header"><h1>gelly v2.4.3</h1><p>if you dont like fries then LEAVE now...</p></div></div>
-        <div id="games" class="section"><div class="page-header"><h1>gelly games</h1><p>click on a game to play</p></div><div id="game-grid" class="grid"></div></div>
-        
-        <div id="proxy" class="section"><iframe id="proxy-frame" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms"></iframe></div>
+        <div id="home" class="section active">
+            <div class="page-header">
+                <h1>gelly v2.4.3</h1>
+                <p>if you dont like fries then LEAVE now...</p>
+            </div>
+        </div>
+        <div id="games" class="section">
+            <div class="page-header"><h1>gelly games</h1><p>click on a game to play</p></div>
+            <div id="game-grid" class="grid"></div>
+        </div>
+        <div id="proxy" class="section"><iframe id="proxy-frame" sandbox="allow-forms allow-scripts allow-same-origin allow-popups-to-escape-sandbox" loading="lazy"></iframe></div>
         
         <div id="sounds" class="section">
-            <div class="page-header"><h1>gelly soundboard</h1><p>click to play</p></div>
+            <div class="page-header">
+                <h1>soundboard</h1>
+                <p>click the buttons to activate noises</p>
+                <button class="nav-btn active" onclick="stopAllSounds()" style="margin-top: 15px; border: 1px solid #333;">
+                    stop all sounds
+                </button>
+            </div>
             <div id="sound-grid" class="grid"></div>
         </div>
-
         <div id="settings" class="section">
             <div class="page-header"><h1>settings</h1><p>configure your experience</p></div>
-            <input type="text" id="panic-input" placeholder="https://google.com" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 350px;">
-            <button class="nav-btn active" onclick="saveSettings()" style="margin-top:20px;">save changes</button>
+            <p style="color: var(--subtext); font-weight: 600;">panic url</p>
+            <input type="text" id="panic-input" oninput="markUnsaved()" placeholder="https://google.com" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 350px;">
+            <span id="save-status">press save changes to save these</span>
+            <div class="save-btn-container"><button class="nav-btn active" onclick="saveSettings()">save changes</button></div>
         </div>
     </div>
 
     <div id="player">
-        <div class="player-bar">
-            <div style="display: flex; gap: 10px;">
-                <button class="icon-btn" onclick="closeGame()"><svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/></svg></button>
-            </div>
-            <div id="player-title" style="position: absolute; left: 50%; transform: translateX(-50%); font-weight: 600; font-size: 16px; color: var(--subtext);"></div>
-            <div style="display: flex; gap: 10px;">
-                <button class="icon-btn" onclick="toggleFS()"><svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
+        <div id="player-bar" class="player-bar">
+            <button class="icon-btn" onclick="closeGame()"><svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/></svg></button>
+            <div id="player-title"></div>
+            <div class="nav-right">
                 <button class="icon-btn" onclick="panic()"><svg viewBox="0 0 24 24"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg></button>
+                <button class="icon-btn" onclick="toggleFS()"><svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
             </div>
         </div>
         <iframe id="game-frame"></iframe>
     </div>
 
     <script>
-        let activeAudios = [];
+        let hasUnsavedChanges = false;
+        let activeAudios = []; // Keeps track of playing sounds
 
-        // 100% Empty sound array as requested
-        const soundData = []; 
-
-        // Games Stacked Vertically
+        // --- DATA ARRAYS ---
         const gameData = [
             { name: "2048", id: "2048", img: "2048icon.png" },
             { name: "bitlife", id: "bitlife", img: "bitlifeicon.png" },
@@ -201,100 +217,169 @@
             { name: "the impossible quiz", id: "theimpossiblequiz", img: "theimpossiblequizicon.png" }
         ];
 
+        // ADD YOUR MP3 NAMES HERE! (Without the .mp3 part)
+        // Make sure these match the files inside your "sounds" folder exactly.
+        const soundData = [
+            "bruh",
+            "vine-boom",
+            "fart",
+            "error"
+        ];
+
         function checkCode() {
-            if (document.getElementById('secret-input').value === "gg55") {
-                document.getElementById('secret-container').style.display = 'none';
-                document.getElementById('secret-btn').style.display = 'flex';
-            }
+            const input = document.getElementById('secret-input');
+            const container = document.getElementById('secret-container');
+            const secretBtn = document.getElementById('secret-btn');
+            if (input.value === "gg55") {
+                container.classList.add('hidden'); 
+                setTimeout(() => { secretBtn.classList.add('active'); }, 400);
+            } else { input.value = ""; input.blur(); }
         }
 
-        // About:blank cloaking restored
-        function transfer() {
-            const win = window.open('about:blank');
-            const ifr = win.document.createElement('iframe');
-            ifr.style = "border:none; width:100%; height:100vh; margin:0;";
-            ifr.src = window.location.href + "#cloaked";
-            win.document.body.appendChild(ifr);
-            window.close();
-        }
+        document.getElementById('secret-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') checkCode(); });
 
-        function draw() {
-            const gGrid = document.getElementById('game-grid');
-            gGrid.innerHTML = '';
-            gameData.forEach(g => {
+        function drawGames(query = "") {
+            const grid = document.getElementById('game-grid');
+            grid.innerHTML = '';
+            gameData.filter(g => g.name.toLowerCase().includes(query.toLowerCase())).forEach(g => {
                 const div = document.createElement('div');
                 div.className = 'game-card';
                 div.onclick = () => openGame(g.id, g.name);
                 div.innerHTML = `<img src="icons/${g.img}"><span>${g.name}</span>`;
-                gGrid.appendChild(div);
-            });
-
-            const sGrid = document.getElementById('sound-grid');
-            sGrid.innerHTML = '';
-            soundData.forEach(s => {
-                const name = s.replace('.mp3', '').replace(/-/g, ' ');
-                const div = document.createElement('div');
-                div.className = 'sound-card';
-                div.innerHTML = `<div class="sound-play-btn" onclick="playSound('${s}')"><svg viewBox="0 0 24 24"><path d="M8,5.14V19.14L19,12.14L8,5.14Z"/></svg></div><div class="sound-name">${name}</div>`;
-                sGrid.appendChild(div);
+                grid.appendChild(div);
             });
         }
 
-        function playSound(file) {
-            const audio = new Audio(`sounds/${file}`);
+        // --- NEW SOUNDBOARD FUNCTIONS ---
+        function drawSounds() {
+            const grid = document.getElementById('sound-grid');
+            grid.innerHTML = '';
+            soundData.forEach(sound => {
+                const div = document.createElement('div');
+                div.className = 'sound-card';
+                div.innerHTML = `
+                    <button class="sound-btn" onclick="playSound('${sound}')">play</button>
+                    <span>${sound}</span>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        function playSound(name) {
+            const audio = new Audio(`sounds/${name}.mp3`);
             activeAudios.push(audio);
             audio.play();
-            audio.onended = () => activeAudios = activeAudios.filter(a => a !== audio);
+            // Remove audio from tracking array once it finishes playing to save memory
+            audio.onended = () => {
+                activeAudios = activeAudios.filter(a => a !== audio);
+            };
         }
 
         function stopAllSounds() {
-            activeAudios.forEach(a => { a.pause(); a.currentTime = 0; });
-            activeAudios = [];
+            activeAudios.forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0; // Rewind back to start
+            });
+            activeAudios = []; // Clear tracking array
         }
-
-        function tab(id, el) {
-            const vp = document.getElementById('main-viewport');
-            if (['proxy', 'home', 'sounds'].includes(id)) vp.classList.add('no-scroll');
-            else vp.classList.remove('no-scroll');
-            
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-btn, .icon-btn').forEach(b => b.classList.remove('active'));
-            
-            document.getElementById(id).classList.add('active');
-            if(el) el.classList.add('active');
-            if(id === 'proxy') document.getElementById('proxy-frame').src = 'https://storage.googleapis.com/canvas-lms/index.html#/search';
-
-            // Show/Hide the Stop Sounds icon based on tab
-            if (id === 'sounds') {
-                document.getElementById('nav-stop-btn').classList.add('visible');
-            } else {
-                document.getElementById('nav-stop-btn').classList.remove('visible');
-            }
-        }
+        // -------------------------------
 
         function openGame(id, name) {
+            document.getElementById('navbar').classList.add('hidden');
             document.getElementById('player').classList.add('active');
             document.getElementById('player-title').innerText = name;
             document.getElementById('game-frame').src = `games/${id}/index.html`;
         }
 
         function closeGame() {
+            document.getElementById('navbar').classList.remove('hidden');
             document.getElementById('player').classList.remove('active');
             setTimeout(() => { document.getElementById('game-frame').src = ''; }, 400);
         }
 
-        function toggleFS() {
-            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-            else document.exitFullscreen();
+        function tab(id, el) {
+            const vp = document.getElementById('main-viewport');
+            
+            // Sounds is removed from the no-scroll list so the grid can scroll
+            if (['proxy', 'home'].includes(id)) vp.classList.add('no-scroll');
+            else vp.classList.remove('no-scroll');
+            
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn, .icon-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(el) el.classList.add('active');
+            
+            if (id === 'proxy') document.getElementById('proxy-frame').src = 'https://storage.googleapis.com/canvas-lms/index.html#/search';
+        }
+
+        function toggleFS() { 
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        document.addEventListener('fullscreenchange', () => {
+            const isFS = !!document.fullscreenElement;
+            const mainNav = document.getElementById('navbar');
+            const playerBar = document.getElementById('player-bar');
+            const viewport = document.getElementById('main-viewport');
+            const player = document.getElementById('player');
+
+            if (isFS) {
+                mainNav.classList.add('hidden');
+                playerBar.classList.add('hidden');
+                viewport.classList.add('fullscreen-mode');
+                player.classList.add('player-fullscreen');
+            } else {
+                if (!player.classList.contains('active')) {
+                    mainNav.classList.remove('hidden');
+                }
+                playerBar.classList.remove('hidden');
+                viewport.classList.remove('fullscreen-mode');
+                player.classList.remove('player-fullscreen');
+            }
+        });
+
+        function markUnsaved() {
+            hasUnsavedChanges = true;
+            document.getElementById('save-status').innerText = "press save changes to save these";
+            document.getElementById('save-status').classList.add('visible');
         }
 
         function saveSettings() {
             localStorage.setItem('gelly-panic', document.getElementById('panic-input').value);
+            hasUnsavedChanges = false;
+            document.getElementById('save-status').innerText = "saved changes";
+            setTimeout(() => { if (!hasUnsavedChanges) document.getElementById('save-status').classList.remove('visible'); }, 2000);
         }
 
-        function panic() { window.location.href = localStorage.getItem('gelly-panic') || 'https://google.com'; }
+        function revertSettings() {
+            document.getElementById('panic-input').value = localStorage.getItem('gelly-panic') || 'https://google.com';
+        }
 
-        draw();
+        function panic() { window.top.location.href = localStorage.getItem('gelly-panic') || 'https://google.com'; }
+        
+        function transfer() {
+            const win = window.open('about:blank');
+            if (!win) return;
+            win.document.body.style.margin = '0';
+            const ifr = win.document.createElement('iframe');
+            ifr.style = "border:none; width:100%; height:100vh;";
+            ifr.src = window.location.href + "#cloaked";
+            win.document.body.appendChild(ifr);
+            window.close();
+        }
+
+        if (window.self !== window.top || window.location.hash === "#cloaked") {
+            document.getElementById('landing').style.display = 'none';
+        }
+
+        // Initialize everything
+        drawGames();
+        drawSounds();
+        revertSettings();
     </script>
 </body>
 </html>
