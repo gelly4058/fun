@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Traffic Jam 3D Games</title>
+    <meta name="description" content="Get in touch with Traffic Jam 3D Games team. We'd love to hear from you!">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3SXS6THN83"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        
+        gtag('config', 'G-3SXS6THN83');
+    </script>
+    
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .content-page {
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(26, 26, 26, 0.8);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        .content-page h1 {
+            color: #FFD700;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .content-page h2 {
+            color: #FFD700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .content-page p {
+            color: #c0c0c0;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .contact-info {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: #c0c0c0;
+        }
+        .contact-item:last-child {
+            margin-bottom: 0;
+        }
+        .contact-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 1rem;
+            color: #FFD700;
+        }
+        .contact-form {
+            background: rgba(255, 215, 0, 0.05);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            background: rgba(26, 26, 26, 0.8);
+            color: #c0c0c0;
+            font-size: 1rem;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #FFD700;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .submit-btn {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #1a1a1a;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+        .back-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #1a1a1a;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+        .back-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><a href="index.html">Traffic Jam 3D</a></h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="games/index.html" class="nav-link">More Games</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="main">
+        <div class="container">
+            <div class="content-page">
+                <h1>Contact Us</h1>
+                
+                <p>We'd love to hear from you! Whether you have questions, suggestions, feedback, or just want to say hello, don't hesitate to reach out to us.</p>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-icon">📧</span>
+                        <span><strong>Email:</strong> contact@traffic-jam-3d.org</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">🌐</span>
+                        <span><strong>Website:</strong> www.traffic-jam-3d.org</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">⏰</span>
+                        <span><strong>Response Time:</strong> We typically respond within 24-48 hours</span>
+                    </div>
+                </div>
+                
+                <h2>Send Us a Message</h2>
+                <p>Use the form below to send us a message directly. We read every message and do our best to respond promptly.</p>
+                
+                <div class="contact-form">
+                    <form action="#" method="post" onsubmit="handleFormSubmit(event)">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Your Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" placeholder="Tell us what's on your mind..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Send Message</button>
+                    </form>
+                </div>
+                
+                <h2>What Can You Contact Us About?</h2>
+                <ul style="color: #c0c0c0; line-height: 1.6; padding-left: 2rem;">
+                    <li><strong>Game Suggestions:</strong> Have an idea for a new traffic game? We'd love to hear it!</li>
+                    <li><strong>Technical Issues:</strong> Experiencing problems with any of our games? Let us know the details.</li>
+                    <li><strong>Feedback:</strong> Share your thoughts on how we can improve our games and website.</li>
+                    <li><strong>Partnerships:</strong> Interested in collaborating or featuring your games on our platform?</li>
+                    <li><strong>General Inquiries:</strong> Any other questions or comments about our services.</li>
+                </ul>
+                
+                <p>Thank you for your interest in Traffic Jam 3D Games. We appreciate your support and look forward to hearing from you!</p>
+                
+                <a href="index.html" class="back-link">← Back to Home</a>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Create mailto link
+            const mailtoLink = `mailto:contact@traffic-jam-3d.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+            
+            // Open email client
+            window.location.href = mailtoLink;
+            
+            // Show confirmation
+            alert('Thank you for your message! Your email client should open now. If it doesn\'t, please send an email to contact@traffic-jam-3d.org');
+            
+            // Reset form
+            event.target.reset();
+        }
+    </script>
+</body>
+</html>
