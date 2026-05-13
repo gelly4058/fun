@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>More Games - Traffic Jam 3D</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3SXS6THN83"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        
+        gtag('config', 'G-3SXS6THN83');
+    </script>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .game-list-container {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .game-item {
+            background: rgba(26, 26, 26, 0.8);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        .game-item:hover {
+            transform: translateY(-5px);
+            border-color: #FFD700;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
+        }
+        .game-item a {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+        }
+        .game-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .game-item:hover img {
+            transform: scale(1.05);
+        }
+        .game-item h3 {
+            margin: 1rem;
+            font-size: 1.1rem;
+            color: #FFD700;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .game-list-container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+            .game-item h3 {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .game-list-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+            .game-item img {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><a href="../index.html">Traffic Jam 3D</a></h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="../index.html" class="nav-link">Home</a></li>
+                    <li><a href="index.html" class="nav-link active">More Games</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="main">
+        <div class="container">
+            <h1>More Games</h1>
+            <div id="game-list" class="game-list-container">
+                <!-- Games will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const gameListContainer = document.getElementById('game-list');
+            
+            // Load directly from original game data and link to standalone pages
+            fetch('../games_data.json')
+                .then(response => response.json())
+                .then(games => {
+                    // Also load generated game list to get filename mapping
+                    fetch('generated_games.json')
+                        .then(response => {
+                            return response.json();
+                        })
+                        .then(generatedGames => {
+                            games.forEach((game, index) => {
+                                const gameItem = document.createElement('div');
+                                gameItem.className = 'game-item';
+
+                                const gameLink = document.createElement('a');
+                                // Find corresponding generated filename
+                                const generatedGame = generatedGames.find(g => g.id === game.id);
+                                if (generatedGame) {
+                                    gameLink.href = `${generatedGame.filename}.html`;
+                                } else {
+                                    // Fallback to dynamic page
+                                    gameLink.href = `play.html?id=${index}`;
+                                }
+                                gameLink.target = '_self';
+
+                                const gameImage = document.createElement('img');
+                                gameImage.src = game.thumb;
+                                gameImage.alt = game.title;
+
+                                const gameTitle = document.createElement('h3');
+                                gameTitle.textContent = game.title;
+
+                                gameLink.appendChild(gameImage);
+                                gameLink.appendChild(gameTitle);
+                                gameItem.appendChild(gameLink);
+                                gameListContainer.appendChild(gameItem);
+                            });
+                        })
+                        .catch(() => {
+                            // If unable to load generated game list, fallback to dynamic links
+                            games.forEach((game, index) => {
+                                const gameItem = document.createElement('div');
+                                gameItem.className = 'game-item';
+
+                                const gameLink = document.createElement('a');
+                                gameLink.href = `play.html?id=${index}`;
+                                gameLink.target = '_self';
+
+                                const gameImage = document.createElement('img');
+                                gameImage.src = game.thumb;
+                                gameImage.alt = game.title;
+
+                                const gameTitle = document.createElement('h3');
+                                gameTitle.textContent = game.title;
+
+                                gameLink.appendChild(gameImage);
+                                gameLink.appendChild(gameTitle);
+                                gameItem.appendChild(gameLink);
+                                gameListContainer.appendChild(gameItem);
+                            });
+                        });
+                })
+                .catch(error => {
+                    console.error('Error loading games:', error);
+                    gameListContainer.innerHTML = '<p>Could not load game list. Please try again later.</p>';
+                });
+        });
+    </script>
+</body>
+</html>

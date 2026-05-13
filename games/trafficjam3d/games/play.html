@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="game-title">Game - Traffic Jam 3D</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3SXS6THN83"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        
+        gtag('config', 'G-3SXS6THN83');
+    </script>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .game-container {
+            padding: 20px;
+            text-align: center;
+        }
+        .game-iframe {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .game-info {
+            margin: 20px 0;
+        }
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+        .loading {
+            padding: 50px;
+            font-size: 18px;
+            color: #666;
+        }
+        .error {
+            padding: 50px;
+            font-size: 18px;
+            color: #d32f2f;
+        }
+        @media (max-width: 768px) {
+            .game-iframe {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><a href="../index.html">Traffic Jam 3D</a></h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="../index.html" class="nav-link">Home</a></li>
+                    <li><a href="index.html" class="nav-link">More Games</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="main">
+        <section class="game-section">
+            <div class="container game-container">
+                <a href="./" class="back-button">â†?Back to Games</a>
+                <div id="game-content">
+                    <div class="loading">Loading game...</div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const gameContent = document.getElementById('game-content');
+            const gameTitle = document.getElementById('game-title');
+            
+            // Get game ID from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const gameId = urlParams.get('id');
+            
+            if (!gameId) {
+                gameContent.innerHTML = '<div class="error">No game specified. Please select a game from the list.</div>';
+                return;
+            }
+            
+            // Fetch game data
+            const feedUrl = 'https://gamemonetize.com/feed.php?format=0&name=traffic&num=50&page=1';
+            
+            fetch(feedUrl)
+                .then(response => response.text())
+                .then(text => {
+                    const games = JSON.parse(text);
+                    const game = games[parseInt(gameId)];
+                    
+                    if (!game) {
+                        gameContent.innerHTML = '<div class="error">Game not found. Please try again.</div>';
+                        return;
+                    }
+                    
+                    // Update page title
+                    gameTitle.textContent = `${game.title} - Traffic Jam 3D`;
+                    
+                    // Create game content
+                    gameContent.innerHTML = `
+                        <div class="game-info">
+                            <h2>${game.title}</h2>
+                            <p>${game.description || 'Enjoy this exciting game!'}</p>
+                        </div>
+                        <iframe 
+                            class="game-iframe" 
+                            src="${game.url}" 
+                            allowfullscreen
+                            allow="gamepad; microphone; camera"
+                        ></iframe>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Error fetching game data:', error);
+                    gameContent.innerHTML = '<div class="error">Could not load game. Please try again later.</div>';
+                });
+        });
+    </script>
+</body>
+</html>
