@@ -61,7 +61,10 @@
         #proxy.section { padding: 0; height: calc(100vh - 70px); overflow: hidden; }
         .viewport.fullscreen-mode #proxy.section { height: 100vh; }
 
-        #proxy-frame { width: 100%; height: 100%; border: none; display: block; background: transparent; }
+        #proxy-frame, #soundboard-frame { width: 100%; height: 100%; border: none; display: block; background: transparent; }
+        
+        /* Specific height for soundboard iframe since it has a header */
+        #soundboard-frame { height: calc(100vh - 350px); border-radius: 18px; background: var(--card); }
 
         .page-header { text-align: center; margin-bottom: 60px; width: 100%; }
         .page-header h1 { font-size: 64px; font-weight: 900; margin: 0; letter-spacing: -2px; color: var(--accent); }
@@ -69,20 +72,11 @@
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 25px; }
         
-        /* Game Card Styles */
         .game-card { background: var(--card); border-radius: 18px; padding: 12px; text-align: center; transition: var(--transition); cursor: pointer; border: 1px solid transparent; }
         .game-card:hover { transform: translateY(-5px); background: var(--secondary); border-color: #333; }
         .game-card img { width: 100%; border-radius: 12px; aspect-ratio: 1; object-fit: cover; margin-bottom: 12px; }
         .game-card span { font-size: 14px; font-weight: 600; color: var(--subtext); transition: var(--transition); display: block; }
         .game-card:hover span { color: var(--accent); }
-
-        /* Sound Card Styles */
-        .sound-card { background: var(--card); border-radius: 18px; padding: 20px; text-align: center; transition: var(--transition); display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 15px; border: 1px solid transparent; }
-        .sound-card:hover { transform: translateY(-5px); background: var(--secondary); border-color: #333; }
-        .sound-card span { font-size: 14px; font-weight: 600; color: var(--subtext); transition: var(--transition); }
-        .sound-card:hover span { color: var(--accent); }
-        .sound-btn { padding: 12px 20px; border-radius: 10px; background: var(--secondary); color: var(--text); border: 1px solid #333; cursor: pointer; font-family: inherit; font-weight: 600; transition: var(--transition); width: 100%; }
-        .sound-btn:hover { background: var(--text); color: var(--bg); border-color: var(--text); }
 
         #save-status { position: absolute; bottom: 45px; left: 60px; font-size: 13px; font-weight: 600; color: var(--subtext); opacity: 0; transition: opacity 0.3s ease; }
         #save-status.visible { opacity: 1; }
@@ -151,18 +145,19 @@
             <div class="page-header"><h1>gelly games</h1><p>click on a game to play</p></div>
             <div id="game-grid" class="grid"></div>
         </div>
-        <div id="proxy" class="section"><iframe id="proxy-frame" sandbox="allow-forms allow-scripts allow-same-origin allow-popups-to-escape-sandbox" loading="lazy"></iframe></div>
+        
+        <div id="proxy" class="section">
+            <iframe id="proxy-frame" sandbox="allow-forms allow-scripts allow-same-origin allow-popups-to-escape-sandbox"></iframe>
+        </div>
         
         <div id="sounds" class="section">
             <div class="page-header">
-                <h1>soundboard</h1>
-                <p>click the buttons to activate noises</p>
-                <button class="nav-btn active" onclick="stopAllSounds()" style="margin-top: 15px; border: 1px solid #333;">
-                    stop all sounds
-                </button>
+                <h1>gelly soundboard</h1>
+                <p>activate noises directly from the panel below</p>
             </div>
-            <div id="sound-grid" class="grid"></div>
+            <iframe id="soundboard-frame" src="soundboard/index.html"></iframe>
         </div>
+
         <div id="settings" class="section">
             <div class="page-header"><h1>settings</h1><p>configure your experience</p></div>
             <p style="color: var(--subtext); font-weight: 600;">panic url</p>
@@ -186,9 +181,7 @@
 
     <script>
         let hasUnsavedChanges = false;
-        let activeAudios = []; // Keeps track of playing sounds
 
-        // --- DATA ARRAYS ---
         const gameData = [
             { name: "2048", id: "2048", img: "2048icon.png" },
             { name: "bitlife", id: "bitlife", img: "bitlifeicon.png" },
@@ -217,15 +210,6 @@
             { name: "the impossible quiz", id: "theimpossiblequiz", img: "theimpossiblequizicon.png" }
         ];
 
-        // ADD YOUR MP3 NAMES HERE! (Without the .mp3 part)
-        // Make sure these match the files inside your "sounds" folder exactly.
-        const soundData = [
-            "bruh",
-            "vine-boom",
-            "fart",
-            "error"
-        ];
-
         function checkCode() {
             const input = document.getElementById('secret-input');
             const container = document.getElementById('secret-container');
@@ -250,40 +234,6 @@
             });
         }
 
-        // --- NEW SOUNDBOARD FUNCTIONS ---
-        function drawSounds() {
-            const grid = document.getElementById('sound-grid');
-            grid.innerHTML = '';
-            soundData.forEach(sound => {
-                const div = document.createElement('div');
-                div.className = 'sound-card';
-                div.innerHTML = `
-                    <button class="sound-btn" onclick="playSound('${sound}')">play</button>
-                    <span>${sound}</span>
-                `;
-                grid.appendChild(div);
-            });
-        }
-
-        function playSound(name) {
-            const audio = new Audio(`sounds/${name}.mp3`);
-            activeAudios.push(audio);
-            audio.play();
-            // Remove audio from tracking array once it finishes playing to save memory
-            audio.onended = () => {
-                activeAudios = activeAudios.filter(a => a !== audio);
-            };
-        }
-
-        function stopAllSounds() {
-            activeAudios.forEach(audio => {
-                audio.pause();
-                audio.currentTime = 0; // Rewind back to start
-            });
-            activeAudios = []; // Clear tracking array
-        }
-        // -------------------------------
-
         function openGame(id, name) {
             document.getElementById('navbar').classList.add('hidden');
             document.getElementById('player').classList.add('active');
@@ -300,7 +250,6 @@
         function tab(id, el) {
             const vp = document.getElementById('main-viewport');
             
-            // Sounds is removed from the no-scroll list so the grid can scroll
             if (['proxy', 'home'].includes(id)) vp.classList.add('no-scroll');
             else vp.classList.remove('no-scroll');
             
@@ -308,8 +257,6 @@
             document.querySelectorAll('.nav-btn, .icon-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             if(el) el.classList.add('active');
-            
-            if (id === 'proxy') document.getElementById('proxy-frame').src = 'https://storage.googleapis.com/canvas-lms/index.html#/search';
         }
 
         function toggleFS() { 
@@ -376,9 +323,11 @@
             document.getElementById('landing').style.display = 'none';
         }
 
-        // Initialize everything
+        // --- IMMEDIATE LOAD ACTIONS ---
+        // Proxy loads immediately when the page script runs
+        document.getElementById('proxy-frame').src = 'https://storage.googleapis.com/canvas-lms/index.html#/search';
+        
         drawGames();
-        drawSounds();
         revertSettings();
     </script>
 </body>
