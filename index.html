@@ -101,7 +101,7 @@
             <button class="icon-btn" onclick="toggleFS()" title="fullscreen">
                 <svg viewBox="0 0 24 24"><path d="M7,14H5V19H10V17H7V14M5,10H7V7H10V5H5V10M17,17H14V19H19V14H17V17M14,5V7H17V10H19V5H14Z"/></svg>
             </button>
-            <button class="icon-btn" onclick="tab('settings', this)"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.13,5.91,7.62,6.29L5.23,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.72,8.87 c-0.11,0.2,0.06,0.47,0.12,0.61l2.03,1.58C4.82,11.36,4.8,11.68,4.8,12c0,0.33,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></button>
+            <button class="icon-btn" onclick="tab('settings', this)"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.13,5.91,7.62,6.29L5.23,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.72,8.87 c-0.11,0.2,0.06,0.47,0.12,0.61l2.03,1.58C4.82,11.36,4.8,11.68,4.8,12c0,0.33,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></button>
         </div>
     </div>
 
@@ -127,6 +127,7 @@
 
     <script>
         let hasUnsavedChanges = false;
+        let gameUnloadTimeout = null;
         const gameData = [ { name: "2048", id: "2048", img: "2048icon.png" }, { name: "bitlife", id: "bitlife", img: "bitlifeicon.png" }, { name: "cookie clicker", id: "cookieclicker", img: "cookieclickericon.png" }, { name: "crossy road", id: "crossyroad", img: "crossyroadicon.png" }, { name: "dino game", id: "dinogame", img: "dinogameicon.png" }, { name: "drive mad", id: "drivemad", img: "drivemadicon.png" }, { name: "duck life", id: "ducklife", img: "ducklifeicon.png" }, { name: "flappy bird", id: "flappy", img: "flappybirdicon.png" }, { name: "geometry dash", id: "geodash", img: "geodashicon.png" }, { name: "getting over it", id: "gettingoverit", img: "gettingoveriticon.png" }, { name: "minecraft", id: "minecraft", img: "minecrafticon.png" }, { name: "paper.io 2", id: "paperio2", img: "paperio2icon.png" }, { name: "red ball", id: "redball", img: "redballicon.png" }, { name: "run 3", id: "run3", img: "run3icon.png" }, { name: "slope", id: "slope", img: "slopeicon.png" }, { name: "stickman hook", id: "stickmanhook", img: "stickmanhookicon.png" }, { name: "tetris", id: "tetris", img: "tetrisicon.png" }, { name: "tiny fishing", id: "tinyfishing", img: "tinyfishingicon.png" }, { name: "vex 4", id: "vex4", img: "vex4icon.png" }, { name: "moto x3m", id: "motox3m", img: "motox3micon.png" }, { name: "drift hunters", id: "drifthunters", img: "drifthuntersicon.png" }, { name: "suika game", id: "suikagame", img: "suikagameicon.png" }, { name: "worlds hardest game", id: "worldshardestgame", img: "worldshardestgameicon.png" }, { name: "survival race", id: "survivalrace", img: "survivalraceicon.png" }, { name: "the impossible quiz", id: "theimpossiblequiz", img: "theimpossiblequizicon.png" }, { name: "roblox", id: "roblox", img: "robloxicon.png" } ];
         
         function checkCode() { const input = document.getElementById('secret-input'); const container = document.getElementById('secret-container'); const secretBtn = document.getElementById('secret-btn'); if (input.value === "gg55") { container.classList.add('hidden'); setTimeout(() => { secretBtn.classList.add('active'); }, 400); } else { input.value = ""; input.blur(); } }
@@ -135,17 +136,26 @@
         function drawGames(query = "") { const grid = document.getElementById('game-grid'); grid.innerHTML = ''; gameData.filter(g => g.name.toLowerCase().includes(query.toLowerCase())).forEach(g => { const div = document.createElement('div'); div.className = 'game-card'; div.onclick = () => openGame(g.id, g.name); div.innerHTML = `<img src="icons/${g.img}"><span>${g.name}</span>`; grid.appendChild(div); }); }
         
         function openGame(id, name) { 
+            clearTimeout(gameUnloadTimeout);
             document.getElementById('navbar').classList.add('hidden'); 
             document.getElementById('player').classList.add('active'); 
             document.getElementById('player-title').innerText = name; 
-            document.getElementById('game-frame').src = `games/${id}/index.html`; 
+            
+            const targetSrc = `games/${id}/index.html`;
+            if (!document.getElementById('game-frame').src.includes(targetSrc)) {
+                document.getElementById('game-frame').src = targetSrc; 
+            }
         }
         
         function closeGame() { 
             if (document.fullscreenElement) document.exitFullscreen();
             document.getElementById('navbar').classList.remove('hidden'); 
             document.getElementById('player').classList.remove('active'); 
-            setTimeout(() => { document.getElementById('game-frame').src = ''; }, 400); 
+            
+            clearTimeout(gameUnloadTimeout);
+            gameUnloadTimeout = setTimeout(() => { 
+                document.getElementById('game-frame').src = ''; 
+            }, 15000); 
         }
         
         function tab(id, el) { 
@@ -162,7 +172,6 @@
             else document.exitFullscreen(); 
         }
 
-        // Fixed Fullscreen Bug Logic
         document.addEventListener('fullscreenchange', () => {
             const isFS = !!document.fullscreenElement;
             const player = document.getElementById('player');
@@ -172,7 +181,6 @@
             const viewport = document.getElementById('main-viewport');
 
             if (isFS) {
-                // Check if we are currently in a game
                 if (player.classList.contains('active')) {
                     playerBar.classList.add('hidden');
                     gameFrame.style.height = '100vh';
@@ -181,7 +189,6 @@
                     viewport.classList.add('fullscreen-mode');
                 }
             } else {
-                // Exiting Fullscreen
                 if (player.classList.contains('active')) {
                     playerBar.classList.remove('hidden');
                     gameFrame.style.height = 'calc(100vh - 70px)';
