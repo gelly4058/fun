@@ -155,7 +155,8 @@
             { name: "worlds hardest game", id: "worldshardestgame", img: "worldshardestgameicon.png" }, 
             { name: "survival race", id: "survivalrace", img: "survivalraceicon.png" }, 
             { name: "the impossible quiz", id: "theimpossiblequiz", img: "theimpossiblequizicon.png" },
-            { name: "amaze", id: "amaze", img: "amazeicon.png" }
+            { name: "amaze", id: "amaze", img: "amazeicon.png" },
+            { name: "racer", id: "racer", img: "racericon.png" }
         ];
         
         function checkCode() { const input = document.getElementById('secret-input'); const container = document.getElementById('secret-container'); const secretBtn = document.getElementById('secret-btn'); if (input.value === "gg55") { container.classList.add('hidden'); setTimeout(() => { secretBtn.classList.add('active'); }, 400); } else { input.value = ""; input.blur(); } }
