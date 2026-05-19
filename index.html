@@ -35,12 +35,9 @@
         .section { display: none; padding: 100px 60px 60px 60px; animation: fadeIn 0.4s ease forwards; min-height: calc(100vh - 70px); position: relative; }
         .section.active { display: block; }
         
-        #proxy.section { padding: 0; height: calc(100vh - 70px); overflow: hidden; }
-        #sounds.section { padding: 100px 0 0 0; height: calc(100vh - 70px); }
-        #sounds .page-header { padding: 0 60px 40px 60px; margin-bottom: 0; }
+        #proxy.section, #sounds.section { padding: 0; height: calc(100vh - 70px); overflow: hidden; }
 
         #proxy-frame, #soundboard-frame { width: 100%; height: 100%; border: none; display: block; background: transparent; }
-        #soundboard-frame { height: calc(100vh - 280px); border-radius: 0; background: var(--nav); border-top: 1px solid var(--secondary); }
 
         /* UI Elements */
         .page-header { text-align: center; margin-bottom: 60px; width: 100%; }
@@ -109,8 +106,19 @@
         <div id="home" class="section active"><div class="page-header"><h1>gelly v2.4.3</h1><p>if you dont like fries then LEAVE now...</p></div></div>
         <div id="games" class="section"><div class="page-header"><h1>gelly games</h1><p>click on a game to play</p></div><div id="game-grid" class="grid"></div></div>
         <div id="proxy" class="section"><iframe id="proxy-frame" sandbox="allow-forms allow-scripts allow-same-origin allow-popups-to-escape-sandbox"></iframe></div>
-        <div id="sounds" class="section"><div class="page-header"><h1>gelly soundboard</h1><p>activate noises directly from the panel below</p></div><iframe id="soundboard-frame" src="soundboard/index.html"></iframe></div>
-        <div id="settings" class="section"><div class="page-header"><h1>gelly settings</h1><p>configure your experience</p></div><p style="color: var(--subtext); font-weight: 600;">panic url</p><input type="text" id="panic-input" oninput="markUnsaved()" placeholder="https://google.com" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 350px;"><span id="save-status">press save changes to save these</span><div class="save-btn-container"><button class="nav-btn active" onclick="saveSettings()">save changes</button></div></div>
+        <div id="sounds" class="section"><iframe id="soundboard-frame" src="soundboard/index.html"></iframe></div>
+        <div id="settings" class="section">
+            <div class="page-header"><h1>gelly settings</h1><p>configure your experience</p></div>
+            
+            <p style="color: var(--subtext); font-weight: 600;">panic url</p>
+            <input type="text" id="panic-input" oninput="markUnsaved()" placeholder="https://google.com" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 350px;">
+            
+            <p style="color: var(--subtext); font-weight: 600; margin-top: 20px;">panic keybind (click & press key)</p>
+            <input type="text" id="panic-key-input" placeholder="`" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 350px; cursor: pointer;" readonly>
+            
+            <span id="save-status">press save changes to save these</span>
+            <div class="save-btn-container"><button class="nav-btn active" onclick="saveSettings()">save changes</button></div>
+        </div>
     </div>
 
     <div id="player">
@@ -127,7 +135,6 @@
 
     <script>
         let hasUnsavedChanges = false;
-        let gameUnloadTimeout = null;
         
         const gameData = [ 
             { name: "2048", id: "2048", img: "2048icon.png" }, 
@@ -137,7 +144,7 @@
             { name: "dino game", id: "dinogame", img: "dinogameicon.png" }, 
             { name: "drive mad", id: "drivemad", img: "drivemadicon.png" }, 
             { name: "duck life", id: "ducklife", img: "ducklifeicon.png" }, 
-            { name: "flappy bird", id: "flappy", img: "flappybirdicon.png" }, 
+            { name: "flappy bird", id: "flappybird", img: "flappybirdicon.png" }, 
             { name: "geometry dash", id: "geodash", img: "geodashicon.png" }, 
             { name: "getting over it", id: "gettingoverit", img: "gettingoveriticon.png" }, 
             { name: "minecraft", id: "minecraft", img: "minecrafticon.png" }, 
@@ -154,7 +161,8 @@
             { name: "suika game", id: "suikagame", img: "suikagameicon.png" }, 
             { name: "worlds hardest game", id: "worldshardestgame", img: "worldshardestgameicon.png" }, 
             { name: "survival race", id: "survivalrace", img: "survivalraceicon.png" }, 
-            { name: "the impossible quiz", id: "theimpossiblequiz", img: "theimpossiblequizicon.png" } 
+            { name: "the impossible quiz", id: "theimpossiblequiz", img: "theimpossiblequizicon.png" },
+            { name: "flappy dunk", id: "flappydunk", img: "flappydunkicon.png" }
         ];
         
         function checkCode() { const input = document.getElementById('secret-input'); const container = document.getElementById('secret-container'); const secretBtn = document.getElementById('secret-btn'); if (input.value === "gg55") { container.classList.add('hidden'); setTimeout(() => { secretBtn.classList.add('active'); }, 400); } else { input.value = ""; input.blur(); } }
@@ -163,7 +171,6 @@
         function drawGames(query = "") { const grid = document.getElementById('game-grid'); grid.innerHTML = ''; gameData.filter(g => g.name.toLowerCase().includes(query.toLowerCase())).forEach(g => { const div = document.createElement('div'); div.className = 'game-card'; div.onclick = () => openGame(g.id, g.name); div.innerHTML = `<img src="icons/${g.img}"><span>${g.name}</span>`; grid.appendChild(div); }); }
         
         function openGame(id, name) { 
-            clearTimeout(gameUnloadTimeout);
             document.getElementById('navbar').classList.add('hidden'); 
             document.getElementById('player').classList.add('active'); 
             document.getElementById('player-title').innerText = name; 
@@ -179,10 +186,8 @@
             document.getElementById('navbar').classList.remove('hidden'); 
             document.getElementById('player').classList.remove('active'); 
             
-            clearTimeout(gameUnloadTimeout);
-            gameUnloadTimeout = setTimeout(() => { 
-                document.getElementById('game-frame').src = ''; 
-            }, 15000); 
+            // Instantly clear the game source
+            document.getElementById('game-frame').src = ''; 
         }
         
         function tab(id, el) { 
@@ -226,9 +231,34 @@
             }
         });
 
+        // Keybind Capture Logic
+        document.getElementById('panic-key-input').addEventListener('keydown', (e) => {
+            e.preventDefault();
+            document.getElementById('panic-key-input').value = e.key;
+            markUnsaved();
+        });
+
+        // Global Panic Key Listener
+        document.addEventListener('keydown', (e) => {
+            const panicKey = localStorage.getItem('gelly-panic-key') || '`';
+            // Only trigger if we aren't currently mapping the keybind
+            if (e.key === panicKey && document.activeElement.id !== 'panic-key-input' && document.activeElement.id !== 'secret-input') {
+                panic();
+            }
+        });
+
         function markUnsaved() { hasUnsavedChanges = true; document.getElementById('save-status').innerText = "press save changes to save these"; document.getElementById('save-status').classList.add('visible'); }
-        function saveSettings() { localStorage.setItem('gelly-panic', document.getElementById('panic-input').value); hasUnsavedChanges = false; document.getElementById('save-status').innerText = "saved changes"; setTimeout(() => { if (!hasUnsavedChanges) document.getElementById('save-status').classList.remove('visible'); }, 2000); }
-        function revertSettings() { document.getElementById('panic-input').value = localStorage.getItem('gelly-panic') || 'https://google.com'; }
+        function saveSettings() { 
+            localStorage.setItem('gelly-panic', document.getElementById('panic-input').value); 
+            localStorage.setItem('gelly-panic-key', document.getElementById('panic-key-input').value); 
+            hasUnsavedChanges = false; 
+            document.getElementById('save-status').innerText = "saved changes"; 
+            setTimeout(() => { if (!hasUnsavedChanges) document.getElementById('save-status').classList.remove('visible'); }, 2000); 
+        }
+        function revertSettings() { 
+            document.getElementById('panic-input').value = localStorage.getItem('gelly-panic') || 'https://google.com'; 
+            document.getElementById('panic-key-input').value = localStorage.getItem('gelly-panic-key') || '`'; 
+        }
         function panic() { window.top.location.href = localStorage.getItem('gelly-panic') || 'https://google.com'; }
         function transfer() { const win = window.open('about:blank'); if (!win) return; win.document.body.style.margin = '0'; const ifr = win.document.createElement('iframe'); ifr.style = "border:none; width:100%; height:100vh;"; ifr.src = window.location.href + "#cloaked"; win.document.body.appendChild(ifr); window.close(); }
         if (window.self !== window.top || window.location.hash === "#cloaked") { document.getElementById('landing').style.display = 'none'; }
