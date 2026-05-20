@@ -35,9 +35,9 @@
         .section { display: none; padding: 100px 60px 60px 60px; animation: fadeIn 0.4s ease forwards; min-height: calc(100vh - 70px); position: relative; }
         .section.active { display: block; }
         
-        #proxy.section, #sounds.section { padding: 0; height: calc(100vh - 70px); overflow: hidden; }
+        #proxy.section, #sounds.section, #ai.section { padding: 0; height: calc(100vh - 70px); overflow: hidden; }
 
-        #proxy-frame, #soundboard-frame { width: 100%; height: 100%; border: none; display: block; background: transparent; }
+        #proxy-frame, #soundboard-frame, #ai-frame { width: 100%; height: 100%; border: none; display: block; background: transparent; }
 
         /* UI Elements */
         .page-header { text-align: center; margin-bottom: 60px; width: 100%; }
@@ -92,6 +92,7 @@
             <button class="nav-btn" onclick="tab('games', this)">games</button>
             <button class="nav-btn" onclick="tab('proxy', this)">proxy</button>
             <button class="nav-btn" onclick="tab('sounds', this)">soundboard</button>
+            <button class="nav-btn" onclick="tab('ai', this)">ai</button>
         </div>
         <div class="nav-right">
             <button class="icon-btn" onclick="panic()"><svg viewBox="0 0 24 24"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg></button>
@@ -107,6 +108,7 @@
         <div id="games" class="section"><div class="page-header"><h1>gelly games</h1><p>click on a game to play</p></div><div id="game-grid" class="grid"></div></div>
         <div id="proxy" class="section"><iframe id="proxy-frame" sandbox="allow-forms allow-scripts allow-same-origin allow-popups-to-escape-sandbox"></iframe></div>
         <div id="sounds" class="section"><iframe id="soundboard-frame" src="soundboard/index.html"></iframe></div>
+        <div id="ai" class="section"><iframe id="ai-frame" src="aichat/index.html"></iframe></div>
         <div id="settings" class="section">
             <div class="page-header"><h1>gelly settings</h1><p>configure your experience</p></div>
             
@@ -192,7 +194,7 @@
             const vp = document.getElementById('main-viewport'); 
             const sbf = document.getElementById('soundboard-frame');
             
-            if (['proxy', 'home', 'sounds'].includes(id)) vp.classList.add('no-scroll'); else vp.classList.remove('no-scroll'); 
+            if (['proxy', 'home', 'sounds', 'ai'].includes(id)) vp.classList.add('no-scroll'); else vp.classList.remove('no-scroll'); 
             
             // If leaving the soundboard tab, completely reload its source to stop all sound
             if (id !== 'sounds') {
