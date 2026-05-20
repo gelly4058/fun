@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,9 +36,9 @@
         .section { display: none; padding: 100px 60px 60px 60px; animation: fadeIn 0.4s ease forwards; min-height: calc(100vh - 70px); position: relative; }
         .section.active { display: block; }
         
-        #proxy.section, #sounds.section { padding: 0; height: calc(100vh - 70px); overflow: hidden; }
+        #proxy.section, #sounds.section, #aichat.section { padding: 0; height: calc(100vh - 70px); overflow: hidden; }
 
-        #proxy-frame, #soundboard-frame { width: 100%; height: 100%; border: none; display: block; background: transparent; }
+        #proxy-frame, #soundboard-frame, #aichat-frame { width: 100%; height: 100%; border: none; display: block; background: transparent; }
 
         /* UI Elements */
         .page-header { text-align: center; margin-bottom: 60px; width: 100%; }
@@ -92,6 +93,13 @@
             <button class="nav-btn" onclick="tab('games', this)">games</button>
             <button class="nav-btn" onclick="tab('proxy', this)">proxy</button>
             <button class="nav-btn" onclick="tab('sounds', this)">soundboard</button>
+
+            <!-- NEW: AI square icon tab (right of soundboard) -->
+            <button class="icon-btn" onclick="tab('aichat', this)" title="ai">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 4h16v16H4V4zm3.2 12h1.6l.6-1.6h3l.6 1.6h1.6L11.9 8h-1.8L7.2 16zm2.8-3.1 1-2.7 1 2.7h-2zM15.5 16V8h1.6v8h-1.6z"/>
+                </svg>
+            </button>
         </div>
         <div class="nav-right">
             <button class="icon-btn" onclick="panic()"><svg viewBox="0 0 24 24"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg></button>
@@ -107,6 +115,10 @@
         <div id="games" class="section"><div class="page-header"><h1>gelly games</h1><p>click on a game to play</p></div><div id="game-grid" class="grid"></div></div>
         <div id="proxy" class="section"><iframe id="proxy-frame" sandbox="allow-forms allow-scripts allow-same-origin allow-popups-to-escape-sandbox"></iframe></div>
         <div id="sounds" class="section"><iframe id="soundboard-frame" src="soundboard/index.html"></iframe></div>
+
+        <!-- NEW: AI chat tab content -->
+        <div id="aichat" class="section"><iframe id="aichat-frame" src="aichat/index.html"></iframe></div>
+
         <div id="settings" class="section">
             <div class="page-header"><h1>gelly settings</h1><p>configure your experience</p></div>
             
@@ -192,7 +204,7 @@
             const vp = document.getElementById('main-viewport'); 
             const sbf = document.getElementById('soundboard-frame');
             
-            if (['proxy', 'home', 'sounds'].includes(id)) vp.classList.add('no-scroll'); else vp.classList.remove('no-scroll'); 
+            if (['proxy', 'home', 'sounds', 'aichat'].includes(id)) vp.classList.add('no-scroll'); else vp.classList.remove('no-scroll'); 
             
             // If leaving the soundboard tab, completely reload its source to stop all sound
             if (id !== 'sounds') {
@@ -273,3 +285,4 @@
     </script>
 </body>
 </html>
+```
