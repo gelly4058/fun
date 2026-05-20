@@ -63,7 +63,7 @@
 
         /* Landing/Secret */
         #landing { height: 100vh; width: 100vw; display: flex; align-items: flex-start; justify-content: flex-start; padding: 20px; background: #0b0b0b; position: fixed; z-index: 9999; pointer-events: all; }
-        #secret-container { display: flex; align-items: center; position: absolute; top: 20px; left: 20px; opacity: 1; transition: opacity 0.4s ease, display 0.4s ease; }
+        #secret-container { display: flex; align-items: center; position: absolute; top: 20px; left: 20px; opacity: 1; transition: opacity 0.4s ease; }
         #secret-container.hidden { opacity: 0; pointer-events: none; }
         #secret-input { background: transparent; border: none; color: var(--subtext); opacity: 0.3; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; padding: 10px 0; width: 80px; text-transform: lowercase; user-select: text; -webkit-text-security: disc; letter-spacing: -1px; }
         #check-btn { background: none; border: none; color: var(--subtext); opacity: 0.3; cursor: pointer; padding: 10px; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
@@ -72,7 +72,6 @@
         #secret-btn { position: absolute; top: 20px; left: 20px; width: 38px; height: 38px; background: none; border: none; border-radius: 10px; color: var(--subtext); display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.8); transition: opacity 0.6s ease, transform 0.6s ease, color 0.3s ease; visibility: hidden; pointer-events: none; }
         #secret-btn svg { width: 18px; height: 18px; fill: currentColor; }
         #secret-btn.active { visibility: visible !important; pointer-events: all !important; cursor: pointer !important; opacity: 0.3; transform: scale(1); }
-        #secret-btn.active:hover { opacity: 1; color: var(--accent); background: var(--secondary); }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -168,21 +167,7 @@
             { name: "flappy dunk", id: "flappydunk", img: "flappydunkicon.png" }
         ];
         
-        function checkCode() { 
-            const input = document.getElementById('secret-input'); 
-            const container = document.getElementById('secret-container'); 
-            const secretBtn = document.getElementById('secret-btn'); 
-            if (input.value === "gg55") { 
-                container.classList.add('hidden'); 
-                setTimeout(() => { 
-                    container.style.display = 'none'; // Completely removes checkmark block out of the way
-                    secretBtn.classList.add('active'); 
-                }, 400); 
-            } else { 
-                input.value = ""; 
-                input.blur(); 
-            } 
-        }
+        function checkCode() { const input = document.getElementById('secret-input'); const container = document.getElementById('secret-container'); const secretBtn = document.getElementById('secret-btn'); if (input.value === "gg55") { container.classList.add('hidden'); setTimeout(() => { secretBtn.classList.add('active'); }, 400); } else { input.value = ""; input.blur(); } }
         document.getElementById('secret-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') checkCode(); });
         
         function drawGames(query = "") { const grid = document.getElementById('game-grid'); grid.innerHTML = ''; gameData.filter(g => g.name.toLowerCase().includes(query.toLowerCase())).forEach(g => { const div = document.createElement('div'); div.className = 'game-card'; div.onclick = () => openGame(g.id, g.name); div.innerHTML = `<img src="icons/${g.img}"><span>${g.name}</span>`; grid.appendChild(div); }); }
