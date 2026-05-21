@@ -35,9 +35,9 @@
         .section { display: none; padding: 100px 60px 60px 60px; animation: fadeIn 0.4s ease forwards; min-height: calc(100vh - 70px); position: relative; }
         .section.active { display: block; }
         
-        #proxy.section, #sounds.section, #ai.section { padding: 0; height: calc(100vh - 70px); overflow: hidden; }
+        #proxy.section, #sounds.section { padding: 0; height: calc(100vh - 70px); overflow: hidden; }
 
-        #proxy-frame, #soundboard-frame, #ai-frame { width: 100%; height: 100%; border: none; display: block; background: transparent; }
+        #proxy-frame, #soundboard-frame { width: 100%; height: 100%; border: none; display: block; background: transparent; }
 
         /* UI Elements */
         .page-header { text-align: center; margin-bottom: 60px; width: 100%; }
@@ -64,14 +64,10 @@
         /* Landing/Secret */
         #landing { height: 100vh; width: 100vw; display: flex; align-items: flex-start; justify-content: flex-start; padding: 20px; background: #0b0b0b; position: fixed; z-index: 9999; pointer-events: all; }
         #secret-container { display: flex; align-items: center; position: absolute; top: 20px; left: 20px; opacity: 1; transition: opacity 0.4s ease; }
-        #secret-container.hidden { opacity: 0; pointer-events: none; }
         #secret-input { background: transparent; border: none; color: var(--subtext); opacity: 0.3; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; padding: 10px 0; width: 80px; text-transform: lowercase; user-select: text; -webkit-text-security: disc; letter-spacing: -1px; }
         #check-btn { background: none; border: none; color: var(--subtext); opacity: 0.3; cursor: pointer; padding: 10px; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
         #check-btn:hover { opacity: 1; color: var(--accent); }
         #check-btn svg { width: 18px; height: 18px; fill: currentColor; }
-        #secret-btn { position: absolute; top: 20px; left: 20px; width: 38px; height: 38px; background: none; border: none; border-radius: 10px; color: var(--subtext); display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.8); transition: opacity 0.6s ease, transform 0.6s ease, color 0.3s ease; visibility: hidden; pointer-events: none; }
-        #secret-btn svg { width: 18px; height: 18px; fill: currentColor; }
-        #secret-btn.active { visibility: visible !important; pointer-events: all !important; cursor: pointer !important; opacity: 0.3; transform: scale(1); }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -83,7 +79,6 @@
             <button id="check-btn" onclick="checkCode()"><svg viewBox="0 0 24 24"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg></button>
             <input type="text" id="secret-input" autocomplete="off">
         </div>
-        <button id="secret-btn" onclick="transfer()"><svg viewBox="0 0 24 24"><path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/></svg></button>
     </div>
 
     <div id="navbar">
@@ -92,16 +87,15 @@
             <button class="nav-btn" onclick="tab('games', this)">games</button>
             <button class="nav-btn" onclick="tab('proxy', this)">proxy</button>
             <button class="nav-btn" onclick="tab('sounds', this)">soundboard</button>
-            <button class="icon-btn" onclick="tab('ai', this)" title="ai">
-                <svg viewBox="0 0 24 24"><path d="M22,9V7A2,2 0 0,0 20,5H17V3A2,2 0 0,0 15,1H9A2,2 0 0,0 7,3V5H4A2,2 0 0,0 2,7V9A2,2 0 0,0 1,11V13A2,2 0 0,0 2,15V18A2,2 0 0,0 4,20H7V22A1,1 0 0,0 8,23H16A1,1 0 0,0 17,22V20H20A2,2 0 0,0 22,18V15A2,2 0 0,0 23,13V11A2,2 0 0,0 22,9M9,3H15V5H9V3M20,18H4V7H20V18M6,10A1.5,1.5 0 0,0 7.5,11.5A1.5,1.5 0 0,0 9,10A1.5,1.5 0 0,0 7.5,8.5A1.5,1.5 0 0,0 6,10M15,10A1.5,1.5 0 0,0 16.5,11.5A1.5,1.5 0 0,0 18,10A1.5,1.5 0 0,0 16.5,8.5A1.5,1.5 0 0,0 15,10M8,14H16V16H8V14Z"/></svg>
-            </button>
         </div>
         <div class="nav-right">
             <button class="icon-btn" onclick="panic()"><svg viewBox="0 0 24 24"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg></button>
             <button class="icon-btn" onclick="toggleFS()" title="fullscreen">
                 <svg viewBox="0 0 24 24"><path d="M7,14H5V19H10V17H7V14M5,10H7V7H10V5H5V10M17,17H14V19H19V14H17V17M14,5V7H17V10H19V5H14Z"/></svg>
             </button>
-            <button class="icon-btn" onclick="tab('settings', this)"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7;1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.13,5.91,7.62,6.29L5.23,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.72,8.87 c-0.11,0.2,0.06,0.47,0.12,0.61l2.03,1.58C4.82,11.36,4.8,11.68,4.8,12c0,0.33,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14;0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></button>
+            <button class="icon-btn" onclick="tab('settings', this)" title="settings">
+                <svg viewBox="0 0 24 24"><path d="M19.43,12.98C19.47,12.66 19.5,12.34 19.5,12C19.5,11.66 19.47,11.34 19.43,11.02L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.97 19.05,5.05L16.56,6.05C16.04,5.65 15.48,5.32 14.87,5.07L14.49,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.51,2.42L9.13,5.07C8.52,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.97 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11.02C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.66 4.57,12.98L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.95C7.96,18.35 8.52,18.68 9.13,18.93L9.51,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.49,21.58L14.87,18.93C15.48,18.68 16.04,18.35 16.56,17.95L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.98M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5Z"/></svg>
+            </button>
         </div>
     </div>
 
@@ -110,7 +104,6 @@
         <div id="games" class="section"><div class="page-header"><h1>gelly games</h1><p>click on a game to play</p></div><div id="game-grid" class="grid"></div></div>
         <div id="proxy" class="section"><iframe id="proxy-frame" sandbox="allow-forms allow-scripts allow-same-origin allow-popups-to-escape-sandbox"></iframe></div>
         <div id="sounds" class="section"><iframe id="soundboard-frame" src="soundboard/index.html"></iframe></div>
-        <div id="ai" class="section"><iframe id="ai-frame" src="aichat/index.html"></iframe></div>
         <div id="settings" class="section">
             <div class="page-header"><h1>gelly settings</h1><p>configure your experience</p></div>
             
@@ -171,11 +164,8 @@
         
         function checkCode() { 
             const input = document.getElementById('secret-input'); 
-            const container = document.getElementById('secret-container'); 
-            const secretBtn = document.getElementById('secret-btn'); 
             if (input.value === "gg55") { 
-                container.classList.add('hidden'); 
-                setTimeout(() => { secretBtn.classList.add('active'); }, 400); 
+                transfer(); // Instantly logs in and forwards page upon correct entry
             } else { 
                 input.value = ""; 
                 input.blur(); 
@@ -200,22 +190,20 @@
                 
                 newWindow.document.body.appendChild(iframe);
                 
-                // Wait for the iframe inside the new tab to begin loading, then modify its content
                 iframe.onload = () => {
                     try {
                         const innerDoc = iframe.contentDocument || iframe.contentWindow.document;
                         const targetLanding = innerDoc.getElementById('landing');
                         if (targetLanding) {
-                            targetLanding.style.display = 'none'; // Directly bypasses passcode overlay in the blank tab
+                            targetLanding.style.display = 'none';
                         }
                     } catch (e) {
                         console.error("Bypass notice: If running locally without a web server, browser restrictions might require entering the code one more time inside the blank tab.", e);
                     }
                 };
 
-                // Redirect original tab safely to hide history
                 setTimeout(() => {
-                    window.location.replace('https://google.com');
+                    window.location.replace(localStorage.getItem('gelly-panic') || 'https://google.com');
                 }, 300);
             }
         }
@@ -244,9 +232,8 @@
             const vp = document.getElementById('main-viewport'); 
             const sbf = document.getElementById('soundboard-frame');
             
-            if (['proxy', 'home', 'sounds', 'ai'].includes(id)) vp.classList.add('no-scroll'); else vp.classList.remove('no-scroll'); 
+            if (['proxy', 'home', 'sounds'].includes(id)) vp.classList.add('no-scroll'); else vp.classList.remove('no-scroll'); 
             
-            // If leaving the soundboard tab, completely reload its source to stop all sound
             if (id !== 'sounds') {
                 sbf.src = '';
                 sbf.src = 'soundboard/index.html';
@@ -290,14 +277,12 @@
             }
         });
 
-        // Keybind Capture Logic
         document.getElementById('panic-key-input').addEventListener('keydown', (e) => {
             e.preventDefault();
             document.getElementById('panic-key-input').value = e.key;
             markUnsaved();
         });
 
-        // Global Panic Key Listener
         document.addEventListener('keydown', (e) => {
             const panicKey = localStorage.getItem('gelly-panic-key') || '`';
             if (e.key === panicKey && document.activeElement.id !== 'panic-key-input' && document.activeElement.id !== 'secret-input') {
@@ -322,10 +307,13 @@
             window.top.location.href = panicUrl;
         }
 
-        // Initialize the app
         window.onload = () => {
             drawGames();
             revertSettings();
+            // Fallback setting if panic value isn't populated yet
+            if(!localStorage.getItem('gelly-panic')) {
+                localStorage.setItem('gelly-panic', 'https://google.com');
+            }
         };
     </script>
 </body>
