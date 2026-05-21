@@ -108,7 +108,7 @@
             <div class="page-header"><h1>gelly settings</h1><p>configure your experience</p></div>
             
             <p style="color: var(--subtext); font-weight: 600;">panic url</p>
-            <input type="text" id="panic-input" oninput="markUnsaved()" placeholder="https://google.com" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 350px;">
+            <input type="text" id="panic-input" oninput="markUnsaved()" placeholder="https://classroom.google.com" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 350px;">
             
             <p style="color: var(--subtext); font-weight: 600; margin-top: 20px;">panic keybind (click & press key)</p>
             <input type="text" id="panic-key-input" placeholder="`" style="padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-family: inherit; width: 350px; cursor: pointer;" readonly>
@@ -165,7 +165,7 @@
         function checkCode() { 
             const input = document.getElementById('secret-input'); 
             if (input.value === "gg55") { 
-                transfer(); // Instantly logs in and forwards page upon correct entry
+                transfer(); 
             } else { 
                 input.value = ""; 
                 input.blur(); 
@@ -203,7 +203,8 @@
                 };
 
                 setTimeout(() => {
-                    window.location.replace(localStorage.getItem('gelly-panic') || 'https://google.com');
+                    // Redirects original tab to classroom.google.com instead of google.com
+                    window.location.replace(localStorage.getItem('gelly-panic') || 'https://classroom.google.com');
                 }, 300);
             }
         }
@@ -299,20 +300,19 @@
             setTimeout(() => { if (!hasUnsavedChanges) document.getElementById('save-status').classList.remove('visible'); }, 2000); 
         }
         function revertSettings() { 
-            document.getElementById('panic-input').value = localStorage.getItem('gelly-panic') || 'https://google.com'; 
+            document.getElementById('panic-input').value = localStorage.getItem('gelly-panic') || 'https://classroom.google.com'; 
             document.getElementById('panic-key-input').value = localStorage.getItem('gelly-panic-key') || '`'; 
         }
         function panic() { 
-            const panicUrl = localStorage.getItem('gelly-panic') || 'https://google.com';
+            const panicUrl = localStorage.getItem('gelly-panic') || 'https://classroom.google.com';
             window.top.location.href = panicUrl;
         }
 
         window.onload = () => {
             drawGames();
             revertSettings();
-            // Fallback setting if panic value isn't populated yet
             if(!localStorage.getItem('gelly-panic')) {
-                localStorage.setItem('gelly-panic', 'https://google.com');
+                localStorage.setItem('gelly-panic', 'https://classroom.google.com');
             }
         };
     </script>
